@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize scroll to top button
     initScrollToTop();
+
+    // Initialize pricing toggle
+    initPricingToggle();
 });
 
 // Before After Slider functionality
@@ -503,5 +506,212 @@ function initScrollToTop() {
             top: 0,
             behavior: 'smooth'
         });
+    });
+}
+
+// Pricing toggle functionality
+function initPricingToggle() {
+    const toggle = document.getElementById('pricing-toggle');
+    const monthlyPrices = document.querySelectorAll('.monthly-price');
+    const annualPrices = document.querySelectorAll('.annual-price');
+    const savings = document.querySelectorAll('.savings');
+
+    if (!toggle) return;
+
+    toggle.addEventListener('change', function() {
+        const isAnnual = this.checked;
+
+        monthlyPrices.forEach(price => {
+            price.classList.toggle('active', !isAnnual);
+        });
+
+        annualPrices.forEach(price => {
+            price.classList.toggle('active', isAnnual);
+        });
+
+        savings.forEach(saving => {
+            saving.classList.toggle('show', isAnnual);
+        });
+    });
+
+    // Initialize Freemius checkout
+    initFreemiusCheckout();
+}
+
+// Freemius checkout functionality
+function initFreemiusCheckout() {
+    // Check if Freemius script is loaded
+    if (typeof FS === 'undefined') {
+        console.error('Freemius checkout script not loaded');
+        return;
+    }
+
+    // Initialize handler using the working configuration
+    const handler = new FS.Checkout({
+        product_id: '20099',
+        plan_id: '33353',
+        public_key: 'pk_6303cf40cc7629d8361bc8762da77',
+        image: 'https://your-plugin-site.com/logo-100x100.png'
+    });
+
+    // Get Pro button
+    const proButton = document.getElementById('get_pro');
+    if (proButton) {
+        proButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const isAnnual = document.getElementById('pricing-toggle').checked;
+            const planName = isAnnual ? 'MBA Gallery Pro (Annual)' : 'MBA Gallery Pro (Monthly)';
+
+            handler.open({
+                name: planName,
+                licenses: 1, // Single site for Pro
+                purchaseCompleted: (response) => {
+                    console.log('Purchase completed:', response);
+                    console.log('User email:', response.user.email);
+                    console.log('License key:', response.license.key);
+
+                    // Show success message
+                    showPurchaseSuccess(response, 'Pro');
+                },
+                success: (response) => {
+                    console.log('Checkout closed after successful purchase:', response);
+                    console.log('User email:', response.user.email);
+                    console.log('License key:', response.license.key);
+
+                    // Handle purchase success
+                    handlePurchaseSuccess(response, 'Pro');
+                }
+            });
+        });
+    }
+
+    // Get Agency button
+    const agencyButton = document.getElementById('get_agency');
+    if (agencyButton) {
+        agencyButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const isAnnual = document.getElementById('pricing-toggle').checked;
+            const planName = isAnnual ? 'MBA Gallery Agency (Annual)' : 'MBA Gallery Agency (Monthly)';
+
+            handler.open({
+                name: planName,
+                licenses: 'unlimited', // Unlimited sites for Agency
+                purchaseCompleted: (response) => {
+                    console.log('Purchase completed:', response);
+                    console.log('User email:', response.user.email);
+                    console.log('License key:', response.license.key);
+
+                    // Show success message
+                    showPurchaseSuccess(response, 'Agency');
+                },
+                success: (response) => {
+                    console.log('Checkout closed after successful purchase:', response);
+                    console.log('User email:', response.user.email);
+                    console.log('License key:', response.license.key);
+
+                    // Handle purchase success
+                    handlePurchaseSuccess(response, 'Agency');
+                }
+            });
+        });
+    }
+}
+
+// Handle purchase success
+function handlePurchaseSuccess(response, planName) {
+    // Create success modal or redirect to thank you page
+    const successModal = createSuccessModal(response, planName);
+    document.body.appendChild(successModal);
+    successModal.style.display = 'flex';
+
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+        successModal.remove();
+    }, 10000);
+}
+
+// Show immediate purchase success message
+function showPurchaseSuccess(response, planName) {
+    // Show a quick success notification
+    const notification = document.createElement('div');
+    notification.className = 'purchase-notification success';
+    notification.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <span>Purchase successful! Processing your ${planName} license...</span>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Create success modal
+function createSuccessModal(response, planName) {
+    const modal = document.createElement('div');
+    modal.className = 'purchase-success-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-check-circle"></i>
+                <h2>Purchase Successful!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for purchasing <strong>MBA Gallery ${planName}</strong>!</p>
+                <div class="purchase-details">
+                    <div class="detail-item">
+                        <strong>Email:</strong> ${response.user.email}
+                    </div>
+                    <div class="detail-item">
+                        <strong>License Key:</strong>
+                        <code>${response.license.key}</code>
+                        <button class="copy-btn" onclick="copyToClipboard('${response.license.key}')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="next-steps">
+                    <h3>Next Steps:</h3>
+                    <ol>
+                        <li>Check your email for download instructions</li>
+                        <li>Download the plugin from your account</li>
+                        <li>Install and activate using your license key</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="this.closest('.purchase-success-modal').remove()">
+                    Got it, thanks!
+                </button>
+                <a href="mailto:support@medicalbeforeaftergallery.com" class="btn btn-secondary">
+                    Need Help?
+                </a>
+            </div>
+        </div>
+    `;
+
+    return modal;
+}
+
+// Copy to clipboard utility
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Show copied notification
+        const notification = document.createElement('div');
+        notification.className = 'purchase-notification info';
+        notification.innerHTML = `
+            <i class="fas fa-check"></i>
+            <span>License key copied to clipboard!</span>
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 2000);
     });
 }

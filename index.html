@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://checkout.freemius.com/js/v1/"></script>
 </head>
 <body>
     <header class="site-header">
@@ -85,9 +86,9 @@
         </div>
 
     </section>
-    
-    
- 
+
+
+
 
     <section id="features" class="features">
         <div class="container">
@@ -331,6 +332,14 @@
                 <h2>Simple, Transparent Pricing</h2>
                 <p>Choose the plan that works for your practice</p>
             </div>
+            <div class="pricing-toggle">
+                <span class="toggle-label">Monthly</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pricing-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Annual <span class="discount-badge">Save up to 15%</span></span>
+            </div>
             <div class="pricing-container">
                 <div class="pricing-card">
                     <div class="pricing-header">
@@ -357,7 +366,11 @@
                     <div class="pricing-badge">Most Popular</div>
                     <div class="pricing-header">
                         <h3>Pro</h3>
-                        <div class="price">$19<span>/Month</span></div>
+                        <div class="price-container">
+                            <div class="price monthly-price active">$19<span>/month</span></div>
+                            <div class="price annual-price">$199<span>/year</span></div>
+                            <div class="savings annual-savings">Save 12%</div>
+                        </div>
                         <p>For growing practices</p>
                     </div>
                     <div class="pricing-features">
@@ -378,7 +391,11 @@
                 <div class="pricing-card">
                     <div class="pricing-header">
                         <h3>Agency</h3>
-                        <div class="price">$49<span>/Month</span></div>
+                        <div class="price-container">
+                            <div class="price monthly-price active">$49<span>/month</span></div>
+                            <div class="price annual-price">$499<span>/year</span></div>
+                            <div class="savings annual-savings">Save 15%</div>
+                        </div>
                         <p>For multiple practice locations</p>
                     </div>
                     <div class="pricing-features">
