@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Medical Before After Gallery</title>
+    <meta name="description" content="Latest news, tips, and insights about medical before-after galleries and showcasing your medical procedures.">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Blog-specific styles */
+        .blog-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 8rem 0 4rem;
+            text-align: center;
+        }
+
+        .blog-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .blog-header p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .blog-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 3rem;
+            padding: 4rem 0;
+        }
+
+        .blog-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .blog-post-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-post-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+        }
+
+        .blog-post-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .blog-post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .blog-post-card:hover .blog-post-image img {
+            transform: scale(1.05);
+        }
+
+        .blog-post-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .blog-post-content {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-lighter);
+            font-size: 0.875rem;
+        }
+
+        .blog-post-meta i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .blog-post-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            line-height: 1.3;
+        }
+
+        .blog-post-title a {
+            color: var(--text-color);
+        }
+
+        .blog-post-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .blog-post-excerpt {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            flex: 1;
+        }
+
+        .blog-post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            gap: 1rem;
+        }
+
+        .blog-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .sidebar-widget {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-widget h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-form button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-form button:hover {
+            background: var(--primary-dark);
+        }
+
+        .categories-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-item:hover {
+            color: var(--primary-color);
+            padding-left: 0.5rem;
+        }
+
+        .category-count {
+            color: var(--text-lighter);
+            font-size: 0.875rem;
+        }
+
+        .recent-posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .recent-post-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .recent-post-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .recent-post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .recent-post-info h4 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .recent-post-info h4 a {
+            color: var(--text-color);
+        }
+
+        .recent-post-info h4 a:hover {
+            color: var(--primary-color);
+        }
+
+        .recent-post-date {
+            font-size: 0.75rem;
+            color: var(--text-lighter);
+        }
+
+        .tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tag-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-light);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .tag-item:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 968px) {
+            .blog-container {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-sidebar {
+                position: static;
+            }
+
+            .blog-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .blog-post-image {
+                height: 200px;
+            }
+
+            .blog-post-title {
+                font-size: 1.5rem;
+            }
+
+            .blog-post-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B88DD33940"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-B88DD33940');
+    </script>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="blog-header">
+        <div class="container">
+            <h1>MBA Gallery Blog</h1>
+            <p>Tips, insights, and best practices for showcasing medical procedures with before-after galleries</p>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            <div class="blog-container">
+                <main class="blog-posts">
+                    <!-- Blog Post 1 -->
+                    <article class="blog-post-card">
+                        <div class="blog-post-image">
+                            <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="5 Reasons Your Cosmetic Dentistry Practice Needs a Professional Before-After Gallery">
+                            <span class="blog-post-category">Dental Marketing</span>
+                        </div>
+                        <div class="blog-post-content">
+                            <div class="blog-post-meta">
+                                <span><i class="far fa-calendar"></i>December 15, 2024</span>
+                                <span><i class="far fa-user"></i>Dr. Sarah Mitchell</span>
+                                <span><i class="far fa-clock"></i>8 min read</span>
+                            </div>
+                            <h2 class="blog-post-title">
+                                <a href="5-reasons-cosmetic-dentistry-gallery.html">5 Reasons Your Cosmetic Dentistry Practice Needs a Professional Before-After Gallery</a>
+                            </h2>
+                            <p class="blog-post-excerpt">
+                                Discover why a professional before-after gallery is essential for cosmetic dentistry practices. Learn how high-quality visual evidence builds trust, differentiates you from competitors, and converts visitors into patients.
+                            </p>
+                            <div class="blog-post-footer">
+                                <a href="5-reasons-cosmetic-dentistry-gallery.html" class="read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 2 -->
+                    <article class="blog-post-card">
+                        <div class="blog-post-image">
+                            <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="The Complete Guide to Displaying Smile Makeovers">
+                            <span class="blog-post-category">Patient Conversion</span>
+                        </div>
+                        <div class="blog-post-content">
+                            <div class="blog-post-meta">
+                                <span><i class="far fa-calendar"></i>December 12, 2024</span>
+                                <span><i class="far fa-user"></i>Dr. Michael Chen</span>
+                                <span><i class="far fa-clock"></i>12 min read</span>
+                            </div>
+                            <h2 class="blog-post-title">
+                                <a href="smile-makeover-conversion-guide.html">The Complete Guide to Displaying Smile Makeovers That Convert Website Visitors into Patients</a>
+                            </h2>
+                            <p class="blog-post-excerpt">
+                                Master the art of displaying smile makeovers online. Learn proven strategies for presenting before-after photos that convert website visitors into booked consultations, from photography fundamentals to conversion optimization.
+                            </p>
+                            <div class="blog-post-footer">
+                                <a href="smile-makeover-conversion-guide.html" class="read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 3 -->
+                    <article class="blog-post-card">
+                        <div class="blog-post-image">
+                            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Why Static Before-After Photos Are Costing Your Dental Practice New Patients">
+                            <span class="blog-post-category">Practice Growth</span>
+                        </div>
+                        <div class="blog-post-content">
+                            <div class="blog-post-meta">
+                                <span><i class="far fa-calendar"></i>December 10, 2024</span>
+                                <span><i class="far fa-user"></i>Jennifer Martinez</span>
+                                <span><i class="far fa-clock"></i>9 min read</span>
+                            </div>
+                            <h2 class="blog-post-title">
+                                <a href="static-photos-costing-patients.html">Why Static Before-After Photos Are Costing Your Dental Practice New Patients (And What to Do Instead)</a>
+                            </h2>
+                            <p class="blog-post-excerpt">
+                                Learn why static before-after photos are ineffective and costing your dental practice 40-60% of potential patients. Discover modern interactive gallery solutions that drive conversions with real case study results.
+                            </p>
+                            <div class="blog-post-footer">
+                                <a href="static-photos-costing-patients.html" class="read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 4 -->
+                    <article class="blog-post-card">
+                        <div class="blog-post-image">
+                            <img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Create a Stunning Veneers, Whitening & Orthodontics Portfolio">
+                            <span class="blog-post-category">Best Practices</span>
+                        </div>
+                        <div class="blog-post-content">
+                            <div class="blog-post-meta">
+                                <span><i class="far fa-calendar"></i>December 8, 2024</span>
+                                <span><i class="far fa-user"></i>Dr. Lisa Thompson</span>
+                                <span><i class="far fa-clock"></i>11 min read</span>
+                            </div>
+                            <h2 class="blog-post-title">
+                                <a href="veneers-whitening-orthodontics-portfolio.html">How to Create a Stunning Veneers, Whitening & Orthodontics Portfolio for Your Dental Website</a>
+                            </h2>
+                            <p class="blog-post-excerpt">
+                                Step-by-step guide to creating a stunning portfolio of veneers, teeth whitening, and orthodontics cases. Learn photography protocols, organization strategies, and digital presentation techniques that showcase your expertise and attract more patients.
+                            </p>
+                            <div class="blog-post-footer">
+                                <a href="veneers-whitening-orthodontics-portfolio.html" class="read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 5 -->
+                    <article class="blog-post-card">
+                        <div class="blog-post-image">
+                            <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="HIPAA Compliance for Dental Before-After Photography">
+                            <span class="blog-post-category">HIPAA Compliance</span>
+                        </div>
+                        <div class="blog-post-content">
+                            <div class="blog-post-meta">
+                                <span><i class="far fa-calendar"></i>December 5, 2024</span>
+                                <span><i class="far fa-user"></i>Legal Team</span>
+                                <span><i class="far fa-clock"></i>10 min read</span>
+                            </div>
+                            <h2 class="blog-post-title">
+                                <a href="dental-hipaa-compliance.html">HIPAA Compliance for Dental Before-After Photography: Everything You Need to Know</a>
+                            </h2>
+                            <p class="blog-post-excerpt">
+                                Comprehensive guide to HIPAA compliance when capturing and displaying dental before-after photography. Learn about written authorizations, de-identification strategies, secure storage, metadata management, and common compliance violations to avoid.
+                            </p>
+                            <div class="blog-post-footer">
+                                <a href="dental-hipaa-compliance.html" class="read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Featured Blog Post - Pro Promotion -->
+                    <article class="blog-post-card" style="border: 2px solid var(--primary-color);">
+                        <div class="blog-post-image">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Why Upgrade to MBA Gallery Pro">
+                            <span class="blog-post-category" style="background: #059669;">Featured</span>
+                        </div>
+                        <div class="blog-post-content">
+                            <div class="blog-post-meta">
+                                <span><i class="far fa-calendar"></i>January 6, 2026</span>
+                                <span><i class="far fa-user"></i>MBA Gallery Team</span>
+                                <span><i class="far fa-clock"></i>8 min read</span>
+                            </div>
+                            <h2 class="blog-post-title">
+                                <a href="upgrade-to-pro.html">Why Upgrade to MBA Gallery Pro? 7 Features That Transform Your Medical Practice</a>
+                            </h2>
+                            <p class="blog-post-excerpt">
+                                Discover why medical professionals are upgrading to MBA Gallery Pro and seeing conversion increases of up to 40%. Learn about advanced filtering, multiple image pairs, watermarking, and more features that drive real results for your practice.
+                            </p>
+                            <div class="blog-post-footer">
+                                <a href="upgrade-to-pro.html" class="read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                                <span style="color: var(--primary-color); font-weight: 600;"><i class="fas fa-star"></i> Recommended</span>
+                            </div>
+                        </div>
+                    </article>
+
+                
+
+
+                </main>
+
+                <aside class="blog-sidebar">
+                    <!-- Search Widget -->
+                    <div class="sidebar-widget">
+                        <h3>Search</h3>
+                        <form class="search-form">
+                            <input type="text" placeholder="Search articles...">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    <!-- Categories Widget -->
+                    <div class="sidebar-widget">
+                        <h3>Categories</h3>
+                        <div class="categories-list">
+                            <a href="#" class="category-item">
+                                <span>Best Practices</span>
+                                <span class="category-count">12</span>
+                            </a>
+                            <a href="#" class="category-item">
+                                <span>Compliance</span>
+                                <span class="category-count">8</span>
+                            </a>
+                            <a href="#" class="category-item">
+                                <span>Marketing</span>
+                                <span class="category-count">15</span>
+                            </a>
+                            <a href="#" class="category-item">
+                                <span>Tips & Tricks</span>
+                                <span class="category-count">20</span>
+                            </a>
+                            <a href="#" class="category-item">
+                                <span>Technical</span>
+                                <span class="category-count">10</span>
+                            </a>
+                            <a href="#" class="category-item">
+                                <span>Legal</span>
+                                <span class="category-count">6</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Posts Widget -->
+                    <div class="sidebar-widget">
+                        <h3>Recent Posts</h3>
+                        <div class="recent-posts-list">
+                            <div class="recent-post-item">
+                                <div class="recent-post-image">
+                                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Post">
+                                </div>
+                                <div class="recent-post-info">
+                                    <h4><a href="single.html?id=1">Best Practices for Medical Before-After Photography</a></h4>
+                                    <span class="recent-post-date">December 15, 2025</span>
+                                </div>
+                            </div>
+                            <div class="recent-post-item">
+                                <div class="recent-post-image">
+                                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Post">
+                                </div>
+                                <div class="recent-post-info">
+                                    <h4><a href="single.html?id=2">HIPAA Compliance Guide for Medical Photography</a></h4>
+                                    <span class="recent-post-date">December 8, 2025</span>
+                                </div>
+                            </div>
+                            <div class="recent-post-item">
+                                <div class="recent-post-image">
+                                    <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Post">
+                                </div>
+                                <div class="recent-post-info">
+                                    <h4><a href="single.html?id=3">Increase Patient Conversions with Galleries</a></h4>
+                                    <span class="recent-post-date">November 28, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags Widget -->
+                    <div class="sidebar-widget">
+                        <h3>Popular Tags</h3>
+                        <div class="tags-list">
+                            <a href="#" class="tag-item">Before-After</a>
+                            <a href="#" class="tag-item">WordPress</a>
+                            <a href="#" class="tag-item">HIPAA</a>
+                            <a href="#" class="tag-item">Photography</a>
+                            <a href="#" class="tag-item">Medical Marketing</a>
+                            <a href="#" class="tag-item">Patient Consent</a>
+                            <a href="#" class="tag-item">Image Gallery</a>
+                            <a href="#" class="tag-item">Conversion</a>
+                        </div>
+                    </div>
+
+                    <!-- CTA Widget -->
+                    <div class="sidebar-widget" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); color: white;">
+                        <h3 style="color: white;">Ready to Get Started?</h3>
+                        <p style="margin-bottom: 1.5rem; opacity: 0.95;">Transform your medical practice website with MBA Gallery.</p>
+                        <a href="../index.html#pricing" class="btn btn-secondary" style="width: 100%; text-align: center; background: white; color: var(--primary-color);">View Pricing</a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <button id="scroll-top" class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Load header
+        fetch('../includes/header.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('header-placeholder').innerHTML = data)
+            .catch(err => console.error('Header load failed:', err));
+
+        // Load footer
+        fetch('../includes/footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data)
+            .catch(err => console.error('Footer load failed:', err));
+    </script>
+    <script src="../script.js"></script>
+</body>
+</html>
