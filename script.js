@@ -523,8 +523,8 @@ function initFreemiusCheckout() {
     }
 
     // Initialize the checkout handler
-    const handler = new FS.Checkout({
-        product_id: '20099',
+    const handler = FS.Checkout.configure({
+        plugin_id: '20099',
         plan_id: '34011',
         public_key: 'pk_6303cf40cc7629d8361bc8762da77',
         image: 'https://medicalbeforeaftergallery.com/100-100.jpg'
