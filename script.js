@@ -597,42 +597,6 @@ function initFreemiusCheckout() {
         });
     }
 
-    // Get Agency button
-    const agencyButton = document.getElementById('get_agency');
-    if (agencyButton) {
-        agencyButton.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            // Remove any existing loading states
-            removeLoadingStates();
-
-            handler.open({
-                name: 'MBA Gallery Agency - Unlimited Sites (Lifetime)',
-                licenses: 'unlimited',
-                purchaseCompleted: (response) => {
-                    console.log('Purchase completed:', response);
-                    console.log('User email:', response.user.email);
-                    console.log('License key:', response.license.key);
-
-                    // Show success message
-                    showPurchaseSuccess(response, 'Agency');
-                },
-                success: (response) => {
-                    console.log('Checkout closed after successful purchase:', response);
-                    console.log('User email:', response.user.email);
-                    console.log('License key:', response.license.key);
-
-                    // Handle purchase success
-                    handlePurchaseSuccess(response, 'Agency');
-                },
-                cancel: () => {
-                    console.log('Checkout cancelled');
-                    // Remove any loading states when checkout is cancelled
-                    removeLoadingStates();
-                }
-            });
-        });
-    }
 }
 
 // Remove loading states to fix persistent loading animation
@@ -673,7 +637,7 @@ function removeLoadingStates() {
     });
 
     // Reset button states
-    const buttons = document.querySelectorAll('#get_pro, #get_agency');
+    const buttons = document.querySelectorAll('#get_pro');
     buttons.forEach(button => {
         button.disabled = false;
         button.style.opacity = '1';
