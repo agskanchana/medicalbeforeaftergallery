@@ -512,165 +512,45 @@ function initScrollToTop() {
 // Initialize Freemius checkout on load
 function initializeCheckout() {
     initFreemiusCheckout();
-
-    // Add additional cleanup when window regains focus (checkout popup closes)
-    window.addEventListener('focus', () => {
-        setTimeout(() => {
-            removeLoadingStates();
-        }, 500); // Delay to ensure checkout has fully closed
-    });
-
-    // Add click event listener to document to clean up any remaining loading states
-    document.addEventListener('click', (e) => {
-        // Small delay to allow for any loading states to appear first
-        setTimeout(() => {
-            const hasLoadingElements = document.querySelectorAll('[class*="loading"], [class*="spinner"]').length > 0;
-            if (hasLoadingElements && !document.querySelector('.fs-checkout')) {
-                removeLoadingStates();
-            }
-        }, 100);
-    });
-
-    // Periodic cleanup to catch persistent loading animations
-    setInterval(() => {
-        const hasLoadingElements = document.querySelectorAll('[class*="loading"], [class*="spinner"]').length > 0;
-        const hasCheckout = document.querySelector('.fs-checkout') || document.querySelector('[class*="freemius"]');
-
-        // If there are loading elements but no active checkout, clean them up
-        if (hasLoadingElements && !hasCheckout) {
-            console.log('Cleaning up persistent loading animations...');
-            removeLoadingStates();
-        }
-    }, 2000); // Check every 2 seconds
 }
 
 // Freemius checkout functionality
 function initFreemiusCheckout() {
-    // Check if Freemius script is loaded
-    if (typeof FS === 'undefined') {
+    // Check if Freemius checkout script is loaded
+    if (typeof FS === 'undefined' || typeof FS.Checkout === 'undefined') {
         console.error('Freemius checkout script not loaded');
         return;
     }
 
-    // Initialize handler using the working configuration
+    // Initialize the checkout handler
     const handler = new FS.Checkout({
         product_id: '20099',
-        plan_id: '34011', // Updated plan ID for lifetime pricing
+        plan_id: '34011',
         public_key: 'pk_6303cf40cc7629d8361bc8762da77',
         image: 'https://medicalbeforeaftergallery.com/100-100.jpg'
     });
 
-    // Pro button (single site)
+    // Pro button
     const proButton = document.getElementById('get_pro');
     if (proButton) {
         proButton.addEventListener('click', (e) => {
             e.preventDefault();
 
-            // Remove any existing loading states
-            removeLoadingStates();
-
             handler.open({
-                name: 'MBA Gallery Pro - Single Site (Lifetime)',
+                name: 'MBA Gallery Pro',
                 licenses: 1,
                 purchaseCompleted: (response) => {
-                    console.log('Purchase completed:', response);
-                    console.log('User email:', response.user.email);
-                    console.log('License key:', response.license.key);
-
-                    // Show success message
                     showPurchaseSuccess(response, 'Pro');
                 },
                 success: (response) => {
-                    console.log('Checkout closed after successful purchase:', response);
-                    console.log('User email:', response.user.email);
-                    console.log('License key:', response.license.key);
-
-                    // Handle purchase success
                     handlePurchaseSuccess(response, 'Pro');
                 },
                 cancel: () => {
                     console.log('Checkout cancelled');
-                    // Remove any loading states when checkout is cancelled
-                    removeLoadingStates();
                 }
             });
         });
     }
-
-}
-
-// Remove loading states to fix persistent loading animation
-function removeLoadingStates() {
-    // Remove any Freemius loading elements with multiple selectors
-    const loadingSelectors = [
-        '[class*="loading"]',
-        '[class*="spinner"]',
-        '[class*="fs-loading"]',
-        '[class*="fs-spinner"]',
-        '.fs-checkout-loading',
-        '.freemius-loading',
-        '[data-loading]',
-        '.checkout-loading'
-    ];
-
-    loadingSelectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(element => {
-            element.remove();
-        });
-    });
-
-    // Remove any overlay elements that might be causing issues
-    const overlaySelectors = [
-        '[class*="overlay"]',
-        '.fs-overlay',
-        '.freemius-overlay',
-        '.checkout-overlay',
-        '[data-overlay]'
-    ];
-
-    overlaySelectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(element => {
-            element.remove();
-        });
-    });
-
-    // Reset button states
-    const buttons = document.querySelectorAll('#get_pro');
-    buttons.forEach(button => {
-        button.disabled = false;
-        button.style.opacity = '1';
-        button.style.pointerEvents = 'auto';
-        button.classList.remove('loading', 'disabled');
-    });
-
-    // Clear any body classes that might be affecting the page
-    const bodyClasses = [
-        'fs-checkout-loading',
-        'fs-loading',
-        'freemius-loading',
-        'checkout-active',
-        'modal-open'
-    ];
-
-    bodyClasses.forEach(className => {
-        document.body.classList.remove(className);
-    });
-
-    // Reset any inline styles that might be affecting the body or html
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-
-    // Force cleanup after a small delay to catch any delayed loading elements
-    setTimeout(() => {
-        loadingSelectors.forEach(selector => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(element => {
-                element.remove();
-            });
-        });
-    }, 100);
 }
 
 // Handle purchase success
