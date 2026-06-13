@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { faqItems } from '../data/faq';
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer.replace(/<[^>]+>/g, ''),
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Answers to common questions about the Medical Before After Gallery plugin — free vs Pro, licensing, watermarking, consent, server requirements and more."
+  jsonLd={faqJsonLd}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">FAQ</span>
+      <h1>Frequently asked <span class="grad">questions</span></h1>
+      <p class="lead">Everything you need to know about the plugin, licensing and setup. Can’t find an answer? <a href="/contact/">Get in touch</a>.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <Faq items={faqItems} />
+    </div>
+  </section>
+
+  <CtaBanner title="Still have questions?" text="Reach out and we’ll help you get set up — usually within one business day." />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--gradient-soft);
+    padding-block: clamp(2.75rem, 7vw, 4.5rem);
+    text-align: center;
+  }
+  .page-hero .lead {
+    max-width: 54ch;
+    margin: 1rem auto 0;
+  }
+  .page-hero .lead a {
+    text-decoration: underline;
+  }
+  .grad {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>

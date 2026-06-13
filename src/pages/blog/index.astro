@@ -1,0 +1,197 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { slugifyTag } from '../../utils/format';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const [featured, ...rest] = posts;
+
+// Unique tag list for the browse strip
+const tagSet = new Map<string, string>();
+posts.forEach((p) => p.data.tags.forEach((t) => tagSet.set(slugifyTag(t), t)));
+const tags = [...tagSet.entries()].slice(0, 12);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Tips, insights and best practices for showcasing medical before & after results, growing your practice and staying compliant."
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Blog</span>
+      <h1>Insights for <span class="grad">growing your practice</span></h1>
+      <p class="lead">
+        Practical guidance on before & after galleries, patient conversion, photography and compliance.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {
+        featured && (
+          <a href={`/blog/${featured.id}/`} class="featured card">
+            <div class="featured-img">
+              {featured.data.image && <img src={featured.data.image} alt={featured.data.imageAlt ?? ''} loading="lazy" />}
+              {featured.data.category && <span class="cat">{featured.data.category}</span>}
+            </div>
+            <div class="featured-body">
+              <span class="pill">Latest article</span>
+              <h2>{featured.data.title}</h2>
+              <p>{featured.data.description}</p>
+              <span class="read-more">Read article <i class="fa-solid fa-arrow-right" aria-hidden="true" /></span>
+            </div>
+          </a>
+        )
+      }
+
+      {
+        tags.length > 0 && (
+          <div class="tag-strip">
+            <span>Browse by topic:</span>
+            {tags.map(([slug, label]) => (
+              <a href={`/blog/tags/${slug}/`}>#{label}</a>
+            ))}
+          </div>
+        )
+      }
+
+      <div class="grid">
+        {rest.map((post) => <BlogCard post={post} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--gradient-soft);
+    padding-block: clamp(2.75rem, 7vw, 4.5rem);
+    text-align: center;
+  }
+  .page-hero .lead {
+    max-width: 54ch;
+    margin: 1rem auto 0;
+  }
+  .grad {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .featured {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+  .featured-img {
+    position: relative;
+    min-height: 280px;
+    background: var(--bg-softer);
+  }
+  .featured-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .featured:hover .featured-img img {
+    transform: scale(1.04);
+  }
+  .featured .cat {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--gradient-primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.8rem;
+    border-radius: var(--radius-pill);
+  }
+  .featured-body {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pill {
+    align-self: flex-start;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+    background: var(--primary-50);
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: 0.9rem;
+  }
+  .featured-body h2 {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    line-height: 1.25;
+  }
+  .featured-body p {
+    color: var(--text-light);
+    margin-top: 0.75rem;
+  }
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+  }
+
+  .tag-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+  .tag-strip a {
+    background: var(--bg-softer);
+    color: var(--text-light);
+    padding: 0.35rem 0.8rem;
+    border-radius: var(--radius-pill);
+    transition: background 0.18s ease, color 0.18s ease;
+  }
+  .tag-strip a:hover {
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+  @media (max-width: 860px) {
+    .featured {
+      grid-template-columns: 1fr;
+    }
+    .featured-img {
+      min-height: 220px;
+    }
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

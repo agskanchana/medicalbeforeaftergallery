@@ -1,0 +1,22 @@
+---
+import { site } from '../data/site';
+const { gaId } = site;
+// Loaded once via BaseLayout. Skipped in dev so local visits don't pollute analytics.
+const enabled = import.meta.env.PROD && gaId;
+---
+
+{
+  enabled && (
+    <>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} is:inline />
+      <script define:vars={{ gaId }} is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', gaId);
+      </script>
+    </>
+  )
+}

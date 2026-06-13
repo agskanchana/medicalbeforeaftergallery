@@ -1,0 +1,149 @@
+---
+import { plans } from '../data/pricing';
+import { site } from '../data/site';
+import FreemiusCheckout from './FreemiusCheckout.astro';
+---
+
+<div class="pricing-grid">
+  {
+    plans.map((plan) => (
+      <div class:list={['pricing-card card', { featured: plan.featured }]}>
+        {plan.badge && <span class="pricing-badge">{plan.badge}</span>}
+        <div class="pricing-head">
+          <h3>{plan.name}</h3>
+          <div class="price">
+            <span class="amount">{plan.price}</span>
+          </div>
+          <p class="period">{plan.period}</p>
+          <p class="blurb">{plan.blurb}</p>
+        </div>
+        <ul class="pricing-features">
+          {plan.features.map((f) => (
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true" />
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="pricing-cta">
+          {plan.cta.type === 'pro' ? (
+            <FreemiusCheckout label={plan.cta.label} class="btn btn-primary btn-block btn-lg" />
+          ) : (
+            <a class="btn btn-secondary btn-block btn-lg" href={site.wpOrgUrl} target="_blank" rel="noopener noreferrer">
+              {plan.cta.label}
+            </a>
+          )}
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<p class="guarantee">
+  <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+  {site.guaranteeDays}-day money-back guarantee · one-time payment, no subscription
+</p>
+
+<style>
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    max-width: 820px;
+    margin-inline: auto;
+    align-items: start;
+  }
+  .pricing-card {
+    position: relative;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .pricing-card.featured {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(180deg, var(--primary-50) 0%, #fff 26%);
+  }
+  .pricing-badge {
+    position: absolute;
+    top: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient-primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-primary);
+    white-space: nowrap;
+  }
+  .pricing-head h3 {
+    font-size: 1.3rem;
+  }
+  .price {
+    margin-top: 0.5rem;
+  }
+  .amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+  .period {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-top: 0.1rem;
+  }
+  .blurb {
+    margin-top: 0.9rem;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    min-height: 2.8em;
+  }
+  .pricing-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin: 1.5rem 0;
+    flex: 1;
+  }
+  .pricing-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.95rem;
+  }
+  .pricing-features i {
+    color: var(--accent-dark);
+    margin-top: 0.28em;
+    font-size: 0.8rem;
+  }
+  .featured .pricing-features i {
+    color: var(--primary);
+  }
+  .guarantee {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    text-align: center;
+    margin-top: 1.75rem;
+    color: var(--text-light);
+    font-size: 0.92rem;
+  }
+  .guarantee i {
+    color: var(--accent-dark);
+  }
+  @media (max-width: 640px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .blurb {
+      min-height: 0;
+    }
+  }
+</style>

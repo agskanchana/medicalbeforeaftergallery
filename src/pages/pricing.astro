@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Pricing from '../components/Pricing.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import Faq from '../components/Faq.astro';
+import { faqItems } from '../data/faq';
+import { site } from '../data/site';
+
+// Pricing-relevant FAQs
+const pricingFaqs = faqItems.filter((f) =>
+  /cost|trial|free|renew|difference/i.test(f.question)
+);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Medical Before After Gallery Pro',
+  description: 'Pro add-on for the Medical Before After Gallery WordPress plugin. Lifetime license, one-time payment.',
+  brand: { '@type': 'Brand', name: site.name },
+  offers: {
+    '@type': 'Offer',
+    price: String(site.proPrice),
+    priceCurrency: site.currency,
+    availability: 'https://schema.org/InStock',
+    url: site.url + '/pricing/',
+  },
+};
+---
+
+<BaseLayout
+  title="Pricing"
+  description="Simple, one-time pricing. The Medical Before After Gallery plugin is free on WordPress.org; Pro is a $99 lifetime license with a 30-day money-back guarantee."
+  jsonLd={jsonLd}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Pricing</span>
+      <h1>One-time pricing, <span class="grad">lifetime</span> value</h1>
+      <p class="lead">
+        Start completely free on WordPress.org. Upgrade to Pro once and keep it forever — including updates.
+        No subscriptions, ever.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <Pricing />
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Free vs Pro</span>
+        <h2>What’s included</h2>
+      </div>
+      <ComparisonTable />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pricing FAQ</span>
+        <h2>Questions about pricing</h2>
+      </div>
+      <Faq items={pricingFaqs} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--gradient-soft);
+    padding-block: clamp(2.75rem, 7vw, 4.5rem);
+    text-align: center;
+  }
+  .page-hero .lead {
+    max-width: 56ch;
+    margin: 1rem auto 0;
+  }
+  .grad {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+</style>

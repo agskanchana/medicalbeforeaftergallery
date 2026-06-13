@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { slugifyTag } from '../../../utils/format';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const map = new Map<string, { label: string; posts: CollectionEntry<'blog'>[] }>();
+  posts.forEach((p) =>
+    p.data.tags.forEach((t) => {
+      const s = slugifyTag(t);
+      if (!map.has(s)) map.set(s, { label: t, posts: [] });
+      map.get(s)!.posts.push(p);
+    })
+  );
+  return [...map.entries()].map(([slug, { label, posts }]) => ({
+    params: { tag: slug },
+    props: {
+      label,
+      posts: posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { label, posts } = Astro.props;
+---
+
+<BaseLayout title={`${label} articles`} description={`Articles tagged “${label}” on the MBA Gallery blog.`}>
+  <section class="page-hero">
+    <div class="container">
+      <a href="/blog/tags/" class="back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> All topics</a>
+      <span class="eyebrow">Topic</span>
+      <h1>#{label}</h1>
+      <p class="lead">{posts.length} article{posts.length === 1 ? '' : 's'} tagged “{label}”.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        {posts.map((post) => <BlogCard post={post} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--gradient-soft);
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

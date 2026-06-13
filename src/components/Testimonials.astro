@@ -1,0 +1,80 @@
+---
+import { testimonials } from '../data/testimonials';
+---
+
+<div class="testi-grid">
+  {
+    testimonials.map((t) => (
+      <figure class="testi card reveal">
+        <div class="stars" aria-label="5 out of 5 stars">
+          {Array.from({ length: 5 }).map(() => (
+            <i class="fa-solid fa-star" aria-hidden="true" />
+          ))}
+        </div>
+        <blockquote>{t.quote}</blockquote>
+        <figcaption>
+          <img src={t.image} alt="" width="48" height="48" loading="lazy" />
+          <div>
+            <span class="name">{t.name}</span>
+            <span class="role">{t.role}</span>
+          </div>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .testi {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .stars {
+    color: #fbbf24;
+    font-size: 0.85rem;
+    display: flex;
+    gap: 0.15rem;
+  }
+  blockquote {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.65;
+    flex: 1;
+  }
+  figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  figcaption img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .name {
+    display: block;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .role {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 860px) {
+    .testi-grid {
+      grid-template-columns: 1fr;
+      max-width: 480px;
+      margin-inline: auto;
+    }
+  }
+</style>

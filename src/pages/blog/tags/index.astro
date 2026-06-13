@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { slugifyTag } from '../../../utils/format';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const counts = new Map<string, { label: string; count: number }>();
+posts.forEach((p) =>
+  p.data.tags.forEach((t) => {
+    const s = slugifyTag(t);
+    const entry = counts.get(s) ?? { label: t, count: 0 };
+    entry.count += 1;
+    counts.set(s, entry);
+  })
+);
+const tags = [...counts.entries()].sort((a, b) => b[1].count - a[1].count);
+---
+
+<BaseLayout title="Blog topics" description="Browse MBA Gallery blog articles by topic.">
+  <section class="page-hero">
+    <div class="container">
+      <a href="/blog/" class="back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> All articles</a>
+      <span class="eyebrow">Blog</span>
+      <h1>Browse by topic</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="tags">
+        {
+          tags.map(([slug, { label, count }]) => (
+            <a href={`/blog/tags/${slug}/`} class="tag">
+              <span>#{label}</span>
+              <span class="count">{count}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--gradient-soft);
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.6rem 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+  .tag:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-light);
+    color: var(--primary-dark);
+  }
+  .count {
+    display: grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding-inline: 6px;
+    background: var(--primary-50);
+    color: var(--primary-dark);
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+</style>

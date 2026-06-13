@@ -1,0 +1,177 @@
+---
+import { showcase, type ShowcaseItem } from '../data/showcase';
+
+interface Props {
+  items?: ShowcaseItem[];
+}
+const { items = showcase } = Astro.props;
+---
+
+<div class="showcase">
+  {
+    items.map((item, i) => (
+      <div class:list={['row', { reverse: i % 2 === 1 }]}>
+        <div class="media reveal">
+          <a href={item.preview} target="_blank" rel="noopener noreferrer" class="frame" aria-label={item.previewLabel}>
+            <div class="bar"><span></span><span></span><span></span></div>
+            <div class="shot">
+              <img src={item.image} alt={item.imageAlt} loading="lazy" />
+              <span class="play"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" /></span>
+            </div>
+          </a>
+        </div>
+        <div class="copy reveal">
+          <span class:list={['badge', item.tier === 'pro' ? 'badge-pro' : 'badge-free']}>
+            {item.tier === 'pro' ? 'Pro feature' : 'Free & Pro'}
+          </span>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+          <ul>
+            {item.points.map((p) => (
+              <li>
+                <i class="fa-solid fa-circle-check" aria-hidden="true" /> {p}
+              </li>
+            ))}
+          </ul>
+          <a href={item.preview} target="_blank" rel="noopener noreferrer" class="preview-link">
+            {item.previewLabel} <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .showcase {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 7vw, 5.5rem);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .row.reverse .media {
+    order: 2;
+  }
+
+  /* Media frame */
+  .frame {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .frame:hover {
+    transform: translateY(-4px);
+  }
+  .bar {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+  .bar span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .bar span:first-child {
+    background: #ff6058;
+  }
+  .bar span:nth-child(2) {
+    background: #ffbd2e;
+  }
+  .bar span:nth-child(3) {
+    background: #28ca42;
+  }
+  .shot {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--bg-softer);
+  }
+  .shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .play {
+    position: absolute;
+    right: 0.85rem;
+    bottom: 0.85rem;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: #fff;
+    box-shadow: var(--shadow-primary);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .frame:hover .play {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Copy */
+  .copy .badge {
+    margin-bottom: 0.9rem;
+  }
+  .copy h3 {
+    font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+    margin-bottom: 0.6rem;
+  }
+  .copy > p {
+    color: var(--text-light);
+    font-size: 1.02rem;
+  }
+  .copy ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 1.2rem 0 1.5rem;
+  }
+  .copy li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .copy li i {
+    color: var(--accent-dark);
+  }
+  .preview-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    transition: gap 0.18s ease;
+  }
+  .preview-link:hover {
+    gap: 0.8rem;
+  }
+
+  @media (max-width: 860px) {
+    .row,
+    .row.reverse {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .row.reverse .media {
+      order: 0;
+    }
+  }
+</style>

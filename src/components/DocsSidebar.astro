@@ -1,0 +1,87 @@
+---
+import { getDocsTree } from '../utils/docs';
+
+const tree = await getDocsTree();
+const path = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<nav class="docs-nav" aria-label="Documentation">
+  <a href="/docs/" class:list={['docs-home', { active: path === '/docs' }]}>
+    <i class="fa-solid fa-book" aria-hidden="true"></i> Documentation home
+  </a>
+  {
+    tree.map((group) => (
+      <div class="docs-group">
+        <p class="docs-group-title">{group.name}</p>
+        <ul>
+          {group.items.map((item) => {
+            const href = `/docs/${item.id}/`;
+            const active = path === `/docs/${item.id}`;
+            return (
+              <li>
+                <a href={href} class:list={['docs-link', { active }]} aria-current={active ? 'page' : undefined}>
+                  {item.data.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ))
+  }
+</nav>
+
+<style>
+  .docs-nav {
+    font-size: 0.92rem;
+  }
+  .docs-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+  .docs-home.active {
+    color: var(--primary-dark);
+  }
+  .docs-home i {
+    color: var(--primary);
+  }
+  .docs-group {
+    margin-bottom: 1.5rem;
+  }
+  .docs-group-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-lighter);
+    margin-bottom: 0.6rem;
+  }
+  .docs-group ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    border-left: 2px solid var(--border);
+  }
+  .docs-link {
+    display: block;
+    padding: 0.4rem 0.9rem;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+    color: var(--text-light);
+    line-height: 1.4;
+  }
+  .docs-link:hover {
+    color: var(--primary-dark);
+  }
+  .docs-link.active {
+    color: var(--primary-dark);
+    font-weight: 600;
+    border-left-color: var(--primary);
+    background: var(--primary-50);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+</style>

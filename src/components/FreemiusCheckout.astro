@@ -1,0 +1,72 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  label?: string;
+  class?: string;
+}
+
+const { label = 'Get Pro', class: className = 'btn btn-primary' } = Astro.props;
+const fs = site.freemius;
+---
+
+<button
+  type="button"
+  class={className}
+  data-fs-checkout
+  data-product-id={fs.productId}
+  data-plan-id={fs.planId}
+  data-public-key={fs.publicKey}
+  data-product-name={fs.productName}
+  data-image={fs.image}
+>
+  {label}
+</button>
+
+<script>
+  // Wire up every Pro buy button on the page. The Freemius SDK is injected once,
+  // lazily, only on pages that actually have a buy button.
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-fs-checkout]');
+  if (buttons.length) {
+    const cfg = buttons[0].dataset;
+    let handler: any = null;
+
+    const getHandler = () => {
+      const FS = (window as any).FS;
+      if (!FS || !FS.Checkout) return null;
+      if (!handler) {
+        handler = new FS.Checkout({
+          product_id: cfg.productId,
+          plan_id: cfg.planId,
+          public_key: cfg.publicKey,
+          image: cfg.image,
+        });
+      }
+      return handler;
+    };
+
+    const ensureSdk = () => {
+      if (document.getElementById('fs-checkout-sdk')) return;
+      const s = document.createElement('script');
+      s.id = 'fs-checkout-sdk';
+      s.src = 'https://checkout.freemius.com/js/v1/';
+      s.async = true;
+      document.head.appendChild(s);
+    };
+
+    const hostedUrl = `https://checkout.freemius.com/product/${cfg.productId}/plan/${cfg.planId}/`;
+
+    buttons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const h = getHandler();
+        if (h) h.open({ name: cfg.productName, licenses: 1 });
+        // SDK not ready — open the hosted checkout (direct user gesture, won't be blocked)
+        else window.open(hostedUrl, '_blank', 'noopener');
+      })
+    );
+
+    // Preload the SDK so the in-page modal is ready by the time users click.
+    if ((window as any).requestIdleCallback) (window as any).requestIdleCallback(ensureSdk);
+    else window.addEventListener('load', ensureSdk);
+  }
+</script>

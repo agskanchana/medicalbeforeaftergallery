@@ -1,0 +1,115 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Analytics from '../components/Analytics.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, image, type, noindex, jsonLd } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta name="theme-color" content="#3c88fd" />
+    <meta name="generator" content={Astro.generator} />
+    <!-- Mark JS as active so scroll-reveal styles apply only when they can be undone -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
+    <Seo title={title} description={description} image={image} type={type} noindex={noindex} jsonLd={jsonLd} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+
+    <Analytics />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">
+      <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <style>
+      .scroll-top {
+        position: fixed;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        z-index: 90;
+        width: 46px;
+        height: 46px;
+        border: none;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        color: #fff;
+        cursor: pointer;
+        box-shadow: var(--shadow-primary);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(12px);
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+      }
+      .scroll-top.show {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
+    </style>
+
+    <script>
+      // Scroll-to-top button
+      const btn = document.getElementById('scroll-top');
+      const onScroll = () => btn?.classList.toggle('show', window.scrollY > 400);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      // Reveal-on-scroll for elements with .reveal
+      const reveals = document.querySelectorAll('.reveal');
+      if (reveals.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

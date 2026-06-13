@@ -1,0 +1,56 @@
+---
+import FreemiusCheckout from './FreemiusCheckout.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Ready to showcase your results?',
+  text = 'Start free in minutes, or unlock everything with a one-time Pro license.',
+} = Astro.props;
+---
+
+<section class="cta-banner">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <h2>{title}</h2>
+      <p>{text}</p>
+      <div class="cta-actions">
+        <FreemiusCheckout label={`Get Pro — $${site.proPrice} lifetime`} class="btn btn-primary btn-lg" />
+        <a class="btn btn-secondary btn-lg" href={site.wpOrgUrl} target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-wordpress" aria-hidden="true"></i> Download free
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    padding-block: clamp(3rem, 7vw, 5rem);
+  }
+  .cta-inner {
+    position: relative;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-50) 0%, #f1fbf7 100%);
+    border: 1px solid var(--primary-100);
+    border-radius: var(--radius-lg);
+    padding: clamp(2.75rem, 6vw, 4.25rem) 1.5rem;
+  }
+  .cta-inner p {
+    margin-top: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    max-width: 48ch;
+    margin-inline: auto;
+  }
+  .cta-actions {
+    margin-top: 1.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+</style>

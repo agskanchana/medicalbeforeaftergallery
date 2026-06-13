@@ -1,0 +1,486 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Pricing from '../components/Pricing.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import FreemiusCheckout from '../components/FreemiusCheckout.astro';
+import FeatureShowcase from '../components/FeatureShowcase.astro';
+import { showcase } from '../data/showcase';
+import { faqItems } from '../data/faq';
+import { stats } from '../data/testimonials';
+import { site } from '../data/site';
+
+const practiceTypes = [
+  { icon: 'fa-solid fa-user-doctor', label: 'Plastic Surgery' },
+  { icon: 'fa-solid fa-hand-sparkles', label: 'Dermatology' },
+  { icon: 'fa-solid fa-tooth', label: 'Cosmetic Dentistry' },
+  { icon: 'fa-solid fa-spa', label: 'Medical Spas' },
+  { icon: 'fa-solid fa-weight-scale', label: 'Weight Loss' },
+  { icon: 'fa-solid fa-scissors', label: 'Hair Restoration' },
+];
+
+// Hero stock photo — swap for your own image (portrait crop works best).
+const heroImg =
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+
+const softwareJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'MBA Gallery (Medical Before After Gallery)',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'WordPress',
+  description: site.description,
+  url: site.url,
+  downloadUrl: site.wpOrgUrl,
+  offers: [
+    { '@type': 'Offer', price: '0', priceCurrency: 'USD', name: 'Free' },
+    {
+      '@type': 'Offer',
+      price: String(site.proPrice),
+      priceCurrency: site.currency,
+      name: 'Pro (lifetime)',
+      description: 'One-time payment, lifetime license with updates',
+    },
+  ],
+};
+---
+
+<BaseLayout jsonLd={softwareJsonLd}>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <span class="eyebrow"><i class="fa-solid fa-star"></i> WordPress plugin for medical practices</span>
+        <h1>Showcase your <span class="grad">before &amp; after</span> results with confidence</h1>
+        <p class="lead">
+          An interactive before/after gallery built for medical and aesthetic practices — comparison sliders,
+          smart filtering, watermarking and a sensitive-content consent overlay. Free on WordPress.org, with an
+          affordable Pro upgrade.
+        </p>
+        <div class="hero-cta">
+          <FreemiusCheckout label={`Get Pro — $${site.proPrice} lifetime`} class="btn btn-primary btn-lg" />
+          <a class="btn btn-secondary btn-lg" href={site.wpOrgUrl} target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-wordpress" aria-hidden="true"></i> Download free
+          </a>
+        </div>
+        <div class="hero-meta">
+          <span><i class="fa-solid fa-check" aria-hidden="true"></i> {site.guaranteeDays}-day money-back</span>
+          <span><i class="fa-solid fa-check" aria-hidden="true"></i> One-time payment</span>
+          <span><i class="fa-solid fa-check" aria-hidden="true"></i> No subscription</span>
+        </div>
+      </div>
+
+      <div class="hero-media">
+        <div class="hero-photo-wrap">
+          <img class="hero-photo" src={heroImg} alt="A confident patient after treatment" loading="eager" width="640" height="760" />
+        </div>
+        <div class="hero-card hero-card-a">
+          <span class="hc-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></span>
+          <div class="hc-text">
+            <strong>Consent overlay</strong>
+            <small>HIPAA-friendly galleries</small>
+          </div>
+        </div>
+        <div class="hero-card hero-card-b">
+          <span class="hc-icon green"><i class="fa-solid fa-stamp" aria-hidden="true"></i></span>
+          <div class="hc-text">
+            <strong>Auto watermark</strong>
+            <small>Originals never touched</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container hero-stats">
+      {
+        stats.map((s) => (
+          <div class="stat">
+            <span class="stat-num">{s.number}</span>
+            <span class="stat-label">{s.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ============ TRUST STRIP ============ -->
+  <section class="trust">
+    <div class="container">
+      <p class="trust-label">Built for every aesthetic &amp; medical specialty</p>
+      <div class="trust-list">
+        {
+          practiceTypes.map((p) => (
+            <span class="trust-item">
+              <i class={p.icon} aria-hidden="true" /> {p.label}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HIGHLIGHT FEATURES ============ -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Features</span>
+        <h2>Everything you need to present results</h2>
+        <p>From a simple comparison slider to full case studies with filtering, watermarking and consent.</p>
+      </div>
+      <FeatureShowcase items={showcase.slice(0, 4)} />
+      <div class="text-center" style="margin-top:3rem;">
+        <a href="/features/" class="btn btn-secondary">See all features <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPARISON ============ -->
+  <section class="section section-soft" id="comparison">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Free vs Pro</span>
+        <h2>Start free, upgrade when you’re ready</h2>
+        <p>Every core feature is free. Pro removes the limits and unlocks the premium toolkit.</p>
+      </div>
+      <ComparisonTable />
+    </div>
+  </section>
+
+  <!-- ============ DEMO ============ -->
+  <section class="section" id="demo">
+    <div class="container demo-grid">
+      <div class="demo-copy">
+        <span class="eyebrow">Live demo</span>
+        <h2>See it in action</h2>
+        <p class="lead">Explore a real gallery with filtering, the masonry layout, the case modal and more — no install required.</p>
+        <ul class="demo-list">
+          <li><i class="fa-solid fa-check-circle"></i> Interactive comparison sliders</li>
+          <li><i class="fa-solid fa-check-circle"></i> Smart filters &amp; instant search</li>
+          <li><i class="fa-solid fa-check-circle"></i> Masonry layout with a redesigned modal</li>
+          <li><i class="fa-solid fa-check-circle"></i> Sensitive-content consent overlay</li>
+        </ul>
+        <a href={site.demoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+          Open live demo <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+      <div class="demo-visual">
+        <img
+          src="https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80"
+          alt="MBA Gallery shown on desktop and mobile"
+          loading="lazy"
+          width="900"
+          height="600"
+        />
+        <span class="demo-caption"><i class="fa-solid fa-shield-halved"></i> HIPAA-friendly galleries with built-in consent</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="section section-soft" id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Loved by practices</span>
+        <h2>What our users say</h2>
+      </div>
+      <Testimonials />
+    </div>
+  </section>
+
+  <!-- ============ PRICING ============ -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pricing</span>
+        <h2>Simple, one-time pricing</h2>
+        <p>No subscriptions. Pay once for Pro and keep it — including updates — forever.</p>
+      </div>
+      <Pricing />
+    </div>
+  </section>
+
+  <!-- ============ FAQ TEASER ============ -->
+  <section class="section section-soft" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <Faq items={faqItems.slice(0, 5)} />
+      <div class="text-center" style="margin-top:1.75rem;">
+        <a href="/faq/" class="btn btn-ghost">View all FAQs <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  /* Hero — clean, airy, restrained color */
+  .hero {
+    position: relative;
+    background: linear-gradient(180deg, #f6f9fe 0%, #ffffff 72%);
+    padding-top: clamp(3rem, 6vw, 5rem);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(46% 40% at 90% 6%, rgba(60, 136, 253, 0.08), transparent 62%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+  .hero h1 {
+    margin-top: 0.5rem;
+  }
+  .grad {
+    color: var(--primary);
+  }
+  .hero .lead {
+    margin-top: 1.35rem;
+    max-width: 42ch;
+    line-height: 1.7;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    font-size: 0.88rem;
+    color: var(--text-light);
+  }
+  .hero-meta i {
+    color: var(--accent-dark);
+    margin-right: 0.3rem;
+  }
+
+  /* Hero media (stock image + floating cards) */
+  .hero-media {
+    position: relative;
+    margin-inline: auto;
+    max-width: 460px;
+    width: 100%;
+  }
+  .hero-photo-wrap {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 5 / 6;
+    background: var(--bg-softer);
+  }
+  /* soft accent panel offset behind the photo for depth */
+  .hero-media::before {
+    content: '';
+    position: absolute;
+    inset: auto -1.5rem -1.5rem auto;
+    width: 66%;
+    height: 66%;
+    border-radius: var(--radius-lg);
+    background: var(--primary-100);
+    z-index: -1;
+  }
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.7rem 0.9rem;
+    box-shadow: var(--shadow-lg);
+  }
+  .hero-card-a {
+    top: 1.6rem;
+    left: -1.6rem;
+  }
+  .hero-card-b {
+    bottom: 1.9rem;
+    right: -1.5rem;
+  }
+  .hc-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--primary-50);
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+  .hc-icon.green {
+    background: var(--accent-50);
+    color: var(--accent-dark);
+  }
+  .hc-text strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .hc-text small {
+    color: var(--text-light);
+    font-size: 0.78rem;
+  }
+
+  .hero-stats {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 6vw, 4rem);
+    justify-content: center;
+    padding-block: clamp(1.5rem, 4vw, 2.5rem);
+    margin-top: 1rem;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    display: block;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+  .stat-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+  }
+
+  /* Trust strip */
+  .trust {
+    padding-block: 2rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: #fff;
+  }
+  .trust-label {
+    text-align: center;
+    color: var(--text-lighter);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.1rem;
+  }
+  .trust-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.75rem;
+    justify-content: center;
+  }
+  .trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .trust-item i {
+    color: var(--primary);
+  }
+
+  /* Demo */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .demo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 1.25rem 0 1.75rem;
+  }
+  .demo-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text);
+  }
+  .demo-list i {
+    color: var(--accent-dark);
+  }
+  .demo-visual {
+    position: relative;
+  }
+  .demo-visual img {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    object-fit: cover;
+  }
+  .demo-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(15, 27, 51, 0.72);
+    color: #fff;
+    font-size: 0.82rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(6px);
+    width: fit-content;
+  }
+  .demo-caption i {
+    color: var(--accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 920px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .hero .lead {
+      margin-inline: auto;
+    }
+    .hero-cta,
+    .hero-meta {
+      justify-content: center;
+    }
+    .demo-grid {
+      grid-template-columns: 1fr;
+    }
+    .demo-visual {
+      order: -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .hero-media {
+      max-width: 340px;
+    }
+    .hero-card {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+import { faqItems } from '../data/faq';
+
+interface Props {
+  items?: typeof faqItems;
+}
+const { items = faqItems } = Astro.props;
+---
+
+<div class="faq-list">
+  {
+    items.map((item) => (
+      <details class="faq-item">
+        <summary>
+          <span>{item.question}</span>
+          <i class="fa-solid fa-chevron-down" aria-hidden="true" />
+        </summary>
+        <div class="faq-answer">
+          <p set:html={item.answer} />
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq-list {
+    max-width: 760px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .faq-item {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .faq-item[open] {
+    border-color: var(--primary-100);
+    box-shadow: var(--shadow);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.35rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--ink);
+    list-style: none;
+    font-size: 1.02rem;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary i {
+    color: var(--primary);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .faq-item[open] summary i {
+    transform: rotate(180deg);
+  }
+  .faq-answer {
+    padding: 0 1.35rem 1.25rem;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+  .faq-answer :global(a) {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+const updated = 'June 2026';
+---
+
+<BaseLayout title="Privacy Policy" description="How medicalbeforeaftergallery.com handles your data.">
+  <section class="legal">
+    <div class="container narrow">
+      <span class="eyebrow">Legal</span>
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: {updated}</p>
+
+      <div class="prose">
+        <p>
+          This Privacy Policy explains how {site.legalName} (“we”, “us”) handles information when you visit
+          <a href={site.url}>{site.domain}</a> (the “Site”). It applies to this marketing website only.
+        </p>
+
+        <h2>Information we collect</h2>
+        <ul>
+          <li><strong>Contact form.</strong> When you submit our contact form, we collect the name, email, topic and message you provide so we can respond. Submissions are delivered to us by our form provider, Web3Forms.</li>
+          <li><strong>Analytics.</strong> We use Google Analytics to understand aggregate, anonymized traffic (pages viewed, approximate location, device/browser). This uses cookies.</li>
+          <li><strong>Server logs.</strong> Our host (GitHub Pages) may process standard request data such as IP address for security and reliability.</li>
+        </ul>
+
+        <h2>How we use information</h2>
+        <ul>
+          <li>To respond to your enquiries and provide support.</li>
+          <li>To measure and improve the Site’s content and performance.</li>
+          <li>To keep the Site secure and operational.</li>
+        </ul>
+
+        <h2>Sharing</h2>
+        <p>
+          We do not sell your personal information. We share data only with the service providers that operate
+          this Site — Google Analytics (analytics), Web3Forms (contact form delivery), and our checkout provider
+          Freemius if you choose to purchase Pro. Each processes data under their own privacy terms.
+        </p>
+
+        <h2>Cookies</h2>
+        <p>
+          The Site uses analytics cookies. You can disable cookies in your browser settings; the Site will still
+          function.
+        </p>
+
+        <h2>Patient data</h2>
+        <p>
+          This Site is for promoting our WordPress plugin. Please do not submit patient images or any protected
+          health information (PHI) through the contact form. You are responsible for obtaining appropriate patient
+          consent and complying with applicable privacy regulations when publishing before/after images on your
+          own website.
+        </p>
+
+        <h2>Your rights</h2>
+        <p>
+          Depending on your location, you may have the right to access, correct or delete the personal information
+          we hold about you. To make a request, use our <a href="/contact/">contact form</a>.
+        </p>
+
+        <h2>Contact</h2>
+        <p>Questions about this policy? <a href="/contact/">Get in touch</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+  .narrow {
+    max-width: 760px;
+  }
+  .legal h1 {
+    margin-top: 0.5rem;
+  }
+  .updated {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+</style>
