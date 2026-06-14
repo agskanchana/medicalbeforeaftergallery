@@ -30,7 +30,7 @@ export const showcase: ShowcaseItem[] = [
     description:
       'A premium, Pinterest-style gallery with a click-to-open filter drawer and an immersive case modal that includes a Treatment Overview panel and an “About this case” write-up.',
     points: ['Pinterest-style cards', 'Filter drawer & rich case modal', 'Optional dark mode'],
-    image: '/images/features/masonry.png',
+    image: 'https://res.cloudinary.com/ekwa/image/upload/v1781457806/masnry_yigoiu.jpg',
     imageAlt: 'Masonry gallery layout with redesigned case modal',
     preview: site.demoUrl,
     previewLabel: 'Explore the masonry demo',
