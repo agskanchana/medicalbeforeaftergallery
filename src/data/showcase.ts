@@ -63,7 +63,7 @@ export const showcase: ShowcaseItem[] = [
     description:
       'Protect your work with a text or logo watermark in nine positions — your originals are never modified. Add a sensitive-content consent overlay for responsible presentation.',
     points: ['Text or logo watermark', 'Originals never touched', 'Consent overlay for sensitive content'],
-    image: '/images/features/watermarking.png',
+    image: 'https://res.cloudinary.com/ekwa/image/upload/v1781457158/modal-view_hushh9.jpg',
     imageAlt: 'Watermark settings and a watermarked gallery image',
     preview: site.demoUrl,
     previewLabel: 'View a protected gallery',
