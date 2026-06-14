@@ -41,7 +41,7 @@ export const showcase: ShowcaseItem[] = [
     description:
       'Help patients find results relevant to them with six built-in filters (plus unlimited custom ones), instant search, and sort — all shareable through the URL with deep-linking.',
     points: ['Gender, age, procedure & custom filters', 'Instant search & sort', 'Shareable filtered views'],
-    image: '/images/features/filtering.png',
+    image: 'https://res.cloudinary.com/ekwa/image/upload/v1781458142/filter_viqhbc.jpg',
     imageAlt: 'Gallery filtering, search and sort controls',
     preview: site.demoUrl,
     previewLabel: 'Try the filters live',
@@ -52,7 +52,7 @@ export const showcase: ShowcaseItem[] = [
     description:
       'Drop numbered markers directly on your images to highlight exactly what changed. Each hotspot carries a title and note, and visitors reveal them on hover or tap.',
     points: ['Up to 30 markers per image', 'Per-image-pair annotations', 'Hover or tap to reveal'],
-    image: '/images/features/annotations.png',
+    image: 'https://res.cloudinary.com/ekwa/image/upload/v1781458585/annotation_i61ant.jpg',
     imageAlt: 'Numbered annotation hotspots on a before and after image',
     preview: site.demoUrl,
     previewLabel: 'See annotations in action',
