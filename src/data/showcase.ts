@@ -19,7 +19,7 @@ export const showcase: ShowcaseItem[] = [
     description:
       'Let visitors drag to reveal the transformation. The comparison slider feels natural on desktop and touch — and you can open each case in split, before-only, after-only or side-by-side views.',
     points: ['Smooth drag & keyboard control', 'Multiple view modes', 'Looks great on every device'],
-    image: '/images/features/slider.png',
+    image: 'https://res.cloudinary.com/ekwa/image/upload/v1781457158/modal-view_hushh9.jpg',
     imageAlt: 'Interactive before and after comparison slider',
     preview: site.demoUrl,
     previewLabel: 'See it in the live demo',
