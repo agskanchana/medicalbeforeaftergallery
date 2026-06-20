@@ -17,9 +17,9 @@ export const site = {
   // Individual demo destinations shown on the /demo/ page.
   // Leave blank to render a "Coming soon" button — fill in once each demo is live.
   demos: {
-    free: '',
-    proGrid: '',
-    proMasonry: '',
+    free: 'https://demo.medicalbeforeaftergallery.com/free/',
+    proGrid: 'https://demo.medicalbeforeaftergallery.com/',
+    proMasonry: 'https://demo.medicalbeforeaftergallery.com/masonry/',
     proCarousel: '',
   },
 
