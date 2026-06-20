@@ -1,0 +1,264 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { site } from '../data/site';
+
+// Free demo (core experience available on WordPress.org).
+const freeDemo = {
+  icon: 'fa-solid fa-wand-magic-sparkles',
+  description:
+    'Explore the core gallery that ships free on WordPress.org — drag-to-reveal before/after comparison sliders, the sensitive-content consent overlay and a clean, responsive layout.',
+  points: [
+    'Interactive comparison sliders',
+    'Sensitive-content consent overlay',
+    'Responsive, mobile-friendly gallery',
+  ],
+  href: site.demos.free,
+};
+
+// Pro demos — one per premium layout.
+const proDemos = [
+  {
+    title: 'Classic grid layout',
+    icon: 'fa-solid fa-table-cells',
+    description:
+      'A clean, structured grid of before/after cases with smart filtering, instant search and the redesigned case modal.',
+    href: site.demos.proGrid,
+  },
+  {
+    title: 'Masonry layout',
+    icon: 'fa-solid fa-table-cells-large',
+    description:
+      'A premium, Pinterest-style gallery with a filter drawer and an immersive case modal featuring a Treatment Overview panel.',
+    href: site.demos.proMasonry,
+  },
+  {
+    title: 'Category carousel',
+    icon: 'fa-solid fa-images',
+    description:
+      'Group cases by procedure or category and let visitors browse each set in a smooth, swipeable carousel.',
+    href: site.demos.proCarousel,
+  },
+];
+---
+
+<BaseLayout
+  title="Demo"
+  description="Try MBA Gallery for yourself — a free demo of the core before/after gallery, plus Pro demos for the classic grid, masonry layout and category carousel."
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Live demo</span>
+      <h1>See MBA Gallery <span class="grad">in action</span></h1>
+      <p class="lead">
+        Explore real galleries with no install required. Start with the free demo, then see what the
+        <strong>Pro</strong> layouts unlock.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ FREE DEMO ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Free</span>
+        <h2>Free demo</h2>
+        <p>Everything you get out of the box, free on WordPress.org.</p>
+      </div>
+
+      <article class="free-card card reveal">
+        <div class="free-icon"><i class={freeDemo.icon} aria-hidden="true"></i></div>
+        <div class="free-body">
+          <span class="badge badge-free">Free</span>
+          <p>{freeDemo.description}</p>
+          <ul class="point-list">
+            {
+              freeDemo.points.map((p) => (
+                <li>
+                  <i class="fa-solid fa-circle-check" aria-hidden="true" /> {p}
+                </li>
+              ))
+            }
+          </ul>
+          {
+            freeDemo.href ? (
+              <a href={freeDemo.href} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                Open free demo <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
+              </a>
+            ) : (
+              <span class="btn btn-secondary btn-lg is-disabled" aria-disabled="true">
+                <i class="fa-solid fa-clock" aria-hidden="true" /> Coming soon
+              </span>
+            )
+          }
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ PRO DEMOS ============ -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pro</span>
+        <h2>Pro demos</h2>
+        <p>See each premium layout running on a real gallery.</p>
+      </div>
+
+      <div class="pro-grid">
+        {
+          proDemos.map((demo) => (
+            <article class="pro-card card reveal">
+              <div class="pro-icon"><i class={demo.icon} aria-hidden="true" /></div>
+              <h3>
+                {demo.title}
+                <span class="badge badge-pro">Pro</span>
+              </h3>
+              <p>{demo.description}</p>
+              {demo.href ? (
+                <a href={demo.href} target="_blank" rel="noopener noreferrer" class="btn btn-secondary pro-btn">
+                  Open demo <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
+                </a>
+              ) : (
+                <span class="btn btn-ghost pro-btn is-disabled" aria-disabled="true">
+                  <i class="fa-solid fa-clock" aria-hidden="true" /> Coming soon
+                </span>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--gradient-soft);
+    padding-block: clamp(2.75rem, 7vw, 4.5rem);
+    text-align: center;
+  }
+  .page-hero .lead {
+    max-width: 56ch;
+    margin: 1rem auto 0;
+  }
+  .grad {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Free demo card */
+  .free-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1.25rem, 4vw, 2.5rem);
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .free-icon {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: var(--gradient-primary);
+    color: #fff;
+    font-size: 1.8rem;
+    box-shadow: var(--shadow-primary);
+  }
+  .free-body p {
+    color: var(--text-light);
+    font-size: 1.02rem;
+    margin: 0.75rem 0 0;
+  }
+
+  .point-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.5rem;
+    margin: 1rem 0 1.5rem;
+  }
+  .point-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .point-list li i {
+    color: var(--accent-dark);
+  }
+
+  /* Pro demos */
+  .pro-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .pro-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+  }
+  .pro-icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--primary-50);
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin-bottom: 1.1rem;
+  }
+  .pro-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+  .pro-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    flex-grow: 1;
+  }
+  .pro-btn {
+    margin-top: 1.25rem;
+    align-self: flex-start;
+  }
+
+  /* Not-yet-linked buttons */
+  .is-disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  @media (max-width: 900px) {
+    .pro-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 620px) {
+    .free-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .free-icon {
+      margin-inline: auto;
+    }
+    .point-list {
+      justify-content: center;
+    }
+    .pro-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

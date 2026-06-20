@@ -11,8 +11,17 @@ export const site = {
     'The before & after image gallery plugin built for medical and aesthetic practices. Interactive comparison sliders, smart filtering, watermarking and a consent overlay — free on WordPress.org, with a Pro add-on.',
 
   // External properties
-  demoUrl: 'https://demo.medicalbeforeaftergallery.com/',
+  demoUrl: '/demo/',
   wpOrgUrl: 'https://wordpress.org/plugins/medical-before-after-gallery/',
+
+  // Individual demo destinations shown on the /demo/ page.
+  // Leave blank to render a "Coming soon" button — fill in once each demo is live.
+  demos: {
+    free: '',
+    proGrid: '',
+    proMasonry: '',
+    proCarousel: '',
+  },
 
   // Plugin versions (kept in sync with the released plugins)
   freeVersion: '1.3.5',

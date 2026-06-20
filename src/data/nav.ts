@@ -12,7 +12,7 @@ export const mainNav: NavLink[] = [
   { label: 'Docs', href: '/docs/' },
   { label: 'Blog', href: '/blog/' },
   { label: 'FAQ', href: '/faq/' },
-  { label: 'Demo', href: 'https://demo.medicalbeforeaftergallery.com/', external: true },
+  { label: 'Demo', href: '/demo/' },
 ];
 
 export const footerNav: { heading: string; links: NavLink[] }[] = [
@@ -21,7 +21,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     links: [
       { label: 'Features', href: '/features/' },
       { label: 'Pricing', href: '/pricing/' },
-      { label: 'Live demo', href: 'https://demo.medicalbeforeaftergallery.com/', external: true },
+      { label: 'Live demo', href: '/demo/' },
       { label: 'Download free', href: 'https://wordpress.org/plugins/medical-before-after-gallery/', external: true },
     ],
   },
