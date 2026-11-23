@@ -1,0 +1,116 @@
+---
+// A grid of smaller feature cards: screenshot, title, one paragraph, demo and docs links.
+import { featureCards, type ShowcaseItem } from '../data/showcase';
+import { liveDemoUrl } from '../utils/demos';
+
+interface Props {
+  items?: ShowcaseItem[];
+}
+const { items = featureCards } = Astro.props;
+---
+
+<div class="fcards">
+  {
+    items.map((item) => {
+      const demo = liveDemoUrl(item.demo);
+      return (
+        <article class="fcard card reveal" id={item.id}>
+          <div class="fcard-shot">
+            <img src={item.image} alt={item.imageAlt} loading="lazy" decoding="async" width="800" height="450" />
+          </div>
+          <div class="fcard-body">
+            <span class:list={['badge', item.tier === 'pro' ? 'badge-pro' : 'badge-free']}>
+              {item.tier === 'pro' ? 'Pro' : 'Free & Pro'}
+            </span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+            <div class="fcard-links">
+              {demo && (
+                <a href={demo} target="_blank" rel="noopener">
+                  {item.demoLabel ?? 'Live demo'} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
+                  <span class="sr-only">(new tab)</span>
+                </a>
+              )}
+              {item.docs && (
+                <a href={item.docs} class="docs">
+                  Docs<span class="sr-only">: {item.title}</span> <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      );
+    })
+  }
+</div>
+
+<style>
+  .fcards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .fcard {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+  .fcard-shot {
+    aspect-ratio: 16 / 9;
+    background: var(--bg-softer);
+    border-bottom: 1px solid var(--border);
+  }
+  .fcard-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fcard-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 1.4rem 1.5rem 1.5rem;
+    flex: 1;
+  }
+  .fcard-body .badge {
+    align-self: flex-start;
+  }
+  .fcard h3 {
+    font-size: 1.15rem;
+  }
+  .fcard p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    flex: 1;
+  }
+  .fcard-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin-top: 0.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .fcard-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .fcard-links .docs {
+    color: var(--text);
+  }
+  .fcard-links a:hover {
+    color: var(--primary-darker);
+  }
+  @media (max-width: 980px) {
+    .fcards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 620px) {
+    .fcards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

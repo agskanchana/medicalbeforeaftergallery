@@ -1,23 +1,48 @@
 ---
+// The six WordPress.org reviews, word for word, each linking to the review.
 import { testimonials } from '../data/testimonials';
+import { site } from '../data/site';
+
+interface Props {
+  /** Show only the first n reviews (all by default). */
+  limit?: number;
+}
+const { limit } = Astro.props;
+const items = typeof limit === 'number' ? testimonials.slice(0, limit) : testimonials;
+const initials = (name: string) =>
+  name === 'Anonymous User' ? 'AU' : name.replace(/[^a-z]/gi, '').slice(0, 2).toUpperCase();
 ---
+
+<p class="rating-summary">
+  <span class="rating-stars" role="img" aria-label={`${site.wpOrg.rating} out of 5 stars`}>
+    {Array.from({ length: 5 }).map(() => <i class="fa-solid fa-star" aria-hidden="true" />)}
+  </span>
+  <a href={site.wpOrgReviewsUrl} target="_blank" rel="noopener noreferrer">
+    <strong>{site.wpOrg.rating}</strong> on WordPress.org · {site.wpOrg.ratingCount} reviews
+  </a>
+</p>
 
 <div class="testi-grid">
   {
-    testimonials.map((t) => (
-      <figure class="testi card reveal">
-        <div class="stars" aria-label="5 out of 5 stars">
-          {Array.from({ length: 5 }).map(() => (
+    items.map((t) => (
+      <figure class="testi card">
+        <div class="stars" role="img" aria-label={`${t.stars} out of 5 stars`}>
+          {Array.from({ length: t.stars }).map(() => (
             <i class="fa-solid fa-star" aria-hidden="true" />
           ))}
         </div>
-        <blockquote>{t.quote}</blockquote>
+        <h3 class="testi-title">{t.title}</h3>
+        <blockquote cite={t.url}>
+          <p>{t.quote}</p>
+        </blockquote>
         <figcaption>
-          <img src={t.image} alt="" width="48" height="48" loading="lazy" />
-          <div>
+          <span class="avatar" aria-hidden="true">{initials(t.name)}</span>
+          <span class="who">
             <span class="name">{t.name}</span>
-            <span class="role">{t.role}</span>
-          </div>
+            <a class="source" href={t.url} target="_blank" rel="noopener noreferrer">
+              Review on WordPress.org<span class="sr-only"> by {t.name}</span>
+            </a>
+          </span>
         </figcaption>
       </figure>
     ))
@@ -25,56 +50,107 @@ import { testimonials } from '../data/testimonials';
 </div>
 
 <style>
+  .rating-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin: -1.5rem auto 2.25rem;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .rating-summary a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .rating-summary a:hover {
+    color: var(--primary-dark);
+  }
+  .rating-stars,
+  .stars {
+    display: inline-flex;
+    gap: 0.15rem;
+    color: var(--star);
+  }
   .testi-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
+    align-items: start;
   }
   .testi {
-    padding: 1.75rem;
+    padding: 1.6rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.8rem;
   }
   .stars {
-    color: #fbbf24;
     font-size: 0.85rem;
-    display: flex;
-    gap: 0.15rem;
+  }
+  .testi-title {
+    font-size: 1.02rem;
+    line-height: 1.4;
   }
   blockquote {
     color: var(--text);
-    font-size: 1rem;
+    font-size: 0.98rem;
     line-height: 1.65;
-    flex: 1;
+  }
+  blockquote p::before {
+    content: '“';
+  }
+  blockquote p::after {
+    content: '”';
   }
   figcaption {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    margin-top: 0.3rem;
   }
-  figcaption img {
-    width: 48px;
-    height: 48px;
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
     border-radius: 50%;
-    object-fit: cover;
+    background: var(--primary-50);
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+  .who {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
   }
   .name {
-    display: block;
     font-weight: 600;
     color: var(--ink);
     font-size: 0.95rem;
+    overflow-wrap: anywhere;
   }
-  .role {
-    display: block;
-    color: var(--text-light);
+  .source {
     font-size: 0.85rem;
+    color: var(--text-light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
-  @media (max-width: 860px) {
+  .source:hover {
+    color: var(--primary-dark);
+  }
+  @media (max-width: 980px) {
+    .testi-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
     .testi-grid {
       grid-template-columns: 1fr;
-      max-width: 480px;
-      margin-inline: auto;
     }
   }
 </style>

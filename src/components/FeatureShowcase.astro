@@ -1,44 +1,98 @@
 ---
+// Alternating screenshot + text rows. Screenshots are real captures of the demo site; the
+// screenshot and the "try it" link open the live demo page (only while it passes its check).
 import { showcase, type ShowcaseItem } from '../data/showcase';
+import { liveDemoUrl } from '../utils/demos';
 
 interface Props {
   items?: ShowcaseItem[];
+  /** Heading level for each row title (3 under a section h2). */
+  level?: 2 | 3;
 }
-const { items = showcase } = Astro.props;
+const { items = showcase, level = 3 } = Astro.props;
+const Heading = `h${level}`;
 ---
 
 <div class="showcase">
   {
-    items.map((item, i) => (
-      <div class:list={['row', { reverse: i % 2 === 1 }]}>
-        <div class="media reveal">
-          <a href={item.preview} target="_blank" rel="noopener noreferrer" class="frame" aria-label={item.previewLabel}>
-            <div class="bar"><span></span><span></span><span></span></div>
-            <div class="shot">
-              <img src={item.image} alt={item.imageAlt} loading="lazy" />
-              <span class="play"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" /></span>
+    items.map((item, i) => {
+      const demo = liveDemoUrl(item.demo);
+      const thumbs = (item.thumbs ?? []).map((t) => ({ ...t, url: liveDemoUrl(t.demo) })).filter((t) => t.url);
+      return (
+        <div class:list={['row', { reverse: i % 2 === 1 }]} id={item.id}>
+          <div class="media reveal">
+            {demo ? (
+              <a href={demo} target="_blank" rel="noopener" class="frame">
+                <div class="bar" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div class="shot">
+                  <img src={item.image} alt={item.imageAlt} loading="lazy" decoding="async" width="1600" height="900" />
+                  <span class="play" aria-hidden="true">
+                    <i class="fa-solid fa-arrow-up-right-from-square" />
+                  </span>
+                </div>
+                <span class="sr-only">(opens the live demo in a new tab)</span>
+              </a>
+            ) : (
+              <div class="frame">
+                <div class="bar" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div class="shot">
+                  <img src={item.image} alt={item.imageAlt} loading="lazy" decoding="async" width="1600" height="900" />
+                </div>
+              </div>
+            )}
+            {thumbs.length > 0 && (
+              <ul class="thumbs" aria-label={`More ${item.title.toLowerCase()} demos`}>
+                {thumbs.map((t) => (
+                  <li>
+                    <a href={t.url} target="_blank" rel="noopener">
+                      <img src={t.image} alt="" loading="lazy" decoding="async" width="800" height="450" />
+                      <span>{t.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div class="copy reveal">
+            <span class:list={['badge', item.tier === 'pro' ? 'badge-pro' : 'badge-free']}>
+              {item.tier === 'pro' ? 'Pro' : 'Free & Pro'}
+            </span>
+            <Heading class="row-title">{item.title}</Heading>
+            <p>{item.description}</p>
+            {item.points.length > 0 && (
+              <ul class="points">
+                {item.points.map((p) => (
+                  <li>
+                    <i class="fa-solid fa-circle-check" aria-hidden="true" /> <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div class="links">
+              {demo && (
+                <a href={demo} target="_blank" rel="noopener" class="preview-link">
+                  {item.demoLabel ?? 'Try the live demo'} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
+                  <span class="sr-only">(new tab)</span>
+                </a>
+              )}
+              {item.docs && (
+                <a href={item.docs} class="docs-link">
+                  How to set it up <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+                </a>
+              )}
             </div>
-          </a>
+          </div>
         </div>
-        <div class="copy reveal">
-          <span class:list={['badge', item.tier === 'pro' ? 'badge-pro' : 'badge-free']}>
-            {item.tier === 'pro' ? 'Pro feature' : 'Free & Pro'}
-          </span>
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-          <ul>
-            {item.points.map((p) => (
-              <li>
-                <i class="fa-solid fa-circle-check" aria-hidden="true" /> {p}
-              </li>
-            ))}
-          </ul>
-          <a href={item.preview} target="_blank" rel="noopener noreferrer" class="preview-link">
-            {item.previewLabel} <i class="fa-solid fa-arrow-right" aria-hidden="true" />
-          </a>
-        </div>
-      </div>
-    ))
+      );
+    })
   }
 </div>
 
@@ -46,19 +100,23 @@ const { items = showcase } = Astro.props;
   .showcase {
     display: flex;
     flex-direction: column;
-    gap: clamp(3rem, 7vw, 5.5rem);
+    gap: clamp(3.5rem, 8vw, 6rem);
   }
   .row {
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-columns: 1.1fr 0.9fr;
     gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
+    scroll-margin-top: calc(var(--header-h) + 24px);
   }
   .row.reverse .media {
     order: 2;
   }
+  .media {
+    min-width: 0;
+  }
 
-  /* Media frame */
+  /* Browser frame */
   .frame {
     display: block;
     background: #fff;
@@ -68,34 +126,25 @@ const { items = showcase } = Astro.props;
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .frame:hover {
+  a.frame:hover {
     transform: translateY(-4px);
   }
   .bar {
     display: flex;
     gap: 0.4rem;
-    padding: 0.7rem 0.9rem;
+    padding: 0.65rem 0.9rem;
     border-bottom: 1px solid var(--border);
     background: var(--bg-soft);
   }
   .bar span {
-    width: 11px;
-    height: 11px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--border-strong);
   }
-  .bar span:first-child {
-    background: #ff6058;
-  }
-  .bar span:nth-child(2) {
-    background: #ffbd2e;
-  }
-  .bar span:nth-child(3) {
-    background: #28ca42;
-  }
   .shot {
     position: relative;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     background: var(--bg-softer);
   }
   .shot img {
@@ -112,23 +161,59 @@ const { items = showcase } = Astro.props;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--gradient-primary);
+    background: var(--primary-dark);
     color: #fff;
     box-shadow: var(--shadow-primary);
     opacity: 0;
     transform: translateY(6px);
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  .frame:hover .play {
+  a.frame:hover .play,
+  a.frame:focus-visible .play {
     opacity: 1;
     transform: none;
   }
 
+  /* Smaller demo thumbnails under the main screenshot */
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .thumbs a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .thumbs img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    transition: border-color 0.18s ease, transform 0.18s ease;
+  }
+  .thumbs a:hover {
+    color: var(--primary-dark);
+  }
+  .thumbs a:hover img {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+  }
+
   /* Copy */
+  .copy {
+    min-width: 0;
+  }
   .copy .badge {
     margin-bottom: 0.9rem;
   }
-  .copy h3 {
+  .row-title {
     font-size: clamp(1.4rem, 2.6vw, 1.85rem);
     margin-bottom: 0.6rem;
   }
@@ -136,23 +221,31 @@ const { items = showcase } = Astro.props;
     color: var(--text-light);
     font-size: 1.02rem;
   }
-  .copy ul {
+  .points {
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
     margin: 1.2rem 0 1.5rem;
   }
-  .copy li {
+  .points li {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.6rem;
     color: var(--text);
     font-weight: 500;
   }
-  .copy li i {
-    color: var(--accent-dark);
+  .points i {
+    color: var(--accent-text);
+    margin-top: 0.32em;
   }
-  .preview-link {
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.5rem;
+    margin-top: 1.25rem;
+  }
+  .preview-link,
+  .docs-link {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -160,8 +253,13 @@ const { items = showcase } = Astro.props;
     color: var(--primary-dark);
     transition: gap 0.18s ease;
   }
-  .preview-link:hover {
-    gap: 0.8rem;
+  .docs-link {
+    color: var(--text);
+  }
+  .preview-link:hover,
+  .docs-link:hover {
+    gap: 0.75rem;
+    color: var(--primary-darker);
   }
 
   @media (max-width: 860px) {
