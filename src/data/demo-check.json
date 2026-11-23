@@ -1,0 +1,387 @@
+{
+  "checked": "2026-11-23",
+  "export": "demo-site/out",
+  "note": "Written by scripts/capture-demo-shots.mjs. A page with ok:false is left off /demo/.",
+  "passed": 73,
+  "total": 74,
+  "pages": {
+    "/free/": {
+      "ok": true,
+      "problems": [],
+      "notes": [
+        "the export has no /favicon.ico (the browser asks for it)"
+      ]
+    },
+    "/free/category-grid/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/free/category-buttons/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/free/category-drop-down/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/free/hover-reveal-cards/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/free/plain-case-window/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/free/brand-colour/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/free/shortcode-options/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/classic-grid/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/masonry-layout/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/spotlight-layout/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/procedure-rows/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/editorial-layout/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/angles/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/uncropped-layout/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/grid-columns-card-shape/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-slider/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-hover-reveal/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-photo/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-switch/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-stacked/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-side-by-side/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-frame-framed/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-frame-open/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/card-extras/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/style-clinical/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/style-luxury/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/style-spa/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/style-midnight/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/dark-mode/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/template-clinical/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/template-modern/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/template-luxury/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/template-editorial/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/template-compact/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/template-photo-first/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/category-tabs/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/photo-pills/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/treatment-cards/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/area-then-treatment/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/icon-chips/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/side-menu/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/search-first/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/filter-bar/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/subcategory-pills/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/custom-case-filters/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/search-and-sort/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/find-by-area/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/help-me-choose/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/treatment-hub/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/concern-first/": {
+      "ok": false,
+      "problems": [
+        "images load (0 images; broken )",
+        "a treatment shows its cases",
+        "a case window opens"
+      ],
+      "notes": []
+    },
+    "/pro-demos/doctor-portfolios/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/doctors/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/collections/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/compare-two-cases/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/progress-stages/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/window-cinema/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/window-drawer/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/window-comparison-desk/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/window-case-story/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/story-mode-on-phones/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/case-viewer-zoom/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/comparison-labels/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/case-details-and-booking/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/image-annotations/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/single-case-embed/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/single-case-stages/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/category-carousel/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/body-map-embed/": {
+      "ok": true,
+      "problems": [],
+      "notes": [
+        "no sideways scroll at 1536 px (page is 30px wider than the window)"
+      ]
+    },
+    "/pro-demos/sensitive-photos-notice/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/sensitive-content-notice/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/image-protection/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/automatic-watermarks/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/shareable-case-links/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    }
+  }
+}

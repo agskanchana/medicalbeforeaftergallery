@@ -1,43 +1,63 @@
-// NOTE: Replace these with real, attributable testimonials when available.
-// Photos are stock images; swap `image` for real headshots or remove.
+// The six reviews of the free plugin on WordPress.org, quoted word for word (spacing and
+// punctuation as written), with the review title, the name WordPress.org shows and a link
+// to each review. All six are 5-star reviews. Read from wordpress.org on 2026-11-23.
+// The anonymised account shows as "anonymized-23354817" on WordPress.org; it is credited as
+// "Anonymous User".
 
 export interface Testimonial {
+  title: string;
   quote: string;
   name: string;
-  role: string;
-  image: string;
+  url: string;
+  stars: number;
 }
 
 export const testimonials: Testimonial[] = [
   {
+    title: 'Professional, Secure, and User-Friendly Before-After Gallery Plugin for Medical',
     quote:
-      'MBA Gallery transformed how we showcase our procedures. Patients are more confident when they can see real results, and the interactive slider makes a huge difference.',
-    name: 'Dr. Sarah Johnson',
-    role: 'Plastic Surgeon',
-    image:
-      'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&q=80',
+      'Medical Before After Gallery is an excellent solution for healthcare professionals and clinics looking to showcase patient transformations with before-and-after images. The plugin is easy to install and configure, and its intuitive interface makes gallery creation straightforward, even for non-technical users.',
+    name: 'dias2025',
+    url: 'https://wordpress.org/support/topic/professional-secure-and-user-friendly-before-after-gallery-plugin-for-medical/',
+    stars: 5,
   },
   {
+    title: 'Best Before/After Plugin I’ve Tried',
     quote:
-      'The multiple image pairs and treatment overview have been a game-changer for our dental practice. We can now present a full case, not just one photo.',
-    name: 'Dr. Michael Chen',
-    role: 'Cosmetic Dentist',
-    image:
-      'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&q=80',
+      'Really happy with this plugin! I run a small clinic and needed a clean way to show before-and-after results. Setup was super easy, the slider looks professional, and it works great on mobile too. Exactly what I was looking for.',
+    name: 'Anonymous User',
+    url: 'https://wordpress.org/support/topic/best-before-after-plugin-ive-tried/',
+    stars: 5,
   },
   {
+    title: 'Best and most secure medical before–after plugin',
     quote:
-      'Setup took minutes and the filtering makes it easy for prospective patients to find results relevant to them. Exactly what our website needed.',
-    name: 'Dr. Rebecca Martinez',
-    role: 'Dermatologist',
-    image:
-      'https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&q=80',
+      'I recently tried the Medical Before After Gallery plugin, and I’m really impressed with how well it works. The setup was very simple, and the slider looks clean, modern, and professional. It’s responsive on all devices and adds real value to medical websites by clearly showcasing before-and-after results. Definitely worth recommending!❤️',
+    name: 'janith1997',
+    url: 'https://wordpress.org/support/topic/best-and-most-secure-medical-before-after-plugin/',
+    stars: 5,
   },
-];
-
-// Honest value-prop highlights shown under the hero (no fabricated metrics).
-export const stats: { number: string; label: string }[] = [
-  { number: 'Free', label: 'Core plugin on WordPress.org' },
-  { number: 'Unlimited', label: 'Cases & categories with Pro' },
-  { number: '30-day', label: 'Money-back guarantee' },
+  {
+    title: 'Love it !!',
+    quote:
+      'I love how it displays on mobile , way it shows before afters with split view , before only view and after only view. just love this plugin',
+    name: 'alex7087',
+    url: 'https://wordpress.org/support/topic/love-it-4303/',
+    stars: 5,
+  },
+  {
+    title: 'Most complete before and after gallery tool',
+    quote:
+      'This is by far the best WordPress before and after image tool i found on the internet. Easy to use, reliable, and low impact on site.',
+    name: 'yourguru16',
+    url: 'https://wordpress.org/support/topic/most-complete-before-and-after-gallery-tool/',
+    stars: 5,
+  },
+  {
+    title: 'Love the modal feature',
+    quote: 'Love the modal feature and category navigation',
+    name: 'sandyl1991',
+    url: 'https://wordpress.org/support/topic/love-the-modal-feature/',
+    stars: 5,
+  },
 ];
