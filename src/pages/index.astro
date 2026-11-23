@@ -15,12 +15,12 @@ import { site } from '../data/site';
 import { demoSections, liveDemos } from '../utils/demos';
 
 const practiceTypes = [
-  { icon: 'fa-solid fa-user-doctor', label: 'Plastic surgery' },
-  { icon: 'fa-solid fa-hand-sparkles', label: 'Dermatology' },
-  { icon: 'fa-solid fa-tooth', label: 'Cosmetic dentistry' },
-  { icon: 'fa-solid fa-spa', label: 'Medical spas' },
-  { icon: 'fa-solid fa-weight-scale', label: 'Weight loss' },
-  { icon: 'fa-solid fa-scissors', label: 'Hair restoration' },
+  { icon: 'fa-solid fa-user-doctor', label: 'Plastic surgery', href: '/for/plastic-surgery/' },
+  { icon: 'fa-solid fa-hand-sparkles', label: 'Dermatology', href: '/for/dermatology/' },
+  { icon: 'fa-solid fa-tooth', label: 'Dental', href: '/for/dental/' },
+  { icon: 'fa-solid fa-spa', label: 'Med spas', href: '/for/med-spa/' },
+  { icon: 'fa-solid fa-weight-scale', label: 'Weight loss', href: '/for/weight-loss/' },
+  { icon: 'fa-solid fa-scissors', label: 'Hair restoration', href: '/for/hair-restoration/' },
 ];
 
 const groupIcons: Record<string, string> = {
@@ -33,6 +33,10 @@ const groupIcons: Record<string, string> = {
 };
 
 // Software + rating, matching the rating shown in the testimonials section.
+const homeTitle = 'Medical Before After Gallery (MBA Gallery) — before and after galleries for clinics';
+const homeDescription =
+  'Medical Before After Gallery (MBA Gallery) is a WordPress plugin for before and after photo galleries in clinics: free on WordPress.org, with a Pro add-on for layouts, case windows, progress timelines, single-case embeds and watermarks.';
+
 const softwareJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
@@ -42,8 +46,9 @@ const softwareJsonLd = {
   applicationSubCategory: 'WordPress plugin',
   operatingSystem: 'WordPress',
   softwareVersion: site.freeVersion,
-  description: site.description,
+  description: homeDescription,
   url: site.url + '/',
+  publisher: { '@id': `${site.url}/#organization` },
   downloadUrl: site.wpOrgUrl,
   image: new URL('/images/features/window-cinema.webp', site.url).href,
   offers: [
@@ -61,13 +66,14 @@ const softwareJsonLd = {
     '@type': 'AggregateRating',
     ratingValue: site.wpOrg.rating,
     ratingCount: site.wpOrg.ratingCount,
+    reviewCount: site.wpOrg.ratingCount,
     bestRating: '5',
     worstRating: '1',
   },
 };
 ---
 
-<BaseLayout jsonLd={softwareJsonLd}>
+<BaseLayout fullTitle={homeTitle} description={homeDescription} jsonLd={softwareJsonLd}>
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="container hero-inner">
@@ -75,9 +81,9 @@ const softwareJsonLd = {
         <span class="eyebrow"><i class="fa-brands fa-wordpress" aria-hidden="true"></i> WordPress plugin for clinics</span>
         <h1>Show your patients real <span class="grad">before &amp; after</span> results</h1>
         <p class="lead">
-          A before and after gallery for medical and aesthetic practices. The free plugin gives you a comparison slider,
-          categories and doctor cards. Pro adds layouts, case windows, progress timelines, single-case embeds, watermarks and
-          more.
+          <strong>Medical Before After Gallery (MBA Gallery)</strong> is a before and after gallery for medical and aesthetic
+          practices. The free plugin gives you a comparison slider, categories and doctor cards. Pro adds layouts, case windows,
+          progress timelines, single-case embeds, watermarks and more.
         </p>
         <div class="hero-cta">
           <FreemiusCheckout label={`Get Pro — $${site.proPrice} one-time`} class="btn btn-primary btn-lg" />
@@ -127,8 +133,10 @@ const softwareJsonLd = {
       <ul class="trust-list">
         {
           practiceTypes.map((p) => (
-            <li class="trust-item">
-              <i class={p.icon} aria-hidden="true" /> {p.label}
+            <li>
+              <a class="trust-item" href={p.href}>
+                <i class={p.icon} aria-hidden="true" /> {p.label}
+              </a>
             </li>
           ))
         }
@@ -449,6 +457,16 @@ const softwareJsonLd = {
     color: var(--text);
     font-weight: 500;
     font-size: 0.95rem;
+  }
+  a.trust-item {
+    padding: 0.35rem 0.2rem;
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 4px;
+  }
+  a.trust-item:hover {
+    color: var(--primary-dark);
+    text-decoration-color: currentColor;
   }
   .trust-item i {
     color: var(--primary-dark);

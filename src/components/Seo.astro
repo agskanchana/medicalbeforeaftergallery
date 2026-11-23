@@ -3,6 +3,8 @@ import { site } from '../data/site';
 
 interface Props {
   title?: string;
+  /** Use this exact <title> (no " — MBA Gallery" suffix), e.g. on the home page. */
+  fullTitle?: string;
   description?: string;
   image?: string;
   type?: 'website' | 'article';
@@ -12,6 +14,7 @@ interface Props {
 
 const {
   title,
+  fullTitle: fullTitleProp,
   description = site.description,
   image = '/images/og-default.png',
   type = 'website',
@@ -19,12 +22,24 @@ const {
   jsonLd,
 } = Astro.props;
 
-const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`;
+const fullTitle = fullTitleProp ?? (title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`);
 // Directory-style URLs are served with a trailing slash — normalize the canonical to match.
 const pathname = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = new URL(pathname, site.url).href;
 const ogImage = new URL(image, site.url).href;
-const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+// The publisher, on every page. sameAs lists only the social profiles that are filled in.
+const sameAs = Object.values(site.social).filter(Boolean);
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${site.url}/#organization`,
+  name: site.legalName,
+  alternateName: site.name,
+  url: `${site.url}/`,
+  logo: new URL(site.logo, site.url).href,
+  ...(sameAs.length ? { sameAs } : {}),
+};
+const jsonLdArray = [organization, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
 ---
 
 <title>{fullTitle}</title>
@@ -50,6 +65,6 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
 {
   jsonLdArray.map((data) => (
-    <script type="application/ld+json" set:html={JSON.stringify(data)} />
+    <script type="application/ld+json" set:html={JSON.stringify(data).replace(/</g, '\\u003c')} />
   ))
 }

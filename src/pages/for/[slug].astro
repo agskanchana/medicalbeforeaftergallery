@@ -1,0 +1,354 @@
+---
+// Specialty pages: /for/dental/, /for/plastic-surgery/ … (content in src/data/specialties.ts).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import { specialties, type Specialty } from '../../data/specialties';
+import { demos, demoSlug } from '../../data/demos';
+import { liveDemoUrl } from '../../utils/demos';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return specialties.map((s) => ({ params: { slug: s.slug }, props: { specialty: s } }));
+}
+
+const { specialty } = Astro.props as { specialty: Specialty };
+
+// Only demos that pass their check are linked.
+const demoCards = specialty.demos
+  .map((p) => {
+    const d = demos.find((x) => x.path === p);
+    const url = liveDemoUrl(p);
+    return d && url ? { ...d, url, image: `/images/demos/${demoSlug(p)}.webp` } : null;
+  })
+  .filter((d): d is NonNullable<typeof d> => d !== null);
+
+const others = specialties.filter((s) => s.slug !== specialty.slug);
+const pageUrl = `${site.url}/for/${specialty.slug}/`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: specialty.title,
+  description: specialty.description,
+  url: pageUrl,
+  about: { '@type': 'SoftwareApplication', name: site.legalName, alternateName: site.name, operatingSystem: 'WordPress' },
+  publisher: { '@id': `${site.url}/#organization` },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: specialty.title, item: pageUrl },
+    ],
+  },
+};
+---
+
+<BaseLayout title={specialty.title} description={specialty.description} jsonLd={jsonLd}>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow"><i class={specialty.icon} aria-hidden="true"></i> For {specialty.name}</span>
+      <h1>{specialty.title}</h1>
+      <p class="lead">{specialty.lead}</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#demos">Try the demos</a>
+        <a class="btn btn-secondary" href={site.wpOrgUrl} target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-wordpress" aria-hidden="true"></i> Download free
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="what-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="what-title">What Medical Before After Gallery does for {specialty.name}</h2>
+        <p>
+          The free plugin on WordPress.org shows up to 12 cases in 4 categories. The Pro add-on removes the limits and adds
+          the rest.
+        </p>
+      </div>
+      <ul class="points">
+        {
+          specialty.points.map((p) => (
+            <li class="point card">
+              <h3>
+                {p.title}
+                <span class:list={['badge', p.tier === 'pro' ? 'badge-pro' : 'badge-free']}>{p.tier === 'pro' ? 'Pro' : 'Free'}</span>
+              </h3>
+              <p>{p.text}</p>
+              {p.docs && (
+                <a href={p.docs} class="point-link">
+                  How it works <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-soft" aria-labelledby="setup-title">
+    <div class="container setup-grid">
+      <div>
+        <h2 id="setup-title">Set up for {specialty.name}</h2>
+        <p class="muted">
+          Pro’s <a href="/docs/setup-wizard-and-ready-to-publish/">setup wizard</a> asks for your practice type. For
+          “{specialty.wizard.practice}” it suggests these starter categories:
+        </p>
+        <ul class="chips">
+          {specialty.wizard.categories.map((c) => <li>{c}</li>)}
+        </ul>
+        <p class="muted small">
+          Then you choose one of six <a href="/docs/design-templates-and-preview/">design templates</a> and the page for the
+          gallery.
+        </p>
+      </div>
+      <div>
+        <h2>Icons and areas</h2>
+        <p class="muted">
+          Built-in <a href="/docs/category-styles-and-icons/">category icons</a> that fit (Pro, 92 in all — or upload your own):
+        </p>
+        <ul class="chips">
+          {specialty.icons.map((c) => <li>{c}</li>)}
+        </ul>
+        <p class="muted small">
+          <a href="/docs/find-by-area-and-help-me-choose/">Find by area</a> (Pro): {specialty.areas}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {
+    demoCards.length > 0 && (
+      <section class="section" id="demos" aria-labelledby="demos-title">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="demos-title">Try it in the demo</h2>
+            <p>Working demo pages with the demo site’s sample cases. Each opens in a new tab.</p>
+          </div>
+          <ul class="demo-grid">
+            {demoCards.map((d) => (
+              <li class="demo-card card">
+                <div class="demo-shot">
+                  <img src={d.image} alt={`Screenshot: ${d.shot}`} width="800" height="450" loading="lazy" decoding="async" />
+                </div>
+                <div class="demo-body">
+                  <h3>
+                    <a href={d.url} target="_blank" rel="noopener" class="demo-link">
+                      {d.title}
+                      <span class="sr-only"> — open the live demo (new tab)</span>
+                    </a>
+                  </h3>
+                  <p>{d.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p class="text-center more">
+            <a href="/demo/" class="btn btn-ghost">All demos <i class="fa-solid fa-arrow-right" aria-hidden="true" /></a>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section-soft" aria-labelledby="others-title">
+    <div class="container">
+      <h2 id="others-title" class="others-title">Other practices</h2>
+      <ul class="others">
+        {
+          others.map((o) => (
+            <li>
+              <a href={`/for/${o.slug}/`}>
+                <i class={o.icon} aria-hidden="true" /> {o.name.charAt(0).toUpperCase() + o.name.slice(1)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--gradient-soft);
+    padding-block: clamp(2.75rem, 7vw, 4.5rem);
+    text-align: center;
+  }
+  .page-hero h1 {
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+  .page-hero .lead {
+    max-width: 62ch;
+    margin: 1rem auto 0;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.75rem;
+  }
+  .points {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .point {
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem 1.5rem;
+  }
+  .point h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.05rem;
+  }
+  .point p {
+    margin-top: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.95rem;
+  }
+  .point-link {
+    margin-top: auto;
+    padding-top: 0.85rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .setup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+  }
+  .setup-grid h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+  }
+  .muted {
+    color: var(--text-light);
+    margin-top: 0.6rem;
+  }
+  .muted a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .small {
+    font-size: 0.92rem;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.9rem;
+  }
+  .chips li {
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-pill);
+    background: #fff;
+    border: 1px solid var(--border);
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .demo-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .demo-shot img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border);
+  }
+  .demo-body {
+    padding: 1rem 1.15rem 1.2rem;
+  }
+  .demo-body h3 {
+    font-size: 1rem;
+  }
+  .demo-link {
+    color: var(--ink);
+  }
+  .demo-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .demo-link:focus-visible {
+    outline: none;
+  }
+  .demo-card:has(.demo-link:focus-visible) {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .demo-card:hover .demo-link {
+    color: var(--primary-dark);
+  }
+  .demo-body p {
+    margin-top: 0.35rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+  }
+  .more {
+    margin-top: 1.75rem;
+  }
+  .others-title {
+    text-align: center;
+    font-size: 1.25rem;
+  }
+  .others {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+  .others a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border-radius: var(--radius-pill);
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 500;
+  }
+  .others a:hover {
+    border-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .others i {
+    color: var(--primary-dark);
+  }
+  @media (max-width: 980px) {
+    .points,
+    .demo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .setup-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .points,
+    .demo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

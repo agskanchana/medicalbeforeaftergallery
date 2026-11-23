@@ -5,19 +5,20 @@ import CtaBanner from '../components/CtaBanner.astro';
 import FeatureShowcase from '../components/FeatureShowcase.astro';
 import { featureGroups } from '../data/features';
 import { site } from '../data/site';
+import { liveDemos } from '../utils/demos';
 ---
 
 <BaseLayout
   title="Features"
-  description="Every feature of the Medical Before After Gallery plugin — comparison sliders, smart filtering, watermarking, image annotations, consent overlay, masonry layout and more."
+  description={`Features of Medical Before After Gallery (MBA Gallery) free ${site.freeVersion} and Pro ${site.proVersion}: comparison slider, doctors, category styles and icons, layouts and card styles, case windows, progress timeline, embeds, watermarks and more.`}
 >
   <section class="page-hero">
     <div class="container">
       <span class="eyebrow">Features</span>
-      <h1>Everything you need to present <span class="grad">before &amp; after</span> results</h1>
+      <h1>What the plugin does for your <span class="grad">before &amp; after</span> photos</h1>
       <p class="lead">
-        A complete toolkit for medical and aesthetic practices — from a simple comparison slider to full,
-        filterable case studies with watermarking and consent. <strong>Pro</strong> features are marked below.
+        Free {site.freeVersion} and Pro {site.proVersion}, feature by feature. Each feature is marked <strong>Free</strong> or
+        <strong>Pro</strong>; the screenshots are from the demo site, and {liveDemos.length} demo pages let you try them.
       </p>
     </div>
   </section>
@@ -26,10 +27,9 @@ import { site } from '../data/site';
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">In action</span>
-        <h2>See the highlights</h2>
+        <h2>The main features, with screenshots</h2>
         <p>
-          A closer look at the features that make MBA Gallery stand out.
-          <a href={site.demoUrl}>Open the live demo →</a>
+          Each screenshot opens the matching demo page. <a href={site.demoUrl}>All demos →</a>
         </p>
       </div>
       <FeatureShowcase />

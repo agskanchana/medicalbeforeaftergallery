@@ -29,7 +29,7 @@ const jsonLd = {
 
 <BaseLayout
   title="Pricing"
-  description="Simple, one-time pricing. The Medical Before After Gallery plugin is free on WordPress.org; Pro is a $99 lifetime license with a 30-day money-back guarantee."
+  description={`Medical Before After Gallery (MBA Gallery) is free on WordPress.org; Pro is a one-time $${site.proPrice} lifetime license with updates and a ${site.guaranteeDays}-day money-back guarantee.`}
   jsonLd={jsonLd}
 >
   <section class="page-hero">
@@ -37,8 +37,7 @@ const jsonLd = {
       <span class="eyebrow">Pricing</span>
       <h1>One-time pricing, <span class="grad">lifetime</span> value</h1>
       <p class="lead">
-        Start completely free on WordPress.org. Upgrade to Pro once and keep it forever — including updates.
-        No subscriptions, ever.
+        Start free on WordPress.org. Pro is one payment for a lifetime license, updates included — no subscription.
       </p>
     </div>
   </section>

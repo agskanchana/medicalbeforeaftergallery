@@ -26,6 +26,17 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     ],
   },
   {
+    heading: 'For your practice',
+    links: [
+      { label: 'Dental', href: '/for/dental/' },
+      { label: 'Plastic surgery', href: '/for/plastic-surgery/' },
+      { label: 'Dermatology', href: '/for/dermatology/' },
+      { label: 'Hair restoration', href: '/for/hair-restoration/' },
+      { label: 'Med spas', href: '/for/med-spa/' },
+      { label: 'Weight loss', href: '/for/weight-loss/' },
+    ],
+  },
+  {
     heading: 'Resources',
     links: [
       { label: 'Documentation', href: '/docs/' },
