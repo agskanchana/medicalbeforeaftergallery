@@ -1,35 +1,51 @@
 ---
-title: Gallery layouts
-description: Choose between the Classic grid and the Pro Masonry layout, and learn how each behaves.
+title: Gallery layouts & card styles
+description: The free grid and Pro’s eight layouts, six card styles, card frames and card extras.
 group: Display & Layout
 groupOrder: 2
 order: 1
 ---
 
-The gallery ships with two layouts. Set yours under **Before After Gallery → Settings → Appearance** with the **Gallery Layout** option.
+## Layouts
 
-## Classic grid (Free & Pro)
+The free plugin shows cases in an even grid. Pro adds more layouts: set the default under **Design → Gallery**, or per gallery with `layout`.
 
-The default layout: a responsive grid of case cards with a **filter sidebar** (Pro) and a category selector at the top. Clicking a card opens the case modal with the comparison slider.
+| Layout | `layout` | What it looks like |
+| --- | --- | --- |
+| Classic grid | `classic` | Even cards in a tidy grid (Free and Pro) |
+| Masonry | `masonry` | Every photo keeps its natural shape, cards packed into columns |
+| Spotlight | `spotlight` | The first matching case in one large tile, the rest around it |
+| Procedure rows | `rows` | One scrolling row of cases per category |
+| Editorial | `editorial` | One case per row, photos and details alternating sides |
+| Angles | `angles` | Small photos of a case’s other views under its card |
+| Uncropped | `uncropped` | Both complete photos, nothing cut off |
+| Collections | `collections` | Hand-picked rows of cases (see [Collections](/docs/page-structures-and-collections/)) |
 
-- Best for a structured, catalog-style gallery.
-- Supports the **card aspect ratio** option for a uniform grid.
-- Filters appear in a left sidebar (which you can hide).
+**Columns**: Auto, 1, 2, 3 or 4 (`columns`). On small screens the gallery uses fewer columns.
 
-## Masonry cards (Pro)
+## Card styles
 
-A Pinterest-style layout with variable-height cards and a redesigned, immersive case modal.
+| Card style | `card_style` | Plan |
+| --- | --- | --- |
+| Side by side | `split` | Free |
+| Hover reveal — the before photo wipes to the after photo on hover, keyboard focus or a press-and-hold, and plays once on the first card that scrolls into view | `reveal` | Free |
+| Slider — drag the divider on the card | `slider` | Pro |
+| Photo — the photo fills the card | `photo` | Pro |
+| Before/after switch — the after photo with a Before / After switch | `toggle` | Pro |
+| Stacked — before above after, both whole (good for wide photos such as smiles) | `stacked` | Pro |
 
-- Filters open in a **click-to-open drawer** instead of a fixed sidebar.
-- Cards show a per-pair viewer, a before/after toggle, category pills and meta chips.
-- The case modal includes a **Treatment Overview** panel and an **About this case** section.
-- Card aspect ratio is ignored (masonry uses each image’s natural height).
+Slider, photo, hover-reveal and uncropped cards never crop a photo: each is shown whole over a soft blurred copy of itself. Visitors who ask for reduced motion never see the hover-reveal animation.
 
-## Choosing columns
+## Card frame (Pro)
 
-Both layouts respect the **Grid Columns** setting — `auto` (responsive), `2`, `3` or `4`. On smaller screens the gallery automatically reduces columns for readability.
+`card_frame`: **Boxed** (`boxed`, the photo across the top of the card), **Framed** (`framed`, the photo inset like a print) or **Open** (`open`, no box).
 
-## Good to know
+## Card extras (Pro)
 
-- The layout choice changes which view modes are available in the comparison viewer — see [Comparison & labels](/docs/comparison-and-labels/).
-- Switching layouts only changes presentation; your cases and categories are unchanged.
+Under **Design → Gallery**: the doctor’s avatar and name, a **New** badge (for cases added in the last 30 days, adjustable), a **Progress** badge for cases with recorded stages, and duration, recovery and results chips.
+
+## Existing galleries
+
+Updating does not change an existing gallery: classic or masonry galleries with side-by-side cards and no preset keep their look until you choose a new layout, card style or template.
+
+Try them on the [demo page](/demo/).

@@ -1,40 +1,37 @@
 ---
-title: Search, sort & deep-linking
-description: Add a search box and sort control, and make filtered views shareable via the URL.
-group: Comparison & Discovery
-groupOrder: 3
+title: Search, sort & shareable links
+description: A search box, a sort menu, and links that open a case or a filtered view directly.
+group: Finding Cases
+groupOrder: 4
 order: 2
 ---
 
-These discovery features are Pro and live under **Settings → Comparison & Discovery**.
+These are Pro features. Search and sort are under **Design → Categories & filters**; shareable links under **Design → Case window**.
 
-## Search (Pro)
+## Search
 
-Enable **Show a search box on the gallery** to let visitors search across case **titles, descriptions and category names**. Set the **search placeholder** text to suit your audience. Results filter as the visitor types (debounced for performance).
+**Show a search box on the gallery** lets visitors search case titles, descriptions and category names. Set the placeholder text to suit your visitors. Results update as they type.
 
-## Sort (Pro)
+The **Search first** category style turns the search box into the way in: it suggests treatments as visitors type — see [Category styles](/docs/category-styles-and-icons/).
 
-Enable **Show a sort dropdown** and pick a **default sort**:
+## Sort
 
-- **Newest first**
-- **Oldest first**
-- **Title (A–Z)**
+**Show a sort dropdown on the gallery** and choose the default order: **Newest first**, **Oldest first** or **Title (A–Z)**. Sorting works together with filters and search.
 
-Sorting works alongside any active filters and search.
+## Shareable links
 
-## Deep-linking (Pro)
-
-Turn on **Reflect filters, search and sort in the URL** to make any filtered view **bookmarkable and shareable**. As the visitor filters, searches or sorts, the URL updates without a page reload.
-
-URL parameters used:
+Opening a case updates the address bar, so every case has its own link. With **Reflect filters, search and sort in the URL** on, a filtered view can be bookmarked and shared too.
 
 | Parameter | Purpose |
 | --- | --- |
-| `?mbcase=ID` | Open a specific case directly |
-| `?mbq=term` | Pre-fill the search term |
+| `?mbcase=ID` | Open a case directly |
+| `?mbcat=slug` | Choose a category |
+| `?mbq=term` | Fill in the search |
 | `?mbsort=newest\|oldest\|title` | Set the sort order |
-| `?<filter>=value1,value2` | Pre-select filter values |
+| `?<filter>=value1,value2` | Choose filter values |
 
-For example, linking to `…/gallery/?mbcase=128` opens that case immediately — handy for sharing a specific result by email or social media.
+For example, `…/gallery/?mbcase=128` opens that case straight away — handy for sending a result by email. The page structures, Find by area and Help me choose keep their state in the address as well.
 
-See [Case filters](/docs/case-filters/) to configure which filters appear.
+If the [sensitive-content notice](/docs/photo-protection/) is on, it also shows for visitors who arrive through a shared link.
+
+Try it: [search and sort](https://demo.medicalbeforeaftergallery.com/pro-demos/search-and-sort/) · [shareable case links](https://demo.medicalbeforeaftergallery.com/pro-demos/shareable-case-links/).

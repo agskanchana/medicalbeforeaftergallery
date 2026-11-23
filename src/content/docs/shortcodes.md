@@ -1,67 +1,96 @@
 ---
 title: Shortcode reference
-description: Every shortcode and attribute — the gallery, the category carousel and single-case embeds.
+description: Every shortcode and attribute — the gallery, the single-case embed, the category carousel and the body map.
 group: Reference
 groupOrder: 7
 order: 1
 ---
 
-The plugin provides three shortcodes. The first is in the free plugin; the other two are Pro.
+There are four shortcodes. `[medbeafgallery]` is in the free plugin; the other three are Pro. All of them work in the Block editor (Shortcode block), the Classic editor and page builders such as Elementor, Divi and WPBakery.
 
-## `[medbeafgallery]` — full gallery (Free)
+## `[medbeafgallery]` — the gallery
 
-Embeds the complete, filterable gallery.
+### Free attributes
 
-| Attribute | Default | Description |
+| Attribute | Default | Values |
 | --- | --- | --- |
-| `items_per_page` | `6` | Cases loaded per page. |
-| `default_category` | `all` | Category slug to show first. |
-| `show_filters` | `true` | Show the filter controls. |
-| `show_cta` | from settings | Show the consultation CTA button. |
-| `cta_text` | from settings | Override CTA label. |
-| `cta_link` | from settings | Override CTA URL. |
+| `items_per_page` | `6` | Cases loaded at a time. |
+| `default_category` | `all` | Slug of the category shown first. |
+| `show_filters` | `true` | `false` hides the category bar (and Pro’s filter sidebar or drawer). |
+| `card_style` | from Design | `split`, `reveal` — Pro adds `slider`, `photo`, `toggle`, `stacked`. |
+| `category_style` | from Design | `carousel`, `grid`, `buttons`, `dropdown` — Pro adds `tabs`, `photos`, `cards`, `areas`, `menu`, `search`, `icons`, `bar`. |
+
+### Pro attributes
+
+| Attribute | Default | Values |
+| --- | --- | --- |
+| `layout` | from Design | `classic`, `masonry`, `spotlight`, `rows`, `editorial`, `angles`, `uncropped`, `collections` |
+| `card_frame` | `boxed` | `boxed`, `framed`, `open` |
+| `columns` | from Design | `auto`, `1`, `2`, `3`, `4` |
+| `preset` | `default` | `default`, `clinical`, `luxury`, `spa`, `midnight` |
+| `motion` | `subtle` | `none`, `subtle`, `lively` |
+| `structure` | `gallery` | `gallery`, `hub`, `concerns`, `doctors` |
+| `compare` | `off` | `off`, `on` |
+
+`gallery_layout` and `grid_columns` are accepted as other names for `layout` and `columns`. An attribute that is left out uses the saved Design setting, so existing galleries keep their look.
 
 ```text
-[medbeafgallery default_category="botox" items_per_page="9"]
+[medbeafgallery layout="spotlight" preset="luxury"]
+[medbeafgallery structure="hub" layout="classic" compare="on"]
+[medbeafgallery default_category="veneers" show_filters="false" card_style="stacked"]
 ```
+
+## `[mba_case]` — one case (Pro)
+
+| Attribute | Default | Values |
+| --- | --- | --- |
+| `id` | *(required)* | A published case’s ID |
+| `layout` | `auto` | `auto`, `split`, `stacked`, `compact` |
+| `view` | `slider` | `slider`, `before`, `after`, `side` |
+| `show_title` | `true` | `true`, `false` |
+| `heading` | `3` | `2`–`6` |
+| `show_details` | `true` | `true`, `false` |
+| `show_cta` | `true` | `true`, `false` |
+| `show_stages` | `true` | `true`, `false` |
+
+```text
+[mba_case id="123" layout="split" show_stages="false"]
+```
+
+Details: [Single-case embed](/docs/single-case-embed/).
 
 ## `[mba_category_carousel]` — category carousel (Pro)
 
-A sliding carousel of cases from a category, powered by Splide.
-
-| Attribute | Default | Description |
+| Attribute | Default | Values |
 | --- | --- | --- |
-| `category` | *(all)* | Category slug to display. |
-| `items_per_view` | `3` | Slides visible at once (1–5). |
-| `autoplay` | `false` | Auto-advance slides. |
-| `autoplay_speed` | `3000` | Delay between slides, ms (1000–15000). |
-| `show_navigation` | `true` | Show prev/next arrows. |
-| `show_dots` | `true` | Show pagination dots. |
-| `loop` | `true` | Infinite loop. |
-| `gap` | `20` | Space between slides, px. |
+| `category` | *(required)* | Category slug |
+| `items_per_view` | `3` | Slides visible at once |
+| `autoplay` | `false` | `true`, `false` |
+| `autoplay_speed` | `3000` | Milliseconds per slide (at least 1000) |
+| `show_navigation` | `true` | Arrows |
+| `show_dots` | `true` | Dots |
+| `loop` | `true` | `true`, `false` |
+| `gap` | `20` | Pixels between slides |
 
 ```text
-[mba_category_carousel category="facelift" items_per_view="4" autoplay="true" autoplay_speed="5000"]
+[mba_category_carousel category="veneers" items_per_view="4" autoplay="true"]
 ```
 
-Clicking a carousel item opens the same case modal as the main gallery. There’s a generator under **Before After Gallery → Settings → Carousel** that builds the shortcode for you.
+Details: [Category carousel](/docs/category-carousel/).
 
-## `[mba_case]` — single case (Pro)
+## `[mba_body_map]` — the map on any page (Pro)
 
-Embeds one full case inline — viewer, pair navigation and (optionally) the treatment overview and description.
-
-| Attribute | Default | Description |
+| Attribute | Default | Values |
 | --- | --- | --- |
-| `id` | *(required)* | The case’s post ID. |
-| `show_details` | `true` | Show treatment overview + description. |
-| `show_cta` | `true` | Show the CTA button (if configured). |
+| `url` | *(required)* | Your gallery page |
+| `figures` | from Discovery | `face`, `body-front`, `body-back`, `smile`, comma-separated |
 
 ```text
-[mba_case id="123" show_details="true"]
+[mba_body_map url="https://example.com/gallery/" figures="face,smile"]
 ```
 
-A generator under **Settings → Single Case** lets you pick a published case and copy the shortcode.
+Details: [Find by area & Help me choose](/docs/find-by-area-and-help-me-choose/).
 
-## Using shortcodes in builders
+## Builders
 
-All three work in the **Block editor** (Shortcode block), **Classic editor**, and page builders such as **Elementor**, **Divi** and **WPBakery** via their shortcode widgets. You can place multiple carousels and single-case embeds on the same page.
+The Pro workspace builds the embed shortcodes for you under **Embeds → Carousel** and **Embeds → Single case**, and the **Overview** shows the gallery shortcode with a copy button.

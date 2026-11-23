@@ -6,13 +6,13 @@ groupOrder: 1
 order: 1
 ---
 
-The plugin comes in two parts: a **free base plugin** (required) and an optional **Pro add-on** that unlocks the premium features. This page covers installing both.
+The plugin comes in two parts: the **free plugin** (required, on WordPress.org) and the optional **Pro add-on**. This page covers installing both.
 
 ## Requirements
 
 - WordPress 5.0 or newer
 - PHP 7.4 or newer
-- The **GD** or **Imagick** PHP image library (needed for cropping and watermarking — most hosts include one). The plugin runs a health check and tells you which is available.
+- The **GD** or **Imagick** PHP image library for cropping and watermarks (most hosts have one; the plugin tells you which it uses)
 
 ## 1. Install the free plugin
 
@@ -22,29 +22,32 @@ The plugin comes in two parts: a **free base plugin** (required) and an optional
 
 You can also download it from [WordPress.org](https://wordpress.org/plugins/medical-before-after-gallery/) and upload the ZIP under **Plugins → Add New → Upload Plugin**.
 
-After activating, you’ll find a new **Before After Gallery** menu in the admin sidebar, and a default **“All”** category is created automatically.
+You’ll find a **Medical Before After Gallery** menu in the admin sidebar, with the Dashboard, Cases, Add New Case, Categories and Doctors screens.
 
-> The free plugin alone is fully functional, with a limit of **12 cases** and **4 categories**.
+> The free plugin works on its own, for up to **12 cases** and **4 categories**.
 
 ## 2. Add the Pro add-on
 
-The Pro add-on extends the free plugin — keep the free plugin active.
+Pro extends the free plugin — keep the free plugin active. Pro 1.6.0 works with free 1.3.2 and newer; doctor cards, the doctor filter and per-gallery shortcode options need free **1.5.0**.
 
-1. After purchasing Pro, download the Pro add-on ZIP from your account email.
+1. After purchasing Pro, download the Pro add-on ZIP.
 2. Go to **Plugins → Add New → Upload Plugin** and upload the ZIP.
 3. Click **Activate**.
 
-If the free plugin isn’t active, Pro will deactivate itself and show a notice — just activate the free plugin first.
+If the free plugin is missing or too old, Pro stays switched off and says so in a notice. If you switch the free plugin off, Pro waits and picks up again as soon as it is back.
 
 ## 3. Activate your Pro license
 
-1. Open the **Before After Gallery** menu — you’ll see a prompt to activate your license.
-2. Enter the license key from your purchase email and activate.
-3. Once activated, the case and category limits are removed and all Pro features appear in the dashboard.
+1. Open the **Medical Before After Gallery** menu — you’ll be asked to activate your license.
+2. Enter the license key from your purchase email.
+3. The case and category limits are removed and the Pro workspace appears.
 
-Your purchase is backed by a **30-day money-back guarantee**. License status is re-checked automatically on a weekly schedule.
+## 4. Set up the gallery
+
+On a site with no cases yet, Pro offers a short [setup wizard](/docs/setup-wizard-and-ready-to-publish/): practice type, starter categories, a design template and the gallery page.
 
 ## What’s next
 
 - [Create your first case](/docs/creating-a-case/)
-- [Embed the gallery on a page](/docs/embedding-the-gallery/)
+- [Add your doctors](/docs/doctors/)
+- [Put the gallery on a page](/docs/embedding-the-gallery/)

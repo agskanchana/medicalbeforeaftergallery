@@ -1,30 +1,38 @@
 ---
-title: Consent overlay & image protection
-description: Gate sensitive galleries behind a consent notice and deter casual image saving.
-group: Privacy & Consent
+title: Sensitive-content notice settings
+description: The settings of the sensitive-content notice — style, wording and how long the answer is remembered — and image protection.
+group: Media & Protection
 groupOrder: 6
-order: 1
+order: 3
 ---
 
-For practices showing sensitive before/after imagery, Pro adds a consent overlay and image-protection deterrents under **Settings → Display Options**.
+The notice and image protection are Pro settings under **Protection → Privacy**. For what visitors see, start with [Photo protection](/docs/photo-protection/).
 
-## Sensitive-content consent overlay (Pro)
+## Sensitive Content Notice
 
-Enable **Sensitive Content Notice** to require visitors to confirm before the gallery is revealed. You can customize:
+Turn on **Sensitive Content Notice**, then set:
 
-- **Heading** — default “Sensitive Content”.
-- **Message** — explain why the content is sensitive (basic formatting allowed).
-- **Button text** — default “I Understand — Show Gallery”.
-- **Remember choice** — store the visitor’s consent so they only confirm once.
+| Setting | Default |
+| --- | --- |
+| **How it looks** | **Photo by photo** — each photo blurred with its own Show button (recommended). Or **Whole page** — a dialog covers the page until the visitor agrees. |
+| **Heading** | Sensitive Content |
+| **Message** | This gallery contains before-and-after medical images that some viewers may find graphic. Please confirm you wish to continue. |
+| **Button Text** | I Understand — Show Gallery |
+| **Remember the visitor’s answer** | On |
+| **Remember for** | 30 days (0 = until the visitor clears their browser) |
 
-The overlay renders immediately on page load (before any images are visible) to prevent a flash of content, and is dismissed when the visitor accepts.
+Changing the wording asks visitors again. Sites that already used the notice before 1.6.0 keep the whole-page style until you choose another.
 
-## Image protection (Pro)
+The notice also applies to the single-case and carousel embeds and to shared case links.
 
-Enable **Image Protection** to discourage casual saving — it disables right-click and image dragging on the gallery and modal.
+## Image protection
 
-> **Deterrence, not security.** Determined users can still access images via browser developer tools or the cache. For real protection, combine this with [watermarking](/docs/watermarking/).
+**Image Protection** (“Discourage right-click saving and image dragging”) turns off right-click saving and dragging photos away in the gallery and the case window.
 
-## A note on compliance
+> **A deterrent, not a lock.** Determined visitors can still find images through the browser’s tools. For real protection, use [watermarks](/docs/watermarking/) and **Protect the originals**.
 
-These tools help you present sensitive imagery responsibly, but they don’t replace proper **patient consent**. Always obtain written authorization before publishing identifiable before/after photos, and follow the privacy regulations that apply in your jurisdiction (such as HIPAA in the US).
+## A note on consent
+
+These tools help you present sensitive photos responsibly; they do not replace your patients’ written consent to publish their photos. Follow the privacy rules that apply to your practice.
+
+Try it: [photo by photo](https://demo.medicalbeforeaftergallery.com/pro-demos/sensitive-photos-notice/) · [whole page](https://demo.medicalbeforeaftergallery.com/pro-demos/sensitive-content-notice/) · [image protection](https://demo.medicalbeforeaftergallery.com/pro-demos/image-protection/).

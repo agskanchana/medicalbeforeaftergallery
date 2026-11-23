@@ -1,53 +1,43 @@
 ---
-title: Appearance options
-description: Dark mode, grid columns, card aspect ratio, category display style and modal height.
+title: Where the settings are
+description: The free plugin’s Design settings, and the Pro workspace — Overview, Design, Discovery, Filters, Protection, Embeds and Settings.
 group: Display & Layout
 groupOrder: 2
 order: 2
 ---
 
-All appearance options live under **Before After Gallery → Settings → Appearance** (Pro). The free plugin includes the brand-color setting; the rest are Pro.
+## Free plugin
 
-## Brand color (Free & Pro)
+**Medical Before After Gallery → Dashboard** holds the gallery settings:
 
-Set a **primary color** for the gallery. It accepts a solid hex value **or a CSS gradient**, and is applied across buttons, accents and active states.
+- **Design** — brand colour (a colour or a gradient), **Card Style** (side by side or hover reveal), **Category Navigation** (carousel, grid, buttons or drop-down), **Case Window Background** (a blurred copy of the photo, or plain black) and **Category Counts** (count subcategory cases toward their parent category).
+- **Image Cropping** — see [Image cropping](/docs/image-cropping/).
+- **Data & Uninstall** — your cases and categories are kept when the plugin is deleted, unless you tick “Also delete all cases, categories and their images when this plugin is deleted” first.
+
+## Pro workspace
+
+With Pro active, the dashboard becomes a workspace with a section list on the left, an unsaved-changes bar and a live preview:
+
+| Section | What’s in it |
+| --- | --- |
+| **Overview** | The gallery shortcode with a copy button, the pages that show it, counts, a getting-started checklist and the cases that need attention |
+| **Design → Templates** | Six ready-made looks ([Design templates](/docs/design-templates-and-preview/)) |
+| **Design → Gallery** | Layout and columns, card style, card frame, card extras, motion, page structure, concerns and Compare two cases |
+| **Design → Categories & filters** | Category style, counts, filter sidebar or drawer, search and sort |
+| **Design → Case window** | Window style and its features, background, starting view, labels, case details, booking button, height, shareable links |
+| **Design → Colours & style** | Brand colour, dark mode, style preset |
+| **Discovery** | [Find by area & Help me choose](/docs/find-by-area-and-help-me-choose/) |
+| **Filters** | [Case filters](/docs/case-filters/) |
+| **Protection** | Watermark, and Privacy: the sensitive-content notice and image protection ([Photo protection](/docs/photo-protection/)) |
+| **Embeds** | Builders for the [category carousel](/docs/category-carousel/) and the [single-case embed](/docs/single-case-embed/) |
+| **Settings** | Image cropping, data and uninstall |
+
+Each setting lives in one place; values saved before 1.6.0 carry over.
 
 ## Dark mode (Pro)
 
-Choose how the gallery renders:
+Off, always on, or following each visitor’s device setting (updating live if they switch).
 
-- **Off** — always light.
-- **Always on** — always dark.
-- **Auto** — follows the visitor’s operating-system preference, updating live if they switch.
+## Case window height (Pro)
 
-## Grid columns (Pro)
-
-`Auto`, `2`, `3` or `4` columns. `Auto` adapts to the viewport; fixed values are capped on small screens so cards never get too narrow.
-
-## Card aspect ratio (Pro, Classic layout)
-
-Force a consistent card shape in the Classic grid:
-
-- **Default (square)**, **1:1**, **4:3**, or **3:2**.
-
-This keeps an even grid even when source images have mixed dimensions. (Ignored in the Masonry layout, which uses natural heights.)
-
-## Category display style (Pro)
-
-How the category selector appears:
-
-- **Carousel** — image cards you can swipe through.
-- **Tabs** — a compact, text-only tab row with scroll arrows.
-
-## Modal height (Pro)
-
-Set the case modal’s maximum height on desktop, from **20–100 vh** (leave at the default for ~90vh). On mobile the modal always uses the full viewport height.
-
-## Hide elements (Pro)
-
-Under **Display Options** you can selectively hide UI to match your design:
-
-- Hide **case title** on cards
-- Hide **category label** on cards
-- Hide the **filter sidebar** (Classic layout)
-- Hide **case details** in the modal
+Set the case window’s maximum height on desktop. On phones it always uses the full screen height.

@@ -1,6 +1,6 @@
 ---
 title: Licensing & updates
-description: Activate, manage and renew your Pro license, and keep the plugin up to date.
+description: How the Pro license works, updates, the money-back guarantee and what happens if Pro is switched off.
 group: Account
 groupOrder: 8
 order: 1
@@ -12,28 +12,32 @@ The Pro add-on is licensed through **Freemius**, our checkout and licensing prov
 
 1. Make sure the **free plugin is active** — Pro extends it.
 2. Install and activate the Pro add-on (see [Installation](/docs/installation/)).
-3. Enter your license key when prompted, or from the **account** screen under the Before After Gallery menu.
+3. Enter your license key when asked, or from the account screen under the **Medical Before After Gallery** menu.
 
-Once activated, the **12-case / 4-category limits are removed** and all Pro features appear.
-
-## Money-back guarantee
-
-Pro is backed by a **30-day money-back guarantee** — if it’s not right for your practice, contact us within 30 days of purchase for a full refund.
+The 12-case / 4-category limits are removed and the Pro workspace appears.
 
 ## Lifetime license
 
-Pro is a **one-time purchase for a lifetime license** — there’s no subscription to renew, and updates are included. License status is verified automatically on a weekly schedule.
+Pro is a **one-time purchase for a lifetime license** — no subscription, updates included. The license is checked automatically once a week.
+
+## Money-back guarantee
+
+Pro has a **30-day money-back guarantee** — if it isn’t right for your practice, contact us within 30 days of purchase for a full refund.
 
 ## Updates
 
-When a new version is released, you’ll see the usual WordPress update notice under **Plugins** (or **Dashboard → Updates**). Update the Pro add-on as you would any plugin. Keeping both the free plugin and the Pro add-on current ensures compatibility.
+New versions arrive as the usual WordPress update notice under **Plugins** (or **Dashboard → Updates**). Keep both the free plugin and Pro up to date. Pro 1.6.0 goes with free 1.5.0; it still works with free 1.3.2 and newer, and lists the features that need the newer free plugin.
+
+## If Pro is switched off
+
+Your cases, categories and settings stay. The gallery goes back to the free plugin’s features and limits (12 cases, 4 categories) until Pro is active again. Pro’s embed shortcodes print nothing instead of raw shortcode text, and Protect the originals lifts its rules so no photo link breaks.
 
 ## Managing your license
 
-From the **account** page you can view your license, transfer it between sites (within your plan’s limit), and access your invoices through Freemius.
+From the account screen you can see your license, move it between sites (within your plan’s limit) and get your invoices through Freemius.
 
 ## Need help?
 
 - Browse the rest of these [docs](/docs/).
 - Check the [FAQ](/faq/).
-- Still stuck? [Contact us](/contact/) — we typically reply within one business day.
+- [Contact us](/contact/) — we usually reply within one business day.

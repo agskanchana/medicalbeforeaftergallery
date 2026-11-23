@@ -1,47 +1,38 @@
 ---
 title: Creating a case
-description: Add a before & after case, upload image pairs, set categories and (in Pro) treatment details.
+description: Add a before and after case with the guided case editor, and use Pro’s photo pairs, details, progress stages and photo tools.
 group: Getting Started
 groupOrder: 1
-order: 2
+order: 3
 ---
 
-A **case** is a single before & after story. Each case has at least one before/after image pair, a category, and — in Pro — additional pairs, treatment details and annotations.
+A **case** is one patient’s result: at least one before/after photo pair, a category, and optionally the doctor and details.
 
-## Add a new case
+## The case editor (Free)
 
-1. Go to **Before After Gallery → Add New Case**.
-2. Enter a **case title**.
-3. In the **Before & After Image Pairs** box, upload the **before image** and the **after image** for the main pair.
-4. Choose one or more **categories** (or create a new one).
-5. Click **Publish**.
+Go to **Medical Before After Gallery → Add New Case**. The editor reads like a guided form: a header with a **Title · Photos · Category · Details · Publish** checklist that ticks itself, **Save** and **Publish** always in reach, and the photos first.
 
-That’s all you need for a working case in the free plugin.
+1. Enter a **title**.
+2. Add the **before** and **after** photo. With cropping on, you can crop both to the same size so they line up (see [Image cropping](/docs/image-cropping/)).
+3. Choose a **category**.
+4. Choose the **doctor** who treated the case (see [Doctors](/docs/doctors/)).
+5. Fill in the details and **Publish**.
 
-## Multiple image pairs (Pro)
+## The Cases screen (Free)
 
-With Pro you can add **unlimited additional image pairs** to a single case — useful for multiple angles, stages, or sessions.
+**Medical Before After Gallery → Cases** shows your cases as photo cards (or a compact list) with status, categories, doctor and the number of photo pairs. Search; filter by status, category or doctor; sort; and publish, unpublish, trash, restore or delete one case or several at once.
 
-- In the case editor, use **Add Image Pair** to add another before/after set.
-- Give each pair a **label** (e.g. “Front view”, “3 months post-op”) — labels appear in the viewer.
-- Reorder pairs by dragging; the order is preserved on the front end.
+## With Pro
 
-## Treatment details (Pro)
-
-Pro unlocks per-case detail fields that power filtering and the **Treatment Overview** panel:
-
-- **Gender**, **Age range**, **Recovery time**, **Treatment duration**, **Results visibility**, **Procedure type**
-
-Set the relevant values for each case. Only the filters you’ve enabled appear in the editor. See [Case filters](/docs/case-filters/) for how these drive the front-end filtering.
-
-## Rich description (Pro)
-
-Pro adds the full WordPress editor to cases. Anything you write becomes the **“About this case”** section in the case modal — add context, formatting and media.
-
-## Image annotations (Pro)
-
-You can drop numbered markers directly onto a case’s images to highlight specific areas. See [Image annotations](/docs/image-annotations/).
+- **More photo pairs (angles)** — add further before/after pairs to a case, each with a label such as “Side view”.
+- **Treatment details** — values for the [case filters](/docs/case-filters/) (gender, age range, recovery time, duration, results, procedure type and your own filters).
+- **Full description** — the WordPress editor for the case story.
+- **Progress timeline** — a dated photo for each stage, up to 12 stages (see [Case windows](/docs/case-windows/#progress-timeline)).
+- **Collections** — tick the [collections](/docs/page-structures-and-collections/) the case belongs to.
+- **Annotations** — numbered markers on the photos (see [Image annotations](/docs/image-annotations/)).
+- **Photo tools** — drop both photos at once, preview the slider, line up the after photo with the before photo (saved as a copy), a **ghost camera** to take the after photo on a phone with the before photo as a faint guide, **transformation reels** (a short before-and-after video for social media), and **Duplicate case**.
+- **Ready-to-publish checks** — the case’s missing photos, alt text or small photos are listed (see [Ready-to-publish checks](/docs/setup-wizard-and-ready-to-publish/)).
 
 ## Free plugin limits
 
-The free plugin allows up to **12 cases** and **4 categories** (the “All” category doesn’t count). When you reach a limit the admin shows a notice; upgrading to Pro removes both limits.
+The free plugin allows up to **12 cases** and **4 categories**. Pro removes both limits. If a Pro license lapses, your cases stay; the gallery goes back to the free plugin’s limits.

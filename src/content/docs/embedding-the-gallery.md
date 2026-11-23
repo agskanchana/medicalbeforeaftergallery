@@ -1,47 +1,49 @@
 ---
 title: Embedding the gallery
-description: Use the [medbeafgallery] shortcode to place the full gallery on any page or post.
+description: Put the gallery on any page with [medbeafgallery], and choose its options per gallery.
 group: Getting Started
 groupOrder: 1
-order: 3
+order: 4
 ---
 
-Place the full gallery anywhere with the **`[medbeafgallery]`** shortcode. Add it to a page or post (in a Shortcode block, or your page builder’s shortcode widget) and publish.
+Place the gallery anywhere with the **`[medbeafgallery]`** shortcode — in a Shortcode block, the Classic editor, or your page builder’s shortcode widget (Elementor, Divi, WPBakery and others).
 
 ```text
 [medbeafgallery]
 ```
 
-## Shortcode attributes
+With Pro, the workspace **Overview** shows this shortcode with a copy button and lists the pages that already show the gallery.
+
+## Options (Free)
 
 | Attribute | Default | Description |
 | --- | --- | --- |
-| `items_per_page` | `6` | How many cases to load per page. |
-| `default_category` | `all` | Category slug to show first. |
-| `show_filters` | `true` | Show the category/filter controls. |
-| `show_cta` | from settings | Show the consultation call-to-action button. |
-| `cta_text` | from settings | Override the CTA button label. |
-| `cta_link` | from settings | Override the CTA button URL. |
+| `items_per_page` | `6` | Cases loaded at a time. |
+| `default_category` | `all` | Slug of the category to show first. |
+| `show_filters` | `true` | `false` hides the category bar (and, with Pro, the filter sidebar or drawer). |
+| `card_style` | from Design | `split` (side by side) or `reveal` (hover-reveal) for this gallery. |
+| `category_style` | from Design | `carousel`, `grid`, `buttons` or `dropdown` (Pro adds eight more). |
 
-Example — start on a specific category and show 9 per page:
+A treatment page that shows only one category, without the category bar:
 
 ```text
-[medbeafgallery default_category="veneers" items_per_page="9"]
+[medbeafgallery default_category="veneers" show_filters="false" items_per_page="9"]
 ```
 
-## Works with any editor
+## Options (Pro)
 
-The shortcode works in the **Block editor** (Shortcode block), **Classic editor**, and page builders such as **Elementor**, **Divi** and **WPBakery** via their shortcode widget.
+Pro adds `layout`, `card_style` (more values), `card_frame`, `columns`, `preset`, `motion`, `structure` and `compare` — see the [Shortcode reference](/docs/shortcodes/).
 
-## Other shortcodes (Pro)
+```text
+[medbeafgallery layout="spotlight" preset="luxury"]
+```
 
-Pro adds two more shortcodes for embedding pieces of your gallery:
+## More embeds (Pro)
 
-- **`[mba_category_carousel]`** — a sliding carousel of a category.
-- **`[mba_case id="123"]`** — a single case embedded inline.
-
-See the [Shortcode reference](/docs/shortcodes/) for every attribute.
+- [`[mba_case]`](/docs/single-case-embed/) — one case on any page
+- [`[mba_category_carousel]`](/docs/category-carousel/) — a sliding row of one category’s cases
+- [`[mba_body_map]`](/docs/find-by-area-and-help-me-choose/) — the face and body map on any page
 
 ## Styling
 
-Set your brand color and base look under **Before After Gallery → Settings**. The gallery is theme-resilient, so it renders consistently inside virtually any theme. With Pro you get extra appearance controls — see [Layouts](/docs/layouts/) and [Appearance](/docs/appearance/).
+Set your brand colour (a colour or a gradient) and the base look under **Design** in the gallery settings. The gallery’s cards are not restyled by your theme; with Pro you can restyle them on purpose through CSS custom properties — see [Design templates & live preview](/docs/design-templates-and-preview/).

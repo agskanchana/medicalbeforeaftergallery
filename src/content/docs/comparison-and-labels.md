@@ -1,39 +1,34 @@
 ---
-title: Comparison sliders & labels
-description: Configure before/after labels and the default view mode for the comparison viewer.
-group: Comparison & Discovery
+title: Comparison & labels
+description: The Slider, Before and After views, Before/After labels, the starting view, zoom and the booking button.
+group: Case Window
 groupOrder: 3
-order: 1
+order: 2
 ---
 
-The heart of the gallery is the before/after comparison. These options live under **Settings → Comparison & Discovery** (Pro).
+## Views (Free)
 
-## Labels (Pro)
+Every case window has labelled **Slider**, **Before** and **After** buttons. On the slider, visitors drag the divider, or focus it and use the arrow keys.
 
-- **Before label** / **After label** — rename the text shown over each side (e.g. “Pre-op” / “Post-op”).
-- **Show labels** — toggle the labels on or off entirely.
+## Labels and starting view (Pro)
 
-The free plugin uses the standard “Before” and “After” labels.
+Under **Design → Case window**:
 
-## Default view mode (Pro)
+- **Before label** / **After label** — rename them, for example “Pre-op” and “Post-op”, or hide the labels.
+- **Default view** — what visitors see first: the slider, the before photo, the after photo, or both side by side. In the masonry layout the case window has a Before/After toggle, and “after first” shows the after photo first.
 
-Choose how the comparison opens. The available modes depend on your [layout](/docs/layouts/):
+`[mba_case]` has its own `view` attribute — see [Single-case embed](/docs/single-case-embed/).
 
-**Classic layout**
+## Zoom (Pro)
 
-- **Split (slider)** — the draggable before/after slider (default).
-- **Before only** — show the before image first.
-- **After only** — show the after image first.
-- **Both** — before and after side by side (no slider).
+The case windows zoom with the mouse wheel, a pinch, or the + / − buttons, and the photo can be dragged while zoomed. The Comparison desk has a **linked magnifier** that shows the same spot in the before and the after photo. Zooming changes the display only; photos are not edited.
 
-**Masonry layout**
+## Case details and booking button (Pro)
 
-- **Before first**, **After first**, or **Both** (side by side). The masonry viewer uses a tap/click-to-flip toggle rather than a drag slider.
+The case window can show the case details (the treatment overview and the case story) and a **booking button** linking to your appointment page. Both are set in **Design → Case window**.
 
-## How visitors interact
+## More than one photo pair
 
-- **Classic / split:** drag the handle (or use arrow keys) to wipe between before and after.
-- **Masonry:** tap the image or the Before/After toggle to flip; swipe to move between image pairs.
-- Multiple image pairs are navigated with the on-screen arrows and a pair counter.
+Cases with several photo pairs (angles) or progress stages show them as thumbnails or a timeline under the photo — see [Case windows](/docs/case-windows/).
 
-Next, make cases easy to find with [search, sort & deep-linking](/docs/search-sort-deep-linking/).
+Try it: [labels and starting view](https://demo.medicalbeforeaftergallery.com/pro-demos/comparison-labels/) · [zoom](https://demo.medicalbeforeaftergallery.com/pro-demos/case-viewer-zoom/) · [case details and booking](https://demo.medicalbeforeaftergallery.com/pro-demos/case-details-and-booking/).

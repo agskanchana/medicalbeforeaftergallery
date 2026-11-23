@@ -1,34 +1,29 @@
 ---
 title: Image annotations
-description: Add numbered hotspot markers with titles and notes to highlight specific areas.
-group: Media & Protection
-groupOrder: 5
-order: 2
+description: Numbered markers on a case’s photos, and the “What to notice” tour in the case window.
+group: Case Window
+groupOrder: 3
+order: 3
 ---
 
-Annotations (Pro) let you place numbered markers on a case’s images to call out exactly what changed — “lifted brow”, “reduced swelling”, and so on.
+Annotations (Pro) put numbered markers on a case’s photos to point out what changed — “lifted brow”, “smoother jawline” and so on.
 
 ## Adding markers
 
-1. Open a case in the editor and find the **Image Annotations** panel.
-2. Select the image pair and side (before or after) you want to annotate.
-3. **Click on the image** to drop a numbered marker.
+1. Open a case and find the **Image Annotations** box.
+2. Choose the photo pair and the side (before or after).
+3. **Click the photo** to drop a numbered marker.
 4. Give it a **title** and an optional **note**.
-5. Drag a marker to reposition it; click it again to edit or delete.
+5. Drag a marker to move it; click it to edit or delete it.
 
-Marker positions are stored as percentages, so they scale correctly at any image size.
+Positions are stored as percentages, so markers stay in place at any photo size. Each photo pair has its own markers, up to 30 per side.
 
-## Limits & coverage
+## On the page
 
-- Up to **30 markers per image side**.
-- Markers are stored **per image pair**, so each additional pair can have its own set.
-- Annotations display in both the **Classic** and **Masonry** case modals.
+Markers appear as small numbered pins. Visitors hover (desktop) or tap (phones) a pin to read its title and note.
 
-## On the front end
+## “What to notice” tour
 
-Markers appear as small numbered pins over the image. Visitors **hover** (desktop) or **tap** (mobile) a pin to reveal its title and note. Tooltips reposition automatically to stay within the image.
+With **Show the “What to notice” tour** on (Design → Case window), the case window offers a short tour that steps through the markers one by one. Visitors start it themselves.
 
-## Tips
-
-- Keep titles short; use the note for detail.
-- Annotate the **after** image to point out results, and the **before** image to set context.
+Try it: [image annotations demo](https://demo.medicalbeforeaftergallery.com/pro-demos/image-annotations/).
