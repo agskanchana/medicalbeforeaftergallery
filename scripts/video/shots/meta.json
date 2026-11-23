@@ -1,0 +1,147 @@
+{
+ "find-by-area": {
+  "pointer": {
+   "x": 118,
+   "y": 144.171875,
+   "w": 118.75,
+   "h": 44.390625
+  },
+  "scale": 1.25,
+  "title": "Find by area"
+ },
+ "treatment-hub": {
+  "scale": 1.25,
+  "title": "Treatment hub"
+ },
+ "compare-two-cases": {
+  "pointer": {
+   "x": 1199.65625,
+   "y": 767.609375,
+   "w": 81.421875,
+   "h": 44
+  },
+  "scale": 1.25,
+  "title": "Compare two cases"
+ },
+ "progress-stages": {
+  "pointer": {
+   "x": 458.1621398925781,
+   "y": 697.6824951171875,
+   "w": 123.94137573242188,
+   "h": 43.923828125
+  },
+  "scale": 1.25,
+  "title": "Default window with progress stages"
+ },
+ "window-cinema": {
+  "pointer": {
+   "x": 455.765625,
+   "y": 415.953125,
+   "w": 61.890625,
+   "h": 32
+  },
+  "scale": 1.25,
+  "title": "Cinema window"
+ },
+ "story-mode-on-phones": {
+  "phone": true,
+  "scale": 2,
+  "title": "Story mode on phones"
+ },
+ "single-case-stages": {
+  "pointer": {
+   "x": 415.703125,
+   "y": 825.375,
+   "w": 122.125,
+   "h": 44
+  },
+  "scale": 1.25,
+  "title": "Single case with progress stages"
+ },
+ "sensitive-photos-notice": {
+  "pointer": null,
+  "scale": 1.25,
+  "title": "Notice, photo by photo"
+ },
+ "category-carousel": {
+  "scale": 1.25,
+  "title": "Category carousel"
+ },
+ "free": {
+  "scale": 1.25,
+  "title": "The free plugin"
+ },
+ "masonry-layout": {
+  "scale": 1.25,
+  "title": "Masonry"
+ },
+ "card-slider": {
+  "scale": 1.25,
+  "title": "Slider cards"
+ },
+ "template-luxury": {
+  "scale": 1.25,
+  "title": "Luxury template"
+ },
+ "area-then-treatment": {
+  "scale": 1.25,
+  "title": "Area, then treatment"
+ },
+ "icon-chips": {
+  "scale": 1.25,
+  "title": "Icon chips"
+ },
+ "doctor-portfolios": {
+  "scale": 1.25,
+  "title": "Doctor portfolios"
+ },
+ "collections": {
+  "scale": 1.25,
+  "title": "Collections"
+ },
+ "window-drawer": {
+  "pointer": {
+   "x": 455.765625,
+   "y": 415.953125,
+   "w": 61.890625,
+   "h": 32
+  },
+  "scale": 1.25,
+  "title": "Drawer window"
+ },
+ "window-comparison-desk": {
+  "pointer": {
+   "x": 455.765625,
+   "y": 415.953125,
+   "w": 61.890625,
+   "h": 32
+  },
+  "scale": 1.25,
+  "title": "Comparison desk"
+ },
+ "automatic-watermarks": {
+  "pointer": {
+   "x": 118,
+   "y": 552.46875,
+   "w": 416.65625,
+   "h": 313
+  },
+  "scale": 1.25,
+  "title": "Watermarks"
+ },
+ "free-window": {
+  "pointer": {
+   "x": 203.8671875,
+   "y": 411.0625,
+   "w": 134.515625,
+   "h": 41.6875
+  },
+  "stage": {
+   "x": 168,
+   "y": 128.203125,
+   "w": 1200,
+   "h": 511.71875
+  },
+  "scale": 1.25
+ }
+}
