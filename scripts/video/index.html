@@ -247,20 +247,31 @@
       s.spokenAt = t + (s.lead ?? LEAD);
       s.spoken = spoken;
       s.text = narration[s.id];
-      // Where each beat starts: by the length of its words, moved to the pause the voice makes there.
+      // Where each beat starts: sentence ends go to the long pauses the voice makes, then the beats
+      // between them by the length of their words, moved to a clear pause nearby if there is one.
       const pauses = clip ? clip.pauses || [] : [];
       const chars = s.beats.map((b) => b.say.length + (/[.?!]$/.test(b.say) ? 6 : /,$/.test(b.say) ? 3 : 1));
-      const total = chars.reduce((a, b) => a + b, 0);
-      let acc = 0, lastAt = 0;
-      const marks = s.beats.map((b, i) => {
-        if (i === 0) { acc += chars[i]; return 0; }
-        const guess = (acc / total) * spoken;
-        acc += chars[i];
-        const near = pauses.filter((p) => p.at > lastAt + 0.3 && Math.abs(p.at - guess) < 0.75)
-          .sort((a, b2) => (Math.abs(a.at - guess) - a.len) - (Math.abs(b2.at - guess) - b2.len))[0];
-        lastAt = near ? near.at : guess;
-        return lastAt;
-      });
+      const n = s.beats.length, sum = [0], marks = new Array(n + 1).fill(null);
+      chars.forEach((c) => sum.push(sum[sum.length - 1] + c));
+      marks[0] = 0; marks[n] = spoken;
+      const pick = (guess, min, reach, lo, hi) => {
+        const score = (p) => Math.abs(p.at - guess) - 2.5 * p.len;
+        return pauses.filter((p) => p.len >= min && p.at > lo + 0.3 && p.at < hi - 0.3 && Math.abs(p.at - guess) < reach).sort((a, b2) => score(a) - score(b2))[0];
+      };
+      for (let i = 1; i < n; i++) {
+        if (!/[.?!]$/.test(s.beats[i - 1].say)) continue;
+        const p = pick((sum[i] / sum[n]) * spoken, 0.22, 1.4, marks.slice(0, i).filter((m) => m !== null).pop(), spoken);
+        if (p) marks[i] = p.at;
+      }
+      for (let i = 1; i < n; i++) {
+        if (marks[i] !== null) continue;
+        let b = i + 1;
+        while (marks[b] === null) b++;
+        const guess = marks[i - 1] + ((sum[i] - sum[i - 1]) / (sum[b] - sum[i - 1])) * (marks[b] - marks[i - 1]);
+        const p = pick(guess, 0.16, 0.5, marks[i - 1], marks[b]);
+        marks[i] = p ? p.at : guess;
+      }
+      marks.length = n;
       let end = s.spokenAt + spoken + (s.tail ?? TAIL);
       const last = s.beats[s.beats.length - 1];
       if (last.min) end = Math.max(end, s.spokenAt + marks[marks.length - 1] + last.min);

@@ -74,6 +74,7 @@ export function flattenMp4(buf) {
       const tfhd = find(buf, traf.body, traf.end, 'tfhd');
       const fl = buf.readUInt32BE(tfhd.body) & 0xffffff;
       const t = tracks.get(buf.readUInt32BE(tfhd.body + 4));
+      if (!t) throw new Error('a fragment has a track the index does not list (the sound encoder started late)');
       let p = tfhd.body + 8;
       let base = m.start;
       const d = { ...t.defaults };

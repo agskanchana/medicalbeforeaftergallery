@@ -2,7 +2,7 @@
 // Records the feature video from scripts/video/index.html in Chrome.
 //
 //   NODE_PATH=<folder with playwright-core> node scripts/video/record.mjs
-//     [--only=mp4|webm|poster|vtt] [--mbps=1.15] [--out=<folder>] [--port=8099] [--allow-silent]
+//     [--only=mp4|webm|poster|vtt] [--mbps=1.6] [--out=<folder>] [--port=8099] [--allow-silent]
 //
 // Serves the repository on 127.0.0.1, opens the canvas page in Chrome (channel 'chrome') and
 // records canvas.captureStream(30) together with the voice (Web Audio → MediaStream) with
@@ -33,7 +33,7 @@ const arg = (name, fallback = '') => {
 const OUT = path.resolve(String(arg('out', path.join(ROOT, 'public/video'))));
 const ONLY = String(arg('only', ''));
 const PORT = Number(arg('port', 8099));
-const MBPS = Number(arg('mbps', 1.15));
+const MBPS = Number(arg('mbps', 1.6));
 const NAME = 'mba-gallery-features';
 
 const FORMATS = [
@@ -180,20 +180,31 @@ for (const f of FORMATS) {
   const mimeType = await page.evaluate((types) => types.find((m) => MediaRecorder.isTypeSupported(m)) || '', f.types);
   if (!mimeType) { console.log(`${f.key}: ${f.types.join(' / ')} is not supported by this Chrome — skipped`); result.files[f.key] = 'unsupported'; continue; }
   console.log(`${f.key}: recording (${mimeType}, ${f.bits / 1e6} Mbit/s)…`);
-  const rec = await page.evaluate(async ({ mimeType, bits }) => {
+  const record = () => page.evaluate(async ({ mimeType, bits }) => {
     const v = window.mbaVideo;
     await v.openAudio();
     v.renderAt(0);
     const stream = new MediaStream([...v.canvas.captureStream(30).getVideoTracks(), ...v.audioStream.getAudioTracks()]);
-    const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: bits, audioBitsPerSecond: 128000 });
+    // A throwaway recording first: the sound encoder is slow the first time, and a late start loses its track.
+    const warm = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: bits, audioBitsPerSecond: 128000 });
+    warm.start();
+    for (let k = 0; k < 60; k++) { v.renderAt(k / 30); await new Promise((r) => setTimeout(r, 40)); }
+    await new Promise((r) => { warm.onstop = r; warm.stop(); });
+    v.renderAt(0);
+    const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: bits, audioBitsPerSecond: 128000, videoKeyFrameIntervalDuration: 3000 });
     const chunks = [];
     recorder.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
     const started = new Promise((r) => { recorder.onstart = r; });
     const stopped = new Promise((r) => { recorder.onstop = r; });
+    // The encoder needs a moment to start: it starts paused, and nothing is recorded until the film does.
     recorder.start(1000);
-    await started;
+    recorder.pause();
+    v.renderAt(0);
+    await Promise.race([started, new Promise((r) => setTimeout(r, 300))]);
+    await new Promise((r) => setTimeout(r, 400)); // Shorter than the keyframe interval: a keyframe right after the resume would close the first fragment before any sound is in it.
+    recorder.resume();
     const t0 = performance.now();
-    const played = await v.play();
+    const played = await v.play({ lead: 0.05 });
     await new Promise((r) => setTimeout(r, 120));
     recorder.stop();
     await stopped;
@@ -203,11 +214,19 @@ for (const f of FORMATS) {
     for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
     return { b64: btoa(bin), ms, ...played, type: recorder.mimeType };
   }, { mimeType, bits: f.bits });
-  let buf = Buffer.from(rec.b64, 'base64');
-  if (f.key === 'webm') {
-    try { buf = fixWebmDuration(buf, rec.ms); } catch (e) { console.log('webm duration not written: ' + e.message); }
-  } else {
-    try { buf = flattenMp4(buf); } catch (e) { console.log('mp4 kept as recorded (fragments): ' + e.message); }
+  let rec, buf;
+  for (let take = 1; ; take++) {
+    rec = await record();
+    buf = Buffer.from(rec.b64, 'base64');
+    const raw = String(arg('keep-raw', ''));
+    if (raw) fs.writeFileSync(path.join(raw, f.file), buf);
+    try {
+      buf = f.key === 'webm' ? fixWebmDuration(buf, rec.ms) : flattenMp4(buf);
+      break;
+    } catch (e) {
+      console.log(`${f.key}: take ${take}: ${e.message}`);
+      if (take === 3) throw e;
+    }
   }
   const file = path.join(OUT, f.file);
   fs.writeFileSync(file, buf);
@@ -218,4 +237,8 @@ for (const f of FORMATS) {
 if (errors.length) console.log('page errors:\n  ' + errors.join('\n  '));
 await browser.close();
 server.close();
-if (!ONLY) fs.writeFileSync(path.join(ROOT, 'scripts/video/last-recording.json'), JSON.stringify(result, null, 1) + '\n');
+// --only adds to the last recording (the timing is the same while the scenes and clips are).
+const LAST = path.join(ROOT, 'scripts/video/last-recording.json');
+const last = ONLY && fs.existsSync(LAST) ? JSON.parse(fs.readFileSync(LAST, 'utf8')) : null;
+if (last && last.duration === result.duration) result.files = { ...last.files, ...result.files };
+fs.writeFileSync(LAST, JSON.stringify(result, null, 1) + '\n');
