@@ -482,7 +482,11 @@ for (const demo of pages) {
         ok('a stage photo fills the photo area', await page.evaluate(() => [...document.querySelectorAll('.mba-pro-scase img')].some((i) => i.getBoundingClientRect().width > 250 && i.naturalWidth > 0)));
         png = await page.screenshot({ type: 'png' });
       } else if (action !== 'phone-open') {
+        // Closing the window gave the focus back to the card that opened it: no focus ring or hover in the picture.
+        await page.evaluate(() => document.activeElement && document.activeElement.blur());
+        await page.mouse.move(2, 2);
         await scrollToMain(page);
+        await page.waitForTimeout(350);
         png = await page.screenshot({ type: 'png' });
       }
     }
