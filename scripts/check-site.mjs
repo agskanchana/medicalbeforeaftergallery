@@ -90,8 +90,9 @@ for (const p of list) {
       await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
       // Scroll through the page so lazy images load and reveal-on-scroll sections show.
       await page.evaluate(async () => {
-        for (let y = 0; y < document.documentElement.scrollHeight; y += Math.round(innerHeight * 0.7)) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); }
-        scrollTo(0, 0);
+        // 'instant': the site scrolls smoothly, and a smooth scroll is cut short by the next one.
+        for (let y = 0; y < document.documentElement.scrollHeight; y += Math.round(innerHeight * 0.6)) { scrollTo({ top: y, behavior: 'instant' }); await new Promise((r) => setTimeout(r, 90)); }
+        scrollTo({ top: 0, behavior: 'instant' });
       });
       await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
       const data = await page.evaluate(async () => {
@@ -99,17 +100,19 @@ for (const p of list) {
         // A lazy image the quick scroll went past is brought into view and given time to load.
         for (const i of imgs) {
           if (i.complete && i.naturalWidth) continue;
-          i.scrollIntoView({ block: 'center' });
+          i.scrollIntoView({ block: 'center', behavior: 'instant' });
           await new Promise((r) => { if (i.complete && i.naturalWidth) r(); else { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); setTimeout(r, 4000); } });
         }
-        scrollTo(0, 0);
+        scrollTo({ top: 0, behavior: 'instant' });
         const headings = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].filter((h) => h.getClientRects().length).map((h) => Number(h.tagName[1]));
         const skips = [];
         for (let i = 1; i < headings.length; i++) if (headings[i] > headings[i - 1] + 1) skips.push(`h${headings[i - 1]}→h${headings[i]}`);
         const jsonld = [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => {
           try { const d = JSON.parse(s.textContent); return { ok: true, type: [].concat(d['@type']).join('+') }; } catch (e) { return { ok: false, error: String(e) }; }
         });
+        const hidden = [...document.querySelectorAll('.reveal:not(.is-visible)')].filter((e) => e.getClientRects().length).length;
         return {
+          hidden,
           broken: imgs.filter((i) => !i.naturalWidth).map((i) => i.getAttribute('src')),
           noAlt: imgs.filter((i) => !i.hasAttribute('alt')).map((i) => i.getAttribute('src')),
           overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -123,6 +126,7 @@ for (const p of list) {
           description: document.querySelector('meta[name="description"]')?.content || '',
         };
       });
+      ok('scroll-reveal blocks appear', data.hidden === 0, `${data.hidden} still hidden`);
       ok('images load', !data.broken.length, data.broken.slice(0, 3).join(', '));
       ok('images have alt', !data.noAlt.length, data.noAlt.slice(0, 3).join(', '));
       ok('no sideways scroll', data.overflow <= 1, `${data.overflow}px (${data.wide.join(', ')})`);

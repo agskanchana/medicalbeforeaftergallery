@@ -212,7 +212,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
   }
   @media (max-width: 820px) {
     .docs-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .docs-aside {
       position: static;

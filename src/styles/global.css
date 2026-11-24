@@ -302,6 +302,19 @@ p {
   font-size: 1.05rem;
   line-height: 1.75;
 }
+/* Long words and shortcodes wrap; wide code and tables scroll inside their own box. */
+.prose {
+  overflow-wrap: break-word;
+}
+.prose :not(pre) > code {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 640px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
+}
 .prose > * + * {
   margin-top: 1.15rem;
 }
