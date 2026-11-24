@@ -17,7 +17,7 @@ Image annotations (a Pro feature in MBA Gallery) let you drop numbered markers d
 
 Patients aren't clinicians. When they look at a result, they often can't tell *what* to look at — so the impact of your work gets lost. Annotations solve that by guiding the eye.
 
-> #### The "show, don't tell" effect
+> ### The "show, don't tell" effect
 >
 > A marker that says **"Restored gum symmetry"** or **"Reduced nasal hump"** does three things at once: it educates the patient, it demonstrates your clinical attention to detail, and it frames the result in the exact language a prospective patient is searching for.
 

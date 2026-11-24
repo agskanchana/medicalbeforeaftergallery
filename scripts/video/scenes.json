@@ -267,7 +267,7 @@
      ]
     },
     {
-     "say": "And slider cards visitors can compare without opening a case.",
+     "say": "And slider cards visitors drag right in the grid.",
      "caption": "Slider cards",
      "steps": [
       {
@@ -306,8 +306,8 @@
      ]
     },
     {
-     "say": "ninety-two icons.",
-     "caption": "92 icons",
+     "say": "and ninety-two icons.",
+     "caption": "92 category icons",
      "steps": [
       {
        "shot": "cat-icons-0",
@@ -335,9 +335,15 @@
        }
       }
      ]
-    },
+    }
+   ]
+  },
+  {
+   "id": "embeds",
+   "tier": "Pro",
+   "beats": [
     {
-     "say": "Embed a single case,",
+     "say": "Embed one case,",
      "caption": "Single-case embed",
      "steps": [
       {
@@ -350,11 +356,32 @@
          "y": 900
         },
         "from": 1,
+        "to": 1.06
+       }
+      }
+     ]
+    },
+    {
+     "say": "with its timeline, on any page.",
+     "caption": "Single-case embed",
+     "steps": [
+      {
+       "shot": "single-1",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 520,
+         "y": 900
+        },
+        "from": 1.06,
         "to": 1.08
        }
       },
       {
-       "shot": "single-1",
+       "shot": "single-2",
+       "to": "to",
+       "click": true,
        "zoom": {
         "at": {
          "x": 520,
@@ -363,11 +390,22 @@
         "from": 1.08,
         "to": 1.1
        }
+      },
+      {
+       "shot": "single-3",
+       "zoom": {
+        "at": {
+         "x": 520,
+         "y": 900
+        },
+        "from": 1.1,
+        "to": 1.12
+       }
       }
      ]
     },
     {
-     "say": "or a carousel, on any page.",
+     "say": "Or a whole category carousel.",
      "caption": "Category carousel",
      "steps": [
       {
@@ -403,7 +441,7 @@
    "tier": "Pro",
    "beats": [
     {
-     "say": "Let visitors start with a treatment,",
+     "say": "Visitors browse by treatment,",
      "caption": "Treatment hub",
      "steps": [
       {
@@ -412,7 +450,7 @@
      ]
     },
     {
-     "say": "a concern,",
+     "say": "concern,",
      "caption": "Concern first",
      "steps": [
       {
@@ -421,7 +459,7 @@
      ]
     },
     {
-     "say": "a doctor,",
+     "say": "doctor,",
      "caption": "Doctor portfolios",
      "steps": [
       {
@@ -430,7 +468,7 @@
      ]
     },
     {
-     "say": "or a body map.",
+     "say": "or body map.",
      "caption": "Find by area",
      "steps": [
       {
@@ -459,13 +497,7 @@
        }
       }
      ]
-    }
-   ]
-  },
-  {
-   "id": "choose",
-   "tier": "Pro",
-   "beats": [
+    },
     {
      "say": "Help me choose guides them.",
      "caption": "Help me choose",
@@ -559,7 +591,7 @@
      ]
     },
     {
-     "say": "Watermarked copies.",
+     "say": "Watermarked copies,",
      "caption": "Watermarked copies",
      "steps": [
       {
@@ -567,13 +599,28 @@
        "zoom": {
         "rect": "mark",
         "from": 1.05,
-        "to": 1.7
+        "to": 2.2
        }
       }
      ]
     },
     {
-     "say": "And sensitive photos stay blurred",
+     "say": "originals untouched.",
+     "caption": "Watermarked copies",
+     "steps": [
+      {
+       "shot": "watermark",
+       "zoom": {
+        "rect": "mark",
+        "from": 2.2,
+        "to": 2.5
+       },
+       "join": true
+      }
+     ]
+    },
+    {
+     "say": "Sensitive photos, blurred",
      "caption": "Sensitive-photo notice",
      "steps": [
       {

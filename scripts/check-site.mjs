@@ -96,7 +96,13 @@ for (const p of list) {
       await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
       const data = await page.evaluate(async () => {
         const imgs = [...document.images];
-        await Promise.all(imgs.map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; setTimeout(r, 4000); }))));
+        // A lazy image the quick scroll went past is brought into view and given time to load.
+        for (const i of imgs) {
+          if (i.complete && i.naturalWidth) continue;
+          i.scrollIntoView({ block: 'center' });
+          await new Promise((r) => { if (i.complete && i.naturalWidth) r(); else { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); setTimeout(r, 4000); } });
+        }
+        scrollTo(0, 0);
         const headings = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].filter((h) => h.getClientRects().length).map((h) => Number(h.tagName[1]));
         const skips = [];
         for (let i = 1; i < headings.length; i++) if (headings[i] > headings[i - 1] + 1) skips.push(`h${headings[i - 1]}→h${headings[i]}`);

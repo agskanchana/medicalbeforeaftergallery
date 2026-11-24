@@ -298,7 +298,7 @@ Track these metrics to optimize your portfolio:
 
 Learn from others' mistakes. These are the most common portfolio pitfalls:
 
-> #### Top Portfolio Mistakes
+> ### Top Portfolio Mistakes
 >
 > -   **Including mediocre cases:** One weak case undermines dozens of strong ones
 > -   **Inconsistent photography:** Varying lighting/angles makes gallery look unprofessional

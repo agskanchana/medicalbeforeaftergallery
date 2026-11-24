@@ -252,7 +252,7 @@ HIPAA compliance shouldn't be viewed as an obstacle to marketing—it's the foun
 
 Remember: Every successful practice has impressive before-after galleries. The difference between those who face HIPAA violations and those who don't isn't the quality of their work—it's the quality of their compliance procedures.
 
-> #### Quick Compliance Checklist
+> ### Quick Compliance Checklist
 >
 > -   ✅ Written authorization obtained before marketing use
 > -   ✅ Authorization includes all necessary HIPAA elements

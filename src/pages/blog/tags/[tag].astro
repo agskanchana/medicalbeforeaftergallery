@@ -39,6 +39,7 @@ const { label, posts } = Astro.props;
 
   <section class="section">
     <div class="container">
+      <h2 class="sr-only">Articles</h2>
       <div class="grid">
         {posts.map((post) => <BlogCard post={post} />)}
       </div>

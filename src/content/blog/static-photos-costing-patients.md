@@ -238,7 +238,7 @@ When evaluating gallery solutions, prioritize these features:
 
 Let's do some simple math to understand what your static gallery is costing you:
 
-> #### ROI Calculation
+> ### ROI Calculation
 >
 > **Assumptions (conservative estimates):**
 >
