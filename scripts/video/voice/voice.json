@@ -1,0 +1,334 @@
+{
+ "clips": {
+  "hook": {
+   "hash": "44c8456af145",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Before and after galleries, built for clinics. Meet Medical Before After Gallery Pro.",
+   "pauses": [
+    {
+     "at": 0.23,
+     "len": 0.1
+    },
+    {
+     "at": 0.98,
+     "len": 0.08
+    },
+    {
+     "at": 1.93,
+     "len": 0.42
+    },
+    {
+     "at": 2.54,
+     "len": 0.16
+    },
+    {
+     "at": 3.08,
+     "len": 0.08
+    },
+    {
+     "at": 3.51,
+     "len": 0.46
+    },
+    {
+     "at": 4.04,
+     "len": 0.12
+    },
+    {
+     "at": 4.84,
+     "len": 0.08
+    }
+   ],
+   "seconds": 6.72,
+   "start": 0.18,
+   "end": 6.5,
+   "peak": 0.8253,
+   "loud": 0.1902,
+   "noise": 0.0005,
+   "clipped": 0,
+   "gain": 0.8758,
+   "perWord": 0.4862
+  },
+  "cinema": {
+   "hash": "85de68b6ae1b",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Cinema case windows. Every result, full screen, with a timeline of dated progress photos.",
+   "pauses": [
+    {
+     "at": 1.74,
+     "len": 0.48
+    },
+    {
+     "at": 2.91,
+     "len": 0.3
+    },
+    {
+     "at": 3.81,
+     "len": 0.26
+    },
+    {
+     "at": 4.16,
+     "len": 0.08
+    },
+    {
+     "at": 4.99,
+     "len": 0.1
+    },
+    {
+     "at": 5.36,
+     "len": 0.16
+    }
+   ],
+   "seconds": 6.8,
+   "start": 0.16,
+   "end": 6.62,
+   "peak": 0.6935,
+   "loud": 0.1566,
+   "noise": 0.0007,
+   "clipped": 0,
+   "gain": 1.0635,
+   "perWord": 0.4614
+  },
+  "windows": {
+   "hash": "158227552272",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Prefer a drawer, a comparison desk, or a case story? Choose yours.",
+   "pauses": [
+    {
+     "at": 0.2,
+     "len": 0.08
+    },
+    {
+     "at": 1.34,
+     "len": 0.2
+    },
+    {
+     "at": 2.57,
+     "len": 0.1
+    },
+    {
+     "at": 3.92,
+     "len": 0.44
+    }
+   ],
+   "seconds": 5.36,
+   "start": 0.32,
+   "end": 5.14,
+   "peak": 0.7942,
+   "loud": 0.1484,
+   "noise": 0.0008,
+   "clipped": 0,
+   "gain": 1.1222,
+   "perWord": 0.4017
+  },
+  "layouts": {
+   "hash": "f5170fdeaa6e",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Masonry, spotlight, editorial. And slider cards visitors drag right in the grid.",
+   "pauses": [
+    {
+     "at": 1.47,
+     "len": 0.18
+    },
+    {
+     "at": 2.49,
+     "len": 0.58
+    }
+   ],
+   "seconds": 5.72,
+   "start": 0.18,
+   "end": 5.5,
+   "peak": 0.8576,
+   "loud": 0.1849,
+   "noise": 0.0005,
+   "clipped": 0,
+   "gain": 0.9006,
+   "perWord": 0.4433
+  },
+  "categories": {
+   "hash": "79fb299046d1",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Eight more category styles, and ninety-two icons.",
+   "pauses": [
+    {
+     "at": 1.56,
+     "len": 0.08
+    }
+   ],
+   "seconds": 3.52,
+   "start": 0.22,
+   "end": 3.44,
+   "peak": 0.8355,
+   "loud": 0.2077,
+   "noise": 0.0027,
+   "clipped": 0,
+   "gain": 0.8019,
+   "perWord": 0.46
+  },
+  "embeds": {
+   "hash": "be7d2c042e01",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Embed one case, with its timeline, on any page. Or a whole category carousel.",
+   "pauses": [
+    {
+     "at": 1.39,
+     "len": 0.22
+    },
+    {
+     "at": 2.55,
+     "len": 0.26
+    },
+    {
+     "at": 3.21,
+     "len": 0.1
+    },
+    {
+     "at": 3.82,
+     "len": 0.44
+    }
+   ],
+   "seconds": 6.4,
+   "start": 0.28,
+   "end": 6.2,
+   "peak": 0.8426,
+   "loud": 0.2153,
+   "noise": 0.0005,
+   "clipped": 0,
+   "gain": 0.7733,
+   "perWord": 0.4229
+  },
+  "browse": {
+   "hash": "150527639207",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Visitors browse by treatment, concern, doctor, or body map. Help me choose guides them. Compare puts two cases side by side.",
+   "pauses": [
+    {
+     "at": 1.88,
+     "len": 0.28
+    },
+    {
+     "at": 2.75,
+     "len": 0.26
+    },
+    {
+     "at": 3.08,
+     "len": 0.08
+    },
+    {
+     "at": 3.47,
+     "len": 0.3
+    },
+    {
+     "at": 4.48,
+     "len": 0.6
+    },
+    {
+     "at": 6.21,
+     "len": 0.38
+    }
+   ],
+   "seconds": 8.88,
+   "start": 0.24,
+   "end": 8.66,
+   "peak": 0.841,
+   "loud": 0.1883,
+   "noise": 0.0008,
+   "clipped": 0,
+   "gain": 0.8844,
+   "perWord": 0.401
+  },
+  "design": {
+   "hash": "ff22e0fc9cb0",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Six design templates, with live preview. Watermarked copies, originals untouched. Sensitive photos, blurred until visitors choose.",
+   "pauses": [
+    {
+     "at": 1.86,
+     "len": 0.12
+    },
+    {
+     "at": 2.58,
+     "len": 0.44
+    },
+    {
+     "at": 3.38,
+     "len": 0.12
+    },
+    {
+     "at": 4.07,
+     "len": 0.18
+    },
+    {
+     "at": 5.4,
+     "len": 0.48
+    },
+    {
+     "at": 6.18,
+     "len": 0.08
+    },
+    {
+     "at": 6.71,
+     "len": 0.1
+    }
+   ],
+   "seconds": 8.96,
+   "start": 0.26,
+   "end": 8.82,
+   "peak": 0.8347,
+   "loud": 0.1631,
+   "noise": 0.0007,
+   "clipped": 0,
+   "gain": 1.0209,
+   "perWord": 0.535
+  },
+  "end": {
+   "hash": "e2de8da9b86c",
+   "model": "models/gemini-3.8-flash-tts",
+   "said": "Start free on WordPress dot org, and upgrade to Pro, at medical before after gallery dot com.",
+   "pauses": [
+    {
+     "at": 0.39,
+     "len": 0.14
+    },
+    {
+     "at": 1.28,
+     "len": 0.12
+    },
+    {
+     "at": 2.21,
+     "len": 0.22
+    },
+    {
+     "at": 2.51,
+     "len": 0.14
+    },
+    {
+     "at": 2.73,
+     "len": 0.1
+    },
+    {
+     "at": 3.24,
+     "len": 0.16
+    },
+    {
+     "at": 3.69,
+     "len": 0.22
+    },
+    {
+     "at": 4.66,
+     "len": 0.16
+    }
+   ],
+   "seconds": 6.84,
+   "start": 0.18,
+   "end": 6.66,
+   "peak": 0.8701,
+   "loud": 0.1952,
+   "noise": 0.0005,
+   "clipped": 0,
+   "gain": 0.8532,
+   "perWord": 0.3812
+  }
+ },
+ "voice": "Laomedeia",
+ "note": "Written by scripts/video/narrate.mjs: the clips, where the speech starts and ends in each, and the gain that gives them one loudness (peak −1 dBFS)."
+}
