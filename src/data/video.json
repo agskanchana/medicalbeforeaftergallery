@@ -1,31 +1,9 @@
 {
-  "_note": "Scenes of the feature video. scripts/video/index.html draws them on a 1920×1080 canvas from the demo screenshots in scripts/video/shots/ (made by scripts/capture-demo-shots.mjs); scripts/video/record.mjs records them. The site lists each scene's `list` line next to the video. `shot` is a file in scripts/video/shots/ without extension; `tier` is the badge; `seconds` includes the crossfade.",
+  "_note": "The feature video's files. It is made in scripts/video/ (see the README).",
   "files": {
-    "mp4": "/video/mba-gallery-tour.mp4",
-    "webm": "/video/mba-gallery-tour.webm",
-    "poster": "/video/mba-gallery-tour-poster.webp"
-  },
-  "fade": 0.7,
-  "scenes": [
-    { "type": "title", "seconds": 4.2, "title": "Medical Before After Gallery", "subtitle": "Before and after galleries for clinics — a free WordPress plugin and a Pro add-on", "list": "What the plugin is" },
-    { "type": "wipe", "shot": "free-window", "seconds": 6, "tier": "Free", "caption": "Drag the slider to compare before and after", "list": "The free plugin’s case window: drag the slider to compare" },
-    { "type": "shot", "shot": "masonry-layout", "seconds": 4.6, "tier": "Pro", "caption": "Masonry and six more layouts", "list": "Masonry and the other Pro layouts", "move": "down" },
-    { "type": "shot", "shot": "card-slider", "seconds": 4.4, "tier": "Pro", "caption": "Card styles: compare right on the card", "list": "Slider cards and other card styles", "move": "in" },
-    { "type": "shot", "shot": "icon-chips", "seconds": 4.8, "tier": "Pro", "caption": "Category styles with icons — built in, or your own image", "list": "Category styles, including icon chips", "move": "in" },
-    { "type": "shot", "shot": "treatment-hub", "seconds": 4.6, "tier": "Pro", "caption": "Start from a treatment, a concern or a doctor", "list": "Treatment hub, concern first and doctor portfolios", "move": "down" },
-    { "type": "shot", "shot": "find-by-area", "seconds": 4.6, "tier": "Pro", "caption": "Find by area: tap the nose, lips or teeth", "list": "Find by area (the face and body map)", "move": "in" },
-    { "type": "shot", "shot": "compare-two-cases", "seconds": 4.6, "tier": "Pro", "caption": "Compare two cases side by side", "list": "Compare two cases", "move": "in" },
-    { "type": "shot", "shot": "window-cinema", "seconds": 4.6, "tier": "Pro", "caption": "Case windows: Cinema", "list": "The Cinema case window", "move": "in" },
-    { "type": "shot", "shot": "window-drawer", "seconds": 4.0, "tier": "Pro", "caption": "Drawer: the gallery stays in view", "list": "The Drawer case window", "move": "left" },
-    { "type": "shot", "shot": "window-comparison-desk", "seconds": 4.2, "tier": "Pro", "caption": "Comparison desk with a linked magnifier", "list": "The Comparison desk", "move": "in" },
-    { "type": "shot", "shot": "progress-stages", "seconds": 5, "tier": "Pro", "caption": "Progress timeline: a dated photo for every stage", "list": "The progress timeline in the default window", "move": "in" },
-    { "type": "shot", "shot": "single-case-stages", "seconds": 4.6, "tier": "Pro", "caption": "One case on any page, with its stages", "list": "The single-case embed [mba_case]", "move": "in" },
-    { "type": "shot", "shot": "category-carousel", "seconds": 4.2, "tier": "Pro", "caption": "A category carousel for treatment pages", "list": "The category carousel", "move": "left" },
-    { "type": "shot", "shot": "doctor-portfolios", "seconds": 4.2, "tier": "Pro", "caption": "Doctors, a doctor filter and doctor portfolios", "list": "Doctor portfolios", "move": "in" },
-    { "type": "shot", "shot": "template-luxury", "seconds": 4.6, "tier": "Pro", "caption": "Six design templates, previewed with your own cases", "list": "Design templates", "move": "down" },
-    { "type": "shot", "shot": "automatic-watermarks", "seconds": 4.2, "tier": "Pro", "caption": "Watermarks on copies — the originals stay untouched", "list": "Watermarks", "move": "in" },
-    { "type": "shot", "shot": "sensitive-photos-notice", "seconds": 4.6, "tier": "Pro", "caption": "Sensitive photos stay blurred until the visitor chooses", "list": "The photo-by-photo sensitive-content notice", "move": "in" },
-    { "type": "phone", "shot": "story-mode-on-phones", "seconds": 4.6, "tier": "Pro", "caption": "Story mode on phones: hold for before, swipe for the next case", "list": "Story mode on phones" },
-    { "type": "end", "seconds": 5.2, "title": "Try every feature live", "url": "medicalbeforeaftergallery.com/demo", "subtitle": "Free on WordPress.org · Pro: $99, one-time", "list": "Where to try it" }
-  ]
+    "mp4": "/video/mba-gallery-features.mp4",
+    "webm": "/video/mba-gallery-features.webm",
+    "poster": "/video/mba-gallery-features-poster.webp",
+    "captions": "/video/mba-gallery-features.en.vtt"
+  }
 }

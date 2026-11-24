@@ -26,6 +26,8 @@ const practiceTypes = [
 const groupIcons: Record<string, string> = {
   free: 'fa-brands fa-wordpress',
   layouts: 'fa-solid fa-table-cells-large',
+  categories: 'fa-solid fa-icons',
+  templates: 'fa-solid fa-swatchbook',
   browse: 'fa-solid fa-filter',
   window: 'fa-solid fa-window-maximize',
   embeds: 'fa-solid fa-code',
@@ -110,7 +112,7 @@ const softwareJsonLd = {
           <span class="bar" aria-hidden="true"><span></span><span></span><span></span></span>
           <img
             src="/images/features/window-cinema.webp"
-            alt="Screenshot of the Pro Cinema case window: a smile case shown full screen with a before and after slider"
+            alt="Screenshot of the Pro Cinema case window: a hair transplant case shown full screen with a timeline of its progress photos"
             width="1600"
             height="900"
             loading="eager"
@@ -145,12 +147,11 @@ const softwareJsonLd = {
   </section>
 
   <!-- ============ VIDEO ============ -->
-  <section class="section" id="tour">
+  <section class="section" id="tour" aria-label="Feature video">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">Feature video</span>
-        <h2>Every feature in under a minute and a half</h2>
-        <p>Recorded from the live demo site. Press play when you’re ready — it has no sound.</p>
+        <h2>See Pro at work</h2>
+        <p>The main Pro features, in under a minute.</p>
       </div>
       <VideoTour />
     </div>
@@ -234,7 +235,9 @@ const softwareJsonLd = {
                   <i class={groupIcons[s.id]} aria-hidden="true" />
                 </span>
                 <span class="dg-text">
-                  <strong>{s.title}</strong>
+                  <strong>
+                    {s.title} <span class:list={['badge', s.tier === 'pro' ? 'badge-pro' : 'badge-free']}>{s.tier === 'pro' ? 'Pro' : 'Free'}</span>
+                  </strong>
                   <small>
                     {s.count} demo{s.count === 1 ? '' : 's'} · {s.intro}
                   </small>
