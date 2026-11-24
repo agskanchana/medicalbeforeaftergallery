@@ -1,0 +1,411 @@
+{
+ "_note": "Scenes of the feature video, drawn by index.html. A scene lasts as long as its line in narration.json (voice/). steps: photographs from shots/ (capture.mjs), in turn; share = weight of the step's time; to = the rectangle in shots.json the pointer goes to and clicks at the end of the step; drag = drag frames; zoom = {rect or at, to}; label = what is shown, at the right of the caption.",
+ "scenes": [
+  {
+   "id": "title",
+   "type": "title",
+   "shot": "cinema-2",
+   "title": [
+    "Medical",
+    "Before After",
+    "Gallery Pro"
+   ],
+   "subtitle": [
+    "The add-on for before and after",
+    "galleries on WordPress"
+   ]
+  },
+  {
+   "id": "cinema",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "cinema-0",
+     "to": "to",
+     "share": 1.15
+    },
+    {
+     "shot": "cinema-1",
+     "to": "to"
+    },
+    {
+     "shot": "cinema-2",
+     "to": "to"
+    },
+    {
+     "shot": "cinema-3"
+    }
+   ],
+   "focus": {
+    "x": 960,
+    "y": 800,
+    "from": 1,
+    "to": 1.3
+   }
+  },
+  {
+   "id": "layouts",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "layout-masonry",
+     "label": "Masonry",
+     "share": 1.25
+    },
+    {
+     "shot": "layout-spotlight",
+     "label": "Spotlight"
+    },
+    {
+     "shot": "layout-editorial",
+     "label": "Editorial"
+    }
+   ]
+  },
+  {
+   "id": "cards",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "card-slider",
+     "drag": "card-slider-drag",
+     "label": "Slider cards",
+     "share": 2.2
+    },
+    {
+     "shot": "card-switch",
+     "label": "Switch cards"
+    },
+    {
+     "shot": "card-stacked",
+     "label": "Stacked cards"
+    }
+   ]
+  },
+  {
+   "id": "categories",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "cat-icons-0",
+     "to": "to",
+     "label": "Icon chips",
+     "share": 1.1
+    },
+    {
+     "shot": "cat-icons-1",
+     "label": "Icon chips",
+     "share": 0.7
+    },
+    {
+     "shot": "cat-area",
+     "label": "Area, then treatment"
+    },
+    {
+     "shot": "cat-cards",
+     "label": "Treatment cards"
+    },
+    {
+     "shot": "cat-menu",
+     "label": "Side menu"
+    }
+   ]
+  },
+  {
+   "id": "single-case",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "single-0",
+     "to": "to",
+     "share": 1.2,
+     "label": "Single-case embed"
+    },
+    {
+     "shot": "single-1",
+     "to": "to",
+     "label": "Single-case embed"
+    },
+    {
+     "shot": "single-2",
+     "label": "Single-case embed"
+    }
+   ],
+   "focus": {
+    "x": 520,
+    "y": 900,
+    "from": 1,
+    "to": 1.16
+   }
+  },
+  {
+   "id": "carousel",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "carousel-0",
+     "to": "to",
+     "label": "Category carousel",
+     "share": 1.1
+    },
+    {
+     "shot": "carousel-1",
+     "label": "Category carousel"
+    }
+   ],
+   "focus": {
+    "x": 960,
+    "y": 420,
+    "from": 1.04,
+    "to": 1.09
+   }
+  },
+  {
+   "id": "windows",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "drawer-1",
+     "label": "Drawer",
+     "zoom": {
+      "at": {
+       "x": 1920,
+       "y": 540
+      },
+      "from": 1,
+      "to": 1.03
+     }
+    },
+    {
+     "shot": "desk-1",
+     "label": "Comparison desk",
+     "share": 1.15,
+     "zoom": {
+      "at": {
+       "x": 960,
+       "y": 540
+      },
+      "from": 1,
+      "to": 1.03
+     }
+    },
+    {
+     "shot": "story-0",
+     "label": "Case story",
+     "zoom": {
+      "at": {
+       "x": 960,
+       "y": 540
+      },
+      "from": 1,
+      "to": 1.03
+     }
+    }
+   ]
+  },
+  {
+   "id": "structures",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "hub",
+     "label": "Treatment hub"
+    },
+    {
+     "shot": "concern-1",
+     "label": "Concern first"
+    },
+    {
+     "shot": "doctors-1",
+     "label": "Doctor portfolios"
+    }
+   ]
+  },
+  {
+   "id": "discovery",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "map-1",
+     "to": "to",
+     "label": "Find by area",
+     "zoom": {
+      "at": {
+       "x": 1920,
+       "y": 110
+      },
+      "from": 1.1,
+      "to": 1.3
+     }
+    },
+    {
+     "shot": "map-2",
+     "label": "Find by area",
+     "share": 0.8,
+     "zoom": {
+      "at": {
+       "x": 1920,
+       "y": 110
+      },
+      "from": 1.3,
+      "to": 1.34
+     }
+    },
+    {
+     "shot": "guide-0",
+     "to": "to",
+     "label": "Help me choose",
+     "zoom": {
+      "at": {
+       "x": 1920,
+       "y": 110
+      },
+      "from": 1.1,
+      "to": 1.3
+     }
+    },
+    {
+     "shot": "guide-1",
+     "label": "Help me choose",
+     "share": 0.8,
+     "zoom": {
+      "at": {
+       "x": 1920,
+       "y": 110
+      },
+      "from": 1.3,
+      "to": 1.34
+     }
+    }
+   ]
+  },
+  {
+   "id": "compare",
+   "type": "shots",
+   "tier": "Pro",
+   "min": 4,
+   "steps": [
+    {
+     "shot": "compare-0",
+     "to": "to",
+     "label": "Compare cases",
+     "share": 0.9
+    },
+    {
+     "shot": "compare-1",
+     "label": "Compare cases",
+     "share": 1.2
+    }
+   ],
+   "focus": {
+    "x": 960,
+    "y": 540,
+    "from": 1,
+    "to": 1.06
+   }
+  },
+  {
+   "id": "templates",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "template-luxury",
+     "label": "Luxury"
+    },
+    {
+     "shot": "template-modern",
+     "label": "Modern"
+    },
+    {
+     "shot": "template-editorial",
+     "label": "Editorial"
+    },
+    {
+     "shot": "template-photo-first",
+     "label": "Photo-first"
+    }
+   ]
+  },
+  {
+   "id": "watermarks",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "watermark",
+     "label": "Watermarks",
+     "zoom": {
+      "rect": "mark",
+      "from": 1,
+      "to": 1.9
+     }
+    }
+   ]
+  },
+  {
+   "id": "notice",
+   "type": "shots",
+   "tier": "Pro",
+   "steps": [
+    {
+     "shot": "notice-0",
+     "to": "to",
+     "label": "Sensitive-content notice"
+    },
+    {
+     "shot": "notice-1",
+     "label": "Sensitive-content notice"
+    }
+   ],
+   "focus": {
+    "x": 960,
+    "y": 300,
+    "from": 1.04,
+    "to": 1.1
+   }
+  },
+  {
+   "id": "free",
+   "type": "shots",
+   "tier": "Free",
+   "steps": [
+    {
+     "shot": "free-0",
+     "to": "to"
+    },
+    {
+     "shot": "free-1"
+    }
+   ],
+   "focus": {
+    "x": 960,
+    "y": 480,
+    "from": 1,
+    "to": 1.06
+   }
+  },
+  {
+   "id": "end",
+   "type": "end",
+   "min": 5.4,
+   "extra": 1.1,
+   "title": "Try the live demos",
+   "url": "medicalbeforeaftergallery.com/demo",
+   "subtitle": "Start free on WordPress.org · Pro: one-time payment",
+   "note": [
+    "Sample content: the doctors are fictional and some photos were created with an image model.",
+    "Some photos: Wikimedia Commons, Alexander Rivkin (CC BY-SA 3.0) and Yvul (CC BY-SA 4.0)."
+   ]
+  }
+ ]
+}

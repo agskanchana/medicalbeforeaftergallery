@@ -3,12 +3,13 @@
 //
 //   npm run build
 //   NODE_PATH=<folder with playwright-core> node scripts/check-site.mjs \
-//     [--demo=<demo export folder>] [--shots=<folder for screenshots>] [--port=8098] [--only=part]
+//     [--demo=<demo export folder>] [--demo-pages=<its pages.json>] [--shots=<folder for screenshots>] [--port=8098] [--only=part]
 //
 // Per page and width: no console errors, no failed requests to the site itself, every image
 // loads and has alt text, no sideways scroll, JSON-LD parses, one h1 and no skipped heading
 // levels. Then: every internal link and #anchor resolves, every demo link points to a page of
-// the demo export that passed its check, the video files exist. Requests to analytics and the
+// the demo export that passed its check and is in its page list, every demo page is linked from
+// /demo/, the video files exist. Requests to analytics and the
 // checkout are blocked, so nothing is sent anywhere. One browser, one page at a time.
 import fs from 'node:fs';
 import os from 'node:os';
@@ -27,6 +28,7 @@ const arg = (name, fallback = '') => {
 };
 const DIST = path.join(ROOT, 'dist');
 const DEMO = arg('demo', process.env.DEMO_EXPORT || 'E:/Temp/mba-feature-pass/demo-site/out');
+const DEMO_PAGES = arg('demo-pages', path.resolve(DEMO, '../pages.json'));
 const SHOTS = arg('shots', '');
 const PORT = Number(arg('port', 8098));
 const ONLY = arg('only', '');
@@ -36,6 +38,7 @@ const DEMO_HOST = 'demo.medicalbeforeaftergallery.com';
 const BLOCK = /googletagmanager|google-analytics|freemius|web3forms/;
 
 const check = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/demo-check.json'), 'utf8')).pages;
+const demoPages = new Set(JSON.parse(fs.readFileSync(DEMO_PAGES, 'utf8')).pages.map((x) => x.path));
 
 // Every built page.
 const pages = [];
@@ -162,7 +165,8 @@ for (const [href, from] of links) {
   } else if (url.hostname === DEMO_HOST) {
     const f = path.join(DEMO, decodeURIComponent(url.pathname), url.pathname.endsWith('/') ? 'index.html' : '');
     if (!fs.existsSync(f)) linkProblems.push(`${from}: demo link ${href} is not in the export`);
-    else if (url.pathname !== '/' && check[url.pathname] && !check[url.pathname].ok) linkProblems.push(`${from}: demo link ${href} failed its check`);
+    else if (!demoPages.has(url.pathname)) linkProblems.push(`${from}: demo link ${href} is not in the demo's page list`);
+    else if (!(check[url.pathname] && check[url.pathname].ok)) linkProblems.push(`${from}: demo link ${href} did not pass its check`);
     external.set(DEMO_HOST, (external.get(DEMO_HOST) || 0) + 1);
   } else {
     external.set(url.hostname, (external.get(url.hostname) || 0) + 1);
@@ -174,11 +178,16 @@ const demoHtml = fs.readFileSync(path.join(DIST, 'demo/index.html'), 'utf8');
 const demoLinks = [...new Set([...demoHtml.matchAll(/href="https:\/\/demo\.medicalbeforeaftergallery\.com(\/[^"]*)"/g)].map((m) => m[1]))];
 for (const l of demoLinks) {
   checks++;
-  if (l !== '/' && !(check[l] && check[l].ok)) linkProblems.push(`/demo/: ${l} is linked but did not pass its check`);
+  if (!(check[l] && check[l].ok)) linkProblems.push(`/demo/: ${l} is linked but did not pass its check`);
+}
+// No demo page is left out.
+for (const l of demoPages) {
+  checks++;
+  if (!demoLinks.includes(l)) linkProblems.push(`/demo/: the demo page ${l} is not linked`);
 }
 
 // The video files.
-for (const f of ['video/mba-gallery-tour.mp4', 'video/mba-gallery-tour.webm', 'video/mba-gallery-tour-poster.webp']) {
+for (const f of ['video/mba-gallery-features.mp4', 'video/mba-gallery-features.webm', 'video/mba-gallery-features-poster.webp', 'video/mba-gallery-features.en.vtt']) {
   checks++;
   if (!fs.existsSync(path.join(DIST, f))) linkProblems.push(`missing ${f}`);
 }

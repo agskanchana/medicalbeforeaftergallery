@@ -28,11 +28,11 @@ NODE_OPTIONS=--use-system-ca npm install
 public/            CNAME, favicon, robots.txt, OG image, logo, GSC verification, .nojekyll
   images/demos/    one screenshot per demo page (800×450 WebP)      ← scripts/capture-demo-shots.mjs
   images/features/ larger screenshots for home/features (1600×900)  ← scripts/capture-demo-shots.mjs
-  video/           the feature video (MP4 + WebM) and its poster     ← scripts/video/record.mjs
+  video/           the feature video (MP4 + WebM), poster, captions   ← scripts/video/record.mjs
 src/
   components/      Header, Footer, Seo (+ Organization JSON-LD), Analytics, FreemiusCheckout,
                    ContactForm, ComparisonTable, Pricing, Faq, Testimonials, CtaBanner, BlogCard,
-                   DocsSidebar, FeatureShowcase, FeatureCards, VideoTour
+                   DocsSidebar, FeatureShowcase, FeatureCards, DemoCard, VideoTour
   layouts/         BaseLayout, BlogPostLayout, DocsLayout
   data/            site, nav, features, showcase, comparison, pricing, faq, testimonials,
                    demos (+ demo-check.json), specialties, video.json   (edit copy here)
@@ -44,7 +44,7 @@ src/
                    blog/ (index, [slug], tags), docs/ (index, [...slug]), rss.xml.ts
   utils/demos.ts   joins the demo list with the last check: only working demos are linked
   styles/global.css   design tokens + base styles
-scripts/           capture-demo-shots.mjs, video/ (index.html + record.mjs), gen-og.mjs,
+scripts/           capture-demo-shots.mjs, check-site.mjs, video/ (see below), gen-og.mjs,
                    gen-logo.mjs, migrate-blog.mjs, lib/static-server.mjs
 ```
 
@@ -62,7 +62,8 @@ scripts/           capture-demo-shots.mjs, video/ (index.html + record.mjs), gen
 The demo site (`demo.medicalbeforeaftergallery.com`) is a static export of a WordPress site. When it
 is rebuilt:
 
-1. Update `src/data/demos.ts` (one entry per demo page: path, title, one-line description, group).
+1. Update `src/data/demos.ts` (one entry per demo page: path, title, description, group; `of` puts a page on
+   another demo’s card as a variant). `/demo/` is the one landing page: the demo site’s own home redirects to it.
 2. Check every page and capture the screenshots — one Chrome, nothing leaves the machine:
 
    ```bash
@@ -73,17 +74,21 @@ is rebuilt:
    window opens and closes (or the embed's control responds), that there are no console errors or
    failed requests, and writes `src/data/demo-check.json`. **Pages that fail are left off the site**
    (the `/demo/` page, the feature sections and the specialty pages only link pages that passed).
-   Screenshots go to `public/images/demos/`, `public/images/features/` and `scripts/video/shots/`.
+   Screenshots go to `public/images/demos/` and `public/images/features/`.
    Only ever point it at the demo export — never at a development site.
-3. Re-record the feature video (about 3 minutes, real time):
+3. The feature video (Pro features, drawn on a canvas, with a spoken voiceover). Scenes are in
+   `scripts/video/scenes.json`, the spoken lines (also the captions) in `scripts/video/narration.json`.
 
    ```bash
-   NODE_PATH=<folder with playwright-core> node scripts/video/record.mjs
+   NODE_PATH=<folder with playwright-core> node scripts/video/capture.mjs --demo=<export folder>  # photographs
+   NODE_OPTIONS=--use-system-ca node scripts/video/narrate.mjs   # voice, only for lines that changed
+   NODE_PATH=<folder with playwright-core> node scripts/video/record.mjs                          # ~3 min, real time
+   NODE_PATH=<folder with playwright-core> node scripts/video/check.mjs                           # sound, length, frames
    ```
 
-   The scenes and the list shown next to the video are in `src/data/video.json`. Watch the video
-   page itself by serving the repository root and opening `/scripts/video/index.html`
-   (`?t=12` shows one frame).
+   `narrate.mjs` uses Gemini text-to-speech (key in `GEMINI_API_KEY`, sent only in a request header) and keeps the
+   clips in `scripts/video/voice/`, so a new recording makes no API call. The free tier allows 10 clips a day per
+   model. Serve the repository root and open `/scripts/video/index.html` to watch it (`?t=12` shows one frame).
 
 `/llms.txt` is generated from `src/data/` at build time.
 

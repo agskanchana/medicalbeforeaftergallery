@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MBA Gallery — feature video</title>
+<!--
+  The feature video (the Pro add-on), drawn on a 1920×1080 canvas from photographs of the demo
+  (./shots/, made by capture.mjs) with the spoken lines of narration.json (./voice/, made by
+  narrate.mjs). The scenes are in scenes.json. record.mjs serves the repository, opens this page
+  in Chrome and records the canvas and the voice. Open it through any static server at the
+  repository root (…/scripts/video/index.html): ?t=12.5 shows one frame, a click plays it.
+-->
+<style>
+  html, body { margin: 0; background: #0b1220; }
+  canvas { display: block; width: 100vw; height: auto; max-height: 100vh; object-fit: contain; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<script>
+(() => {
+  const W = 1920, H = 1080;
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  ctx.imageSmoothingQuality = 'high';
+  const FONT = '"Segoe UI", "Helvetica Neue", Arial, sans-serif';
+  const C = { pro: '#3c88fd', free: '#12a08f', sub: '#c9d8f5' };
+  // The framed screenshot; the caption sits under it, never on it.
+  const F = { x: 144, y: 34, w: 1632, h: 918, r: 20 };
+  const LEAD = 0.12, TAIL = 0.2; // The breath before and after each spoken line.
+  const SLIDE = 0.26, CLICK = 0.16, CARD = 0.3; // Transitions: a new page, a click, a card.
+
+  // ── Easing and helpers ─────────────────────────────────────────────────────────────────
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const ease = (x) => { x = clamp(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const box = (x, y, w, h, r) => { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); };
+  // ── Assets ─────────────────────────────────────────────────────────────────────────────
+  const images = {};
+  let shots = {}, scenes = [], cards = {}, narration = {}, voice = { clips: {} };
+  let segs = []; // Every photograph or card in turn, with its absolute times.
+  const load = (src) => new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => img.decode().catch(() => {}).then(() => resolve(img));
+    img.onerror = () => reject(new Error('could not load ' + src));
+    img.src = src;
+  });
+
+  // ── Pieces ─────────────────────────────────────────────────────────────────────────────
+  function backdrop(tone = 0) {
+    const g = ctx.createLinearGradient(0, 0, W, H);
+    if (tone === 0) { g.addColorStop(0, '#0b1533'); g.addColorStop(1, '#16336f'); }
+    else { g.addColorStop(0, '#1b4fb8'); g.addColorStop(0.55, '#2160d8'); g.addColorStop(1, '#4a53d6'); }
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
+  function logoMark(x, y, s) {
+    ctx.save();
+    ctx.translate(x, y); ctx.scale(s / 92, s / 92);
+    const g = ctx.createLinearGradient(0, 0, 92, 92);
+    g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#dbe8ff');
+    ctx.fillStyle = g; box(0, 0, 92, 92, 24); ctx.fill();
+    ctx.fillStyle = '#2670e8';
+    const a = ctx.globalAlpha;
+    ctx.globalAlpha = a * 0.55; box(22, 22, 40, 48, 8); ctx.fill();
+    ctx.globalAlpha = a; box(34, 30, 40, 48, 8); ctx.fill();
+    ctx.restore();
+  }
+  function badge(x, y, tier, size) {
+    ctx.font = `700 ${size}px ${FONT}`;
+    const w = ctx.measureText(tier).width + size * 1.1, h = size * 1.55;
+    ctx.fillStyle = tier === 'Free' ? C.free : C.pro;
+    box(x, y, w, h, h / 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle';
+    ctx.fillText(tier, x + size * 0.55, y + h / 2 + 1);
+    return w;
+  }
+  // A few words, large, under the picture; a new caption rises into place.
+  function caption(tier, text, a) {
+    if (!text) return;
+    ctx.save();
+    ctx.globalAlpha *= a;
+    const mid = (F.y + F.h + H) / 2 + (1 - a) * 16;
+    const size = 54;
+    ctx.font = `700 34px ${FONT}`;
+    const bw = ctx.measureText(tier).width + 34 * 1.1;
+    ctx.font = `700 ${size}px ${FONT}`;
+    const tw = ctx.measureText(text).width;
+    const x = (W - (bw + 28 + tw)) / 2;
+    badge(x, mid - 27, tier, 34);
+    ctx.font = `700 ${size}px ${FONT}`;
+    ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, x + bw + 28, mid + 1);
+    ctx.restore();
+  }
+  function pointer(x, y, click, alpha) {
+    if (alpha <= 0) return;
+    ctx.save();
+    if (click > 0 && click < 1) {
+      ctx.globalAlpha = alpha * (1 - click) * 0.85;
+      ctx.strokeStyle = '#3c88fd'; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.arc(x, y, 12 + click * 44, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.globalAlpha = alpha;
+    ctx.translate(x, y); ctx.scale(1.75, 1.75);
+    ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, 0); ctx.lineTo(0, 22); ctx.lineTo(6, 16.5); ctx.lineTo(10.5, 26); ctx.lineTo(14, 24.4); ctx.lineTo(9.6, 15.2); ctx.lineTo(17, 15.2); ctx.closePath();
+    ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.shadowColor = 'transparent';
+    ctx.lineWidth = 1.4; ctx.strokeStyle = '#0f1b33'; ctx.stroke();
+    ctx.restore();
+  }
+  const center = (r) => (r ? { x: r.x + r.w / 2, y: r.y + r.h / 2 } : null);
+
+  // ── Cards ──────────────────────────────────────────────────────────────────────────────
+  function drawTitle(seg, t, still) {
+    const s = cards.title;
+    backdrop(0);
+    const img = images[seg.shot];
+    const a = still ? 1 : ease(clamp(t / 0.5));
+    const fw = 1060, fh = 596, fx = 790 + (1 - a) * 120, fy = 270;
+    ctx.save();
+    ctx.globalAlpha *= a;
+    ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 60; ctx.shadowOffsetY = 24;
+    ctx.fillStyle = '#e8eefb'; box(fx, fy - 40, fw, fh + 40, 20); ctx.fill();
+    ctx.shadowColor = 'transparent';
+    ctx.save(); box(fx, fy - 40, fw, fh + 40, 20); ctx.clip();
+    for (let i = 0; i < 3; i++) { ctx.fillStyle = '#b9c6de'; ctx.beginPath(); ctx.arc(fx + 28 + i * 22, fy - 20, 7, 0, Math.PI * 2); ctx.fill(); }
+    ctx.drawImage(img, fx, fy, fw, fh);
+    ctx.restore();
+    ctx.restore();
+    const b = still ? 1 : ease(clamp(t / 0.35));
+    ctx.save();
+    ctx.globalAlpha *= b;
+    ctx.translate((1 - b) * -50, 0);
+    logoMark(96, 232, 92);
+    badge(212, 252, 'Pro', 34);
+    ctx.fillStyle = '#fff'; ctx.textBaseline = 'alphabetic';
+    ctx.font = `700 78px ${FONT}`;
+    s.title.forEach((l, i) => ctx.fillText(l, 96, 440 + i * 90));
+    ctx.fillStyle = C.sub; ctx.font = `400 38px ${FONT}`;
+    s.subtitle.forEach((l, i) => ctx.fillText(l, 96, 440 + s.title.length * 90 + 14 + i * 50));
+    ctx.restore();
+  }
+  function drawEnd(seg, t) {
+    const s = cards.end;
+    backdrop(1);
+    ctx.save();
+    ctx.globalAlpha *= 0.08; ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(1700, 160, 380, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(200, 980, 300, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    const a = ease(clamp(t / 0.4));
+    ctx.save();
+    ctx.globalAlpha *= a;
+    ctx.translate(0, (1 - a) * 30);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    logoMark(W / 2 - 60, 190, 120);
+    ctx.fillStyle = '#fff';
+    ctx.font = `700 104px ${FONT}`; ctx.fillText(s.title, W / 2, 470);
+    ctx.font = `600 66px ${FONT}`;
+    const tw = ctx.measureText(s.url).width;
+    ctx.fillStyle = 'rgba(255,255,255,0.18)'; box(W / 2 - tw / 2 - 52, 540, tw + 104, 122, 61); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillText(s.url, W / 2, 624);
+    ctx.font = `400 42px ${FONT}`; ctx.fillStyle = '#eaf2ff';
+    ctx.fillText(s.subtitle, W / 2, 765);
+    ctx.font = `400 28px ${FONT}`; ctx.fillStyle = '#d5e2ff';
+    s.note.forEach((l, i) => ctx.fillText(l, W / 2, 955 + i * 42));
+    ctx.textAlign = 'left';
+    ctx.restore();
+  }
+
+  // ── A photograph in the frame ──────────────────────────────────────────────────────────
+  // dx: how far it is slid out (in frame widths); returns where its points are on the canvas.
+  function drawShot(seg, t, alpha, dx) {
+    const v = clamp((t - seg.start) / (seg.end - seg.start));
+    const img = images[seg.shot];
+    const zoom = seg.zoom || { at: { x: W / 2, y: 430 }, from: 1.05, to: 1.12 };
+    const at = zoom.rect ? center(shots[seg.shot][zoom.rect]) : zoom.at;
+    // A quick push at the start of a new page, then a slow move.
+    const z = lerp(zoom.from, zoom.to, v) * (seg.trans === 'slide' ? 1 + 0.03 * (1 - ease(clamp((t - seg.start) / 0.5))) : 1);
+    const ox = at.x - at.x * z, oy = at.y - at.y * z;
+    const sc = F.w / W;
+    const X = F.x + dx * (F.w + 40);
+    const place = (pt) => ({ x: X + (ox + pt.x * z) * sc, y: F.y + (oy + pt.y * z) * sc });
+    ctx.save();
+    ctx.globalAlpha *= alpha;
+    box(F.x, F.y, F.w, F.h, F.r); ctx.clip();
+    ctx.fillStyle = '#fff'; ctx.fillRect(X, F.y, F.w, F.h);
+    box(X, F.y, F.w, F.h, F.r); ctx.clip();
+    ctx.drawImage(img, X + ox * sc, F.y + oy * sc, W * z * sc, H * z * sc);
+    let handle = null;
+    if (seg.drag) {
+      const d = shots[seg.drag];
+      const fr = clamp((v - 0.08) / 0.86) * (d.frames - 1);
+      const p = place({ x: d.rect.x, y: d.rect.y });
+      ctx.drawImage(images[`${seg.drag}-${String(Math.round(fr)).padStart(2, '0')}`], p.x, p.y, d.rect.w * z * sc, d.rect.h * z * sc);
+      const k = Math.floor(fr);
+      const pos = lerp(d.positions[k], d.positions[Math.min(d.frames - 1, k + 1)], fr - k);
+      handle = place({ x: d.track.x + d.track.w * pos, y: d.y });
+    }
+    ctx.restore();
+    return { place, v, handle };
+  }
+  function drawFrameEdge(alpha) {
+    ctx.save();
+    ctx.globalAlpha *= alpha;
+    ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 2;
+    box(F.x, F.y, F.w, F.h, F.r); ctx.stroke();
+    ctx.restore();
+  }
+  function drawPointer(i, t, info) {
+    const seg = segs[i], prev = segs[i - 1];
+    if (info.handle) {
+      const h = info.handle, come = ease(seg01(info.v, 0, 0.08));
+      pointer(lerp(h.x + 160, h.x + 4, come), lerp(h.y + 130, h.y + 6, come), seg01(info.v, 0.06, 0.16), ease(seg01(info.v, 0, 0.06)));
+      return;
+    }
+    const cameFrom = prev && prev.to && prev.clickNext ? center(shots[prev.shot][prev.to]) : null;
+    if (seg.to) {
+      const to = info.place(center(shots[seg.shot][seg.to]));
+      const from = cameFrom ? info.place(cameFrom) : { x: to.x + (to.x > W * 0.7 ? -200 : 200), y: to.y + (to.y > H * 0.62 ? -160 : 150) };
+      const go = ease(seg01(info.v, 0.08, 0.68));
+      pointer(lerp(from.x, to.x, go), lerp(from.y, to.y, go), seg01(info.v, 0.76, 1), cameFrom ? 1 : ease(seg01(info.v, 0.02, 0.15)));
+    } else if (cameFrom) {
+      const at = info.place(cameFrom);
+      const since = t - seg.start;
+      pointer(at.x, at.y, seg01(since, 0, 0.3), 1 - seg01(since, 0.25, 0.55));
+    }
+  }
+  const seg01 = (u, a, b) => clamp((u - a) / (b - a));
+
+  // ── Timeline: each scene lasts as long as its line; its beats follow the words ──────────
+  let duration = 0;
+  let cues = [];
+  function layout() {
+    segs = []; cues = [];
+    let t = 0;
+    for (const s of scenes) {
+      const text = s.beats.map((b) => b.say).join(' ');
+      // A clip counts only while it says these words.
+      const said = voice.clips[s.id];
+      const clip = said && said.said === text && said.end ? said : null;
+      const spoken = clip ? clip.end - clip.start : text.split(' ').length * 0.37;
+      s.silent = !clip;
+      s.start = t;
+      s.spokenAt = t + (s.lead ?? LEAD);
+      s.spoken = spoken;
+      s.text = narration[s.id];
+      // Where each beat starts: by the length of its words, moved to the pause the voice makes there.
+      const pauses = clip ? clip.pauses || [] : [];
+      const chars = s.beats.map((b) => b.say.length + (/[.?!]$/.test(b.say) ? 6 : /,$/.test(b.say) ? 3 : 1));
+      const total = chars.reduce((a, b) => a + b, 0);
+      let acc = 0, lastAt = 0;
+      const marks = s.beats.map((b, i) => {
+        if (i === 0) { acc += chars[i]; return 0; }
+        const guess = (acc / total) * spoken;
+        acc += chars[i];
+        const near = pauses.filter((p) => p.at > lastAt + 0.3 && Math.abs(p.at - guess) < 0.75)
+          .sort((a, b2) => (Math.abs(a.at - guess) - a.len) - (Math.abs(b2.at - guess) - b2.len))[0];
+        lastAt = near ? near.at : guess;
+        return lastAt;
+      });
+      let end = s.spokenAt + spoken + (s.tail ?? TAIL);
+      const last = s.beats[s.beats.length - 1];
+      if (last.min) end = Math.max(end, s.spokenAt + marks[marks.length - 1] + last.min);
+      s.seconds = end - t;
+      s.marks = marks;
+      s.beats.forEach((b, i) => {
+        const bs = i === 0 ? t : s.spokenAt + marks[i];
+        const be = i + 1 < s.beats.length ? s.spokenAt + marks[i + 1] : end;
+        if (b.card) { segs.push({ card: b.card, shot: b.shot, start: bs, end: be, tier: s.tier, trans: 'card' }); return; }
+        const n = b.steps.reduce((k, p) => k + (p.share || 1), 0);
+        let k = 0;
+        b.steps.forEach((p, j) => {
+          const st = bs + (k / n) * (be - bs); k += p.share || 1;
+          const before = segs[segs.length - 1];
+          segs.push({ ...p, start: st, end: bs + (k / n) * (be - bs), tier: s.tier, caption: b.caption, clickNext: Boolean(p.click),
+            trans: !before ? 'cut' : before.card ? 'card' : p.join ? 'join' : before.clickNext ? 'click' : 'slide' });
+        });
+      });
+      // Written captions (WebVTT): one per sentence.
+      const sentences = s.text.match(/[^.?!]+(?:\.(?=\S)[^.?!]+)*[.?!]?/g).map((x) => x.trim()).filter(Boolean);
+      const beatEnds = s.beats.map((b, i) => (/[.?!]$/.test(b.say) ? i : -1)).filter((i) => i >= 0);
+      let from = 0;
+      sentences.forEach((x, i) => {
+        const endBeat = beatEnds[Math.min(i, beatEnds.length - 1)];
+        const lastOne = i === sentences.length - 1;
+        // Two sentences in one beat share its time.
+        const to = lastOne ? spoken : endBeat + 1 < marks.length ? marks[endBeat + 1] : spoken;
+        cues.push({ id: s.id, a: s.spokenAt + from, b: Math.min(s.spokenAt + to + (lastOne ? 0.1 : 0), end - 0.02), text: x });
+        from = to;
+      });
+      t = end;
+    }
+    duration = t;
+    cues = cues.filter((c) => c.b - c.a > 0.2);
+  }
+
+  const drawCard = (seg, t) => (seg.card === 'title' ? drawTitle : drawEnd)(seg, t - seg.start);
+  function drawSeg(i, t) {
+    const seg = segs[i];
+    if (seg.card) { drawCard(seg, t); return; }
+    backdrop(0);
+    const since = t - seg.start;
+    const prev = segs[i - 1];
+    let info;
+    if (seg.trans === 'slide' && since < SLIDE) {
+      const k = 1 - Math.pow(1 - since / SLIDE, 3);
+      drawShot(prev, seg.start, 1, -k);
+      info = drawShot(seg, t, 1, 1 - k);
+    } else if (seg.trans === 'click' && since < CLICK) {
+      drawShot(prev, seg.start, 1, 0);
+      info = drawShot(seg, t, ease(since / CLICK), 0);
+    } else info = drawShot(seg, t, 1, 0);
+    drawFrameEdge(1);
+    drawPointer(i, t, info);
+    // The caption changes with the beat.
+    const first = segs.findIndex((x, k) => k <= i && x.caption === seg.caption && segs.slice(k, i + 1).every((y) => y.caption === seg.caption));
+    caption(seg.tier, seg.caption, ease(clamp((t - segs[first].start + 0.02) / 0.2)));
+  }
+  function renderAt(t) {
+    t = clamp(t, 0, duration);
+    ctx.save();
+    let i = segs.findIndex((s) => t < s.end);
+    if (i < 0) i = segs.length - 1;
+    const seg = segs[i];
+    const since = t - seg.start;
+    if (seg.trans === 'card' && i > 0 && since < CARD) {
+      // To and from a full card: the old picture stays under the new one as it fades in and grows.
+      const k = ease(since / CARD);
+      drawSeg(i - 1, seg.start - 0.001);
+      ctx.save();
+      ctx.globalAlpha = k;
+      const z = lerp(1.06, 1, k);
+      ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
+      drawSeg(i, t);
+      ctx.restore();
+    } else drawSeg(i, t);
+    ctx.globalAlpha = 1;
+    const edge = Math.min(clamp((t + 0.12) / 0.2), clamp((duration - t) / 0.35));
+    if (edge < 1) { ctx.fillStyle = `rgba(0,0,0,${1 - edge})`; ctx.fillRect(0, 0, W, H); }
+    ctx.restore();
+  }
+  function poster() {
+    ctx.save(); drawTitle(segs.find((s) => s.card === 'title'), 9, true); ctx.restore();
+  }
+
+  // ── Voice ──────────────────────────────────────────────────────────────────────────────
+  let audio = null, audioOut = null;
+  const buffers = {};
+  async function openAudio() {
+    if (audio) return;
+    audio = new AudioContext({ sampleRate: 48000 });
+    audioOut = audio.createMediaStreamDestination();
+    audioOut.channelCount = 1;
+    for (const s of scenes) {
+      if (s.silent) continue;
+      const data = await (await fetch(`voice/${s.id}.wav`)).arrayBuffer();
+      buffers[s.id] = await audio.decodeAudioData(data);
+    }
+    // A silent bed, so the track runs from the first frame to the last.
+    const bed = audio.createConstantSource();
+    bed.offset.value = 0;
+    bed.connect(audioOut);
+    bed.start();
+  }
+  function schedule(t0, out) {
+    for (const s of scenes) {
+      if (s.silent) continue;
+      const c = voice.clips[s.id];
+      const src = audio.createBufferSource();
+      src.buffer = buffers[s.id];
+      const g = audio.createGain();
+      const at = t0 + s.spokenAt;
+      // Short fades at the cut, so the clip's edges do not click.
+      g.gain.setValueAtTime(0, at);
+      g.gain.linearRampToValueAtTime(c.gain, at + 0.015);
+      g.gain.setValueAtTime(c.gain, at + s.spoken - 0.03);
+      g.gain.linearRampToValueAtTime(0, at + s.spoken);
+      src.connect(g).connect(out);
+      src.start(at, c.start, s.spoken);
+    }
+  }
+  /** Plays the video once; the voice goes to the recording (and, when watching, to the speakers). */
+  async function play({ speakers = false, lead = 0.15 } = {}) {
+    await openAudio();
+    await audio.resume();
+    const t0 = audio.currentTime + lead;
+    schedule(t0, audioOut);
+    if (speakers) schedule(t0, audio.destination);
+    let frames = 0, worst = 0, last = performance.now();
+    return new Promise((resolve) => {
+      const frame = () => {
+        const now = performance.now();
+        if (frames) worst = Math.max(worst, now - last);
+        last = now;
+        const t = audio.currentTime - t0;
+        renderAt(Math.max(0, t));
+        frames++;
+        if (t < duration + 0.05) requestAnimationFrame(frame);
+        else resolve({ frames, seconds: t, worst });
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+
+  window.mbaVideo = {
+    ready: (async () => {
+      const json = (f) => fetch(f).then((r) => (r.ok ? r.json() : null));
+      const [sc, sh, na, vo] = await Promise.all([json('scenes.json'), json('shots/shots.json'), json('narration.json'), json('voice/voice.json')]);
+      scenes = sc.scenes; cards = sc.cards; shots = sh; narration = na; voice = vo || { clips: {} };
+      const names = new Set();
+      scenes.forEach((s) => s.beats.forEach((b) => {
+        if (b.shot) names.add(b.shot);
+        (b.steps || []).forEach((p) => {
+          names.add(p.shot);
+          if (p.drag) for (let i = 0; i < shots[p.drag].frames; i++) names.add(`${p.drag}-${String(i).padStart(2, '0')}`);
+        });
+      }));
+      await Promise.all([...names].map(async (n) => { images[n] = await load(`shots/${n}.webp`); }));
+      await document.fonts.ready;
+      layout();
+      return { duration, silent: scenes.filter((s) => s.silent).map((s) => s.id), cues, segs: segs.map((x) => ({ start: x.start, end: x.end, shot: x.shot, card: x.card, caption: x.caption })), scenes: scenes.map((s) => ({ id: s.id, start: s.start, seconds: s.seconds, spokenAt: s.spokenAt, spoken: s.spoken, marks: s.marks, text: s.text })) };
+    })(),
+    renderAt, play, poster, canvas, openAudio,
+    get audioStream() { return audioOut.stream; },
+    get duration() { return duration; },
+  };
+
+  // Watching in a browser: ?t=12 shows one frame, a click plays it with sound.
+  window.mbaVideo.ready.then(() => {
+    if (navigator.webdriver) return;
+    const t = new URLSearchParams(location.search).get('t');
+    renderAt(t === null ? 2 : Number(t));
+    canvas.addEventListener('click', () => play({ speakers: true }));
+  });
+})();
+</script>
+</body>
+</html>
