@@ -1,410 +1,642 @@
 {
- "_note": "Scenes of the feature video, drawn by index.html. A scene lasts as long as its line in narration.json (voice/). steps: photographs from shots/ (capture.mjs), in turn; share = weight of the step's time; to = the rectangle in shots.json the pointer goes to and clicks at the end of the step; drag = drag frames; zoom = {rect or at, to}; label = what is shown, at the right of the caption.",
- "scenes": [
-  {
-   "id": "title",
-   "type": "title",
-   "shot": "cinema-2",
+ "_note": "Scenes of the feature video, drawn by index.html; a scene lasts as long as its clip (voice/). beats: what is said (the words of narration.json, with addresses spelled the way they are spoken) and what is shown meanwhile; each beat starts on its words. steps: photographs from shots/ (capture.mjs) in turn; share = weight of the beat's time; to = the rectangle in shots.json the pointer goes to; click = it clicks there at the end of the step; join = the same picture goes on; drag = drag frames; zoom = {rect or at, from, to}. caption: a few words under the picture. cards: the title and end cards.",
+ "cards": {
+  "title": {
    "title": [
     "Medical",
     "Before After",
     "Gallery Pro"
    ],
    "subtitle": [
-    "The add-on for before and after",
-    "galleries on WordPress"
+    "Before and after galleries",
+    "for clinics, on WordPress"
+   ]
+  },
+  "end": {
+   "title": "Start free, upgrade to Pro",
+   "url": "medicalbeforeaftergallery.com",
+   "subtitle": "Free on WordPress.org · Pro: one-time payment",
+   "note": [
+    "Sample content: the doctors are fictional and some photos were created with an image model.",
+    "Some photos: Wikimedia Commons, Alexander Rivkin (CC BY-SA 3.0) and Yvul (CC BY-SA 4.0)."
+   ]
+  }
+ },
+ "scenes": [
+  {
+   "id": "hook",
+   "tier": "Pro",
+   "lead": 0.25,
+   "beats": [
+    {
+     "say": "Before and after galleries, built for clinics.",
+     "caption": "Before and after galleries for clinics",
+     "steps": [
+      {
+       "shot": "layout-masonry",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 430
+        },
+        "from": 1.04,
+        "to": 1.1
+       }
+      },
+      {
+       "shot": "card-slider",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 430
+        },
+        "from": 1.04,
+        "to": 1.1
+       }
+      },
+      {
+       "shot": "desk-1",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 540
+        },
+        "from": 1,
+        "to": 1.05
+       }
+      }
+     ]
+    },
+    {
+     "say": "Meet Medical Before After Gallery Pro.",
+     "card": "title",
+     "shot": "cinema-2"
+    }
    ]
   },
   {
    "id": "cinema",
-   "type": "shots",
    "tier": "Pro",
-   "steps": [
+   "beats": [
     {
-     "shot": "cinema-0",
-     "to": "to",
-     "share": 1.15
+     "say": "Cinema case windows.",
+     "caption": "Cinema case window",
+     "steps": [
+      {
+       "shot": "cinema-0",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 760
+        },
+        "from": 1,
+        "to": 1.05
+       }
+      }
+     ]
     },
     {
-     "shot": "cinema-1",
-     "to": "to"
+     "say": "Every result, full screen,",
+     "caption": "Cinema case window",
+     "steps": [
+      {
+       "shot": "cinema-0",
+       "join": true,
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 760
+        },
+        "from": 1.05,
+        "to": 1.12
+       }
+      }
+     ]
     },
     {
-     "shot": "cinema-2",
-     "to": "to"
-    },
-    {
-     "shot": "cinema-3"
-    }
-   ],
-   "focus": {
-    "x": 960,
-    "y": 800,
-    "from": 1,
-    "to": 1.3
-   }
-  },
-  {
-   "id": "layouts",
-   "type": "shots",
-   "tier": "Pro",
-   "steps": [
-    {
-     "shot": "layout-masonry",
-     "label": "Masonry",
-     "share": 1.25
-    },
-    {
-     "shot": "layout-spotlight",
-     "label": "Spotlight"
-    },
-    {
-     "shot": "layout-editorial",
-     "label": "Editorial"
+     "say": "with a timeline of dated progress photos.",
+     "caption": "Dated progress timeline",
+     "steps": [
+      {
+       "shot": "cinema-1",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 760
+        },
+        "from": 1.12,
+        "to": 1.16
+       }
+      },
+      {
+       "shot": "cinema-2",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 760
+        },
+        "from": 1.16,
+        "to": 1.2
+       }
+      },
+      {
+       "shot": "cinema-3",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 760
+        },
+        "from": 1.2,
+        "to": 1.24
+       }
+      }
+     ]
     }
    ]
   },
   {
-   "id": "cards",
-   "type": "shots",
+   "id": "windows",
    "tier": "Pro",
-   "steps": [
+   "beats": [
     {
-     "shot": "card-slider",
-     "drag": "card-slider-drag",
-     "label": "Slider cards",
-     "share": 2.2
+     "say": "Prefer a drawer,",
+     "caption": "Drawer",
+     "steps": [
+      {
+       "shot": "drawer-1",
+       "zoom": {
+        "at": {
+         "x": 1920,
+         "y": 540
+        },
+        "from": 1,
+        "to": 1.03
+       }
+      }
+     ]
     },
     {
-     "shot": "card-switch",
-     "label": "Switch cards"
+     "say": "a comparison desk,",
+     "caption": "Comparison desk",
+     "steps": [
+      {
+       "shot": "desk-1",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 540
+        },
+        "from": 1,
+        "to": 1.03
+       }
+      }
+     ]
     },
     {
-     "shot": "card-stacked",
-     "label": "Stacked cards"
+     "say": "or a case story?",
+     "caption": "Case story",
+     "steps": [
+      {
+       "shot": "story-0",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 540
+        },
+        "from": 1,
+        "to": 1.03
+       }
+      }
+     ]
+    },
+    {
+     "say": "Choose yours.",
+     "caption": "Choose your case window",
+     "steps": [
+      {
+       "shot": "story-0",
+       "join": true,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 540
+        },
+        "from": 1.03,
+        "to": 1.05
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "layouts",
+   "tier": "Pro",
+   "beats": [
+    {
+     "say": "Masonry,",
+     "caption": "Masonry",
+     "steps": [
+      {
+       "shot": "layout-masonry"
+      }
+     ]
+    },
+    {
+     "say": "spotlight,",
+     "caption": "Spotlight",
+     "steps": [
+      {
+       "shot": "layout-spotlight"
+      }
+     ]
+    },
+    {
+     "say": "editorial.",
+     "caption": "Editorial",
+     "steps": [
+      {
+       "shot": "layout-editorial"
+      }
+     ]
+    },
+    {
+     "say": "And slider cards visitors can compare without opening a case.",
+     "caption": "Slider cards",
+     "steps": [
+      {
+       "shot": "card-slider",
+       "drag": "card-slider-drag",
+       "zoom": {
+        "at": {
+         "x": 400,
+         "y": 380
+        },
+        "from": 1.1,
+        "to": 1.35
+       }
+      }
+     ]
     }
    ]
   },
   {
    "id": "categories",
-   "type": "shots",
    "tier": "Pro",
-   "steps": [
+   "beats": [
     {
-     "shot": "cat-icons-0",
-     "to": "to",
-     "label": "Icon chips",
-     "share": 1.1
+     "say": "Eight more category styles,",
+     "caption": "Eight more category styles",
+     "steps": [
+      {
+       "shot": "cat-area"
+      },
+      {
+       "shot": "cat-cards"
+      },
+      {
+       "shot": "cat-menu"
+      }
+     ]
     },
     {
-     "shot": "cat-icons-1",
-     "label": "Icon chips",
-     "share": 0.7
+     "say": "ninety-two icons.",
+     "caption": "92 icons",
+     "steps": [
+      {
+       "shot": "cat-icons-0",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 120
+        },
+        "from": 1.06,
+        "to": 1.12
+       }
+      },
+      {
+       "shot": "cat-icons-1",
+       "share": 0.7,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 120
+        },
+        "from": 1.12,
+        "to": 1.14
+       }
+      }
+     ]
     },
     {
-     "shot": "cat-area",
-     "label": "Area, then treatment"
+     "say": "Embed a single case,",
+     "caption": "Single-case embed",
+     "steps": [
+      {
+       "shot": "single-0",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 520,
+         "y": 900
+        },
+        "from": 1,
+        "to": 1.08
+       }
+      },
+      {
+       "shot": "single-1",
+       "zoom": {
+        "at": {
+         "x": 520,
+         "y": 900
+        },
+        "from": 1.08,
+        "to": 1.1
+       }
+      }
+     ]
     },
     {
-     "shot": "cat-cards",
-     "label": "Treatment cards"
-    },
-    {
-     "shot": "cat-menu",
-     "label": "Side menu"
+     "say": "or a carousel, on any page.",
+     "caption": "Category carousel",
+     "steps": [
+      {
+       "shot": "carousel-0",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 420
+        },
+        "from": 1.02,
+        "to": 1.05
+       }
+      },
+      {
+       "shot": "carousel-1",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 420
+        },
+        "from": 1.05,
+        "to": 1.08
+       }
+      }
+     ]
     }
    ]
   },
   {
-   "id": "single-case",
-   "type": "shots",
+   "id": "browse",
    "tier": "Pro",
-   "steps": [
+   "beats": [
     {
-     "shot": "single-0",
-     "to": "to",
-     "share": 1.2,
-     "label": "Single-case embed"
+     "say": "Let visitors start with a treatment,",
+     "caption": "Treatment hub",
+     "steps": [
+      {
+       "shot": "hub"
+      }
+     ]
     },
     {
-     "shot": "single-1",
-     "to": "to",
-     "label": "Single-case embed"
+     "say": "a concern,",
+     "caption": "Concern first",
+     "steps": [
+      {
+       "shot": "concern-1"
+      }
+     ]
     },
     {
-     "shot": "single-2",
-     "label": "Single-case embed"
-    }
-   ],
-   "focus": {
-    "x": 520,
-    "y": 900,
-    "from": 1,
-    "to": 1.16
-   }
-  },
-  {
-   "id": "carousel",
-   "type": "shots",
-   "tier": "Pro",
-   "steps": [
-    {
-     "shot": "carousel-0",
-     "to": "to",
-     "label": "Category carousel",
-     "share": 1.1
+     "say": "a doctor,",
+     "caption": "Doctor portfolios",
+     "steps": [
+      {
+       "shot": "doctors-1"
+      }
+     ]
     },
     {
-     "shot": "carousel-1",
-     "label": "Category carousel"
-    }
-   ],
-   "focus": {
-    "x": 960,
-    "y": 420,
-    "from": 1.04,
-    "to": 1.09
-   }
-  },
-  {
-   "id": "windows",
-   "type": "shots",
-   "tier": "Pro",
-   "steps": [
-    {
-     "shot": "drawer-1",
-     "label": "Drawer",
-     "zoom": {
-      "at": {
-       "x": 1920,
-       "y": 540
+     "say": "or a body map.",
+     "caption": "Find by area",
+     "steps": [
+      {
+       "shot": "map-1",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 1920,
+         "y": 110
+        },
+        "from": 1.15,
+        "to": 1.3
+       }
       },
-      "from": 1,
-      "to": 1.03
-     }
-    },
-    {
-     "shot": "desk-1",
-     "label": "Comparison desk",
-     "share": 1.15,
-     "zoom": {
-      "at": {
-       "x": 960,
-       "y": 540
-      },
-      "from": 1,
-      "to": 1.03
-     }
-    },
-    {
-     "shot": "story-0",
-     "label": "Case story",
-     "zoom": {
-      "at": {
-       "x": 960,
-       "y": 540
-      },
-      "from": 1,
-      "to": 1.03
-     }
+      {
+       "shot": "map-2",
+       "share": 0.7,
+       "zoom": {
+        "at": {
+         "x": 1920,
+         "y": 110
+        },
+        "from": 1.3,
+        "to": 1.32
+       }
+      }
+     ]
     }
    ]
   },
   {
-   "id": "structures",
-   "type": "shots",
+   "id": "choose",
    "tier": "Pro",
-   "steps": [
+   "beats": [
     {
-     "shot": "hub",
-     "label": "Treatment hub"
+     "say": "Help me choose guides them.",
+     "caption": "Help me choose",
+     "steps": [
+      {
+       "shot": "guide-0",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 1920,
+         "y": 110
+        },
+        "from": 1.15,
+        "to": 1.3
+       }
+      },
+      {
+       "shot": "guide-1",
+       "share": 0.7,
+       "zoom": {
+        "at": {
+         "x": 1920,
+         "y": 110
+        },
+        "from": 1.3,
+        "to": 1.32
+       }
+      }
+     ]
     },
     {
-     "shot": "concern-1",
-     "label": "Concern first"
-    },
-    {
-     "shot": "doctors-1",
-     "label": "Doctor portfolios"
+     "say": "Compare puts two cases side by side.",
+     "caption": "Compare two cases",
+     "steps": [
+      {
+       "shot": "compare-0",
+       "to": "to",
+       "click": true,
+       "share": 0.8,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 540
+        },
+        "from": 1,
+        "to": 1.02
+       }
+      },
+      {
+       "shot": "compare-1",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 540
+        },
+        "from": 1.02,
+        "to": 1.05
+       }
+      }
+     ]
     }
    ]
   },
   {
-   "id": "discovery",
-   "type": "shots",
+   "id": "design",
    "tier": "Pro",
-   "steps": [
+   "beats": [
     {
-     "shot": "map-1",
-     "to": "to",
-     "label": "Find by area",
-     "zoom": {
-      "at": {
-       "x": 1920,
-       "y": 110
+     "say": "Six design templates,",
+     "caption": "Six design templates",
+     "steps": [
+      {
+       "shot": "template-luxury"
       },
-      "from": 1.1,
-      "to": 1.3
-     }
+      {
+       "shot": "template-modern"
+      }
+     ]
     },
     {
-     "shot": "map-2",
-     "label": "Find by area",
-     "share": 0.8,
-     "zoom": {
-      "at": {
-       "x": 1920,
-       "y": 110
+     "say": "with live preview.",
+     "caption": "Templates with live preview",
+     "steps": [
+      {
+       "shot": "template-editorial"
       },
-      "from": 1.3,
-      "to": 1.34
-     }
+      {
+       "shot": "template-photo-first"
+      }
+     ]
     },
     {
-     "shot": "guide-0",
-     "to": "to",
-     "label": "Help me choose",
-     "zoom": {
-      "at": {
-       "x": 1920,
-       "y": 110
-      },
-      "from": 1.1,
-      "to": 1.3
-     }
+     "say": "Watermarked copies.",
+     "caption": "Watermarked copies",
+     "steps": [
+      {
+       "shot": "watermark",
+       "zoom": {
+        "rect": "mark",
+        "from": 1.05,
+        "to": 1.7
+       }
+      }
+     ]
     },
     {
-     "shot": "guide-1",
-     "label": "Help me choose",
-     "share": 0.8,
-     "zoom": {
-      "at": {
-       "x": 1920,
-       "y": 110
-      },
-      "from": 1.3,
-      "to": 1.34
-     }
+     "say": "And sensitive photos stay blurred",
+     "caption": "Sensitive-photo notice",
+     "steps": [
+      {
+       "shot": "notice-0",
+       "to": "to",
+       "click": true,
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 300
+        },
+        "from": 1.02,
+        "to": 1.06
+       }
+      }
+     ]
+    },
+    {
+     "say": "until visitors choose.",
+     "caption": "Sensitive-photo notice",
+     "steps": [
+      {
+       "shot": "notice-1",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 300
+        },
+        "from": 1.06,
+        "to": 1.1
+       }
+      }
+     ]
     }
    ]
-  },
-  {
-   "id": "compare",
-   "type": "shots",
-   "tier": "Pro",
-   "min": 4,
-   "steps": [
-    {
-     "shot": "compare-0",
-     "to": "to",
-     "label": "Compare cases",
-     "share": 0.9
-    },
-    {
-     "shot": "compare-1",
-     "label": "Compare cases",
-     "share": 1.2
-    }
-   ],
-   "focus": {
-    "x": 960,
-    "y": 540,
-    "from": 1,
-    "to": 1.06
-   }
-  },
-  {
-   "id": "templates",
-   "type": "shots",
-   "tier": "Pro",
-   "steps": [
-    {
-     "shot": "template-luxury",
-     "label": "Luxury"
-    },
-    {
-     "shot": "template-modern",
-     "label": "Modern"
-    },
-    {
-     "shot": "template-editorial",
-     "label": "Editorial"
-    },
-    {
-     "shot": "template-photo-first",
-     "label": "Photo-first"
-    }
-   ]
-  },
-  {
-   "id": "watermarks",
-   "type": "shots",
-   "tier": "Pro",
-   "steps": [
-    {
-     "shot": "watermark",
-     "label": "Watermarks",
-     "zoom": {
-      "rect": "mark",
-      "from": 1,
-      "to": 1.9
-     }
-    }
-   ]
-  },
-  {
-   "id": "notice",
-   "type": "shots",
-   "tier": "Pro",
-   "steps": [
-    {
-     "shot": "notice-0",
-     "to": "to",
-     "label": "Sensitive-content notice"
-    },
-    {
-     "shot": "notice-1",
-     "label": "Sensitive-content notice"
-    }
-   ],
-   "focus": {
-    "x": 960,
-    "y": 300,
-    "from": 1.04,
-    "to": 1.1
-   }
-  },
-  {
-   "id": "free",
-   "type": "shots",
-   "tier": "Free",
-   "steps": [
-    {
-     "shot": "free-0",
-     "to": "to"
-    },
-    {
-     "shot": "free-1"
-    }
-   ],
-   "focus": {
-    "x": 960,
-    "y": 480,
-    "from": 1,
-    "to": 1.06
-   }
   },
   {
    "id": "end",
-   "type": "end",
-   "min": 5.4,
-   "extra": 1.1,
-   "title": "Try the live demos",
-   "url": "medicalbeforeaftergallery.com/demo",
-   "subtitle": "Start free on WordPress.org · Pro: one-time payment",
-   "note": [
-    "Sample content: the doctors are fictional and some photos were created with an image model.",
-    "Some photos: Wikimedia Commons, Alexander Rivkin (CC BY-SA 3.0) and Yvul (CC BY-SA 4.0)."
+   "tier": "Free",
+   "tail": 0.4,
+   "beats": [
+    {
+     "say": "Start free on WordPress dot org,",
+     "caption": "Start free on WordPress.org",
+     "steps": [
+      {
+       "shot": "free-1",
+       "zoom": {
+        "at": {
+         "x": 960,
+         "y": 480
+        },
+        "from": 1,
+        "to": 1.05
+       }
+      }
+     ]
+    },
+    {
+     "say": "and upgrade to Pro, at medical before after gallery dot com.",
+     "card": "end",
+     "min": 5.2
+    }
    ]
   }
  ]

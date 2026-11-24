@@ -48,7 +48,7 @@ export const showcase: ShowcaseItem[] = [
     thumbs: [
       { label: 'Slider cards', demo: '/pro-demos/card-slider/', image: card('card-slider'), imageAlt: 'Slider cards: a before and after slider on each card' },
       { label: 'Spotlight', demo: '/pro-demos/spotlight-layout/', image: card('spotlight-layout'), imageAlt: 'Spotlight layout: one featured case in a large tile' },
-      { label: 'Card extras', demo: '/pro-demos/card-extras/', image: card('card-extras'), imageAlt: 'Cards with the doctor, badges and result chips' },
+      { label: 'Card extras', demo: '/pro-demos/card-extras/', image: card('card-extras'), imageAlt: 'Cards with the doctor and New and Progress badges' },
     ],
   },
   {
