@@ -84,7 +84,7 @@ export const showcase: ShowcaseItem[] = [
       'Comparison desk: side by side with a linked magnifier; Case story: a scrolling case study',
     ],
     image: big('window-cinema'),
-    imageAlt: 'Screenshot of the Cinema case window: a smile case full screen with the before and after slider',
+    imageAlt: 'Screenshot of the Cinema case window: a hair transplant case full screen with a timeline of its progress photos',
     demo: '/pro-demos/window-cinema/',
     demoLabel: 'Open the Cinema demo',
     docs: '/docs/case-windows/',

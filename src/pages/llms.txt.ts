@@ -40,7 +40,7 @@ ${specialties.map((s) => `- [${s.title}](${u(`/for/${s.slug}/`)})`).join('\n')}
 
 - [WordPress.org plugin page](${site.wpOrgUrl})
 - [WordPress.org reviews](${site.wpOrgReviewsUrl})
-- [Demo site](${site.demoSite})
+- [Live demos](${u('/demo/')})
 `;
 
   return new Response(text, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

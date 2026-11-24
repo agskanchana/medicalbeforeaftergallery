@@ -25,7 +25,7 @@ export const faqItems: FaqItem[] = [
   {
     question: 'Can I see it working before I install anything?',
     answer:
-      'Yes. The <a href="/demo/">live demos</a> show each free and Pro feature on its own page with the same sample cases: you can filter, open cases, drag the slider and step through progress stages.',
+      'Yes. The <a href="/demo/">live demos</a> show the main Pro and free features on their own pages with the same sample cases: you can filter, open cases, drag the slider and step through progress stages.',
   },
   {
     question: 'Will watermarks change my original photos?',

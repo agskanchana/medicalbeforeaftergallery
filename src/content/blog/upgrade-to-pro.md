@@ -228,4 +228,4 @@ The question isn't whether you can afford to upgrade. It's whether you can affor
 >
 > [Get MBA Gallery Pro - $99](/pricing/)
 >
-> Or [view the live demo](https://demo.medicalbeforeaftergallery.com/) to see Pro features in action
+> Or [view the live demos](/demo/) to see Pro features in action

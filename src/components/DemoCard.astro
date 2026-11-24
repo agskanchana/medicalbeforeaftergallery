@@ -1,0 +1,133 @@
+---
+// One demo on the /demo/ page: screenshot, title, one line, "Open demo". A card that stands
+// for several demo pages also links each of them.
+import type { DemoCard } from '../utils/demos';
+
+interface Props {
+  card: DemoCard;
+}
+const { card } = Astro.props;
+---
+
+<li class="demo-card card card-hover">
+  <div class="demo-shot">
+    <img src={card.image} alt={card.alt} width="800" height="450" loading="lazy" decoding="async" />
+  </div>
+  <div class="demo-body">
+    <h3 class="demo-title">
+      <a href={card.url} target="_blank" rel="noopener" class="demo-link">
+        {card.title}
+        <span class="sr-only"> — open the demo (new tab)</span>
+      </a>
+    </h3>
+    <p>{card.line}</p>
+    {
+      card.variants.length > 0 && (
+        <ul class="demo-variants">
+          {card.variants.map((v) => (
+            <li>
+              <a href={v.url} target="_blank" rel="noopener">
+                {v.tab}
+                <span class="sr-only"> — {v.title}, open the demo (new tab)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <span class="demo-go" aria-hidden="true">
+      Open demo <i class="fa-solid fa-arrow-up-right-from-square"></i>
+    </span>
+  </div>
+</li>
+
+<style>
+  .demo-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .demo-shot {
+    aspect-ratio: 16 / 9;
+    background: var(--bg-softer);
+    border-bottom: 1px solid var(--border);
+  }
+  .demo-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .demo-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1.15rem 1.15rem;
+    flex: 1;
+  }
+  .demo-title {
+    font-size: 1.02rem;
+  }
+  .demo-link {
+    color: var(--ink);
+  }
+  /* The whole card is the link's target area. */
+  .demo-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .demo-link:focus-visible {
+    outline: none;
+  }
+  .demo-card:has(.demo-link:focus-visible) {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 2px;
+  }
+  .demo-body p {
+    color: var(--text-light);
+    font-size: 0.92rem;
+  }
+  .demo-variants {
+    position: relative;
+    z-index: 1; /* Above the card's own link. */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+  }
+  .demo-variants a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0.15rem 0.7rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .demo-variants a:hover {
+    border-color: var(--primary-light);
+    color: var(--primary-dark);
+  }
+  .demo-variants a:focus-visible {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 2px;
+  }
+  .demo-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+  }
+  .demo-card:hover .demo-link {
+    color: var(--primary-dark);
+  }
+</style>

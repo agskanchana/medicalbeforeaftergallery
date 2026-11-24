@@ -140,7 +140,7 @@ While high-quality images are essential, they can also slow down your website if
 
 > ### Ready to Transform Your Practice's Online Presence?
 >
-> See what an interactive gallery looks like with your own eyes: every feature has a working demo page.
+> See what an interactive gallery looks like with your own eyes: its main features have working demo pages.
 >
 > [Try the live demos](/demo/)
 

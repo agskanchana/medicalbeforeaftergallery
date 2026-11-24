@@ -68,4 +68,4 @@ Annotations pair naturally with the rest of the Pro toolkit — [multiple image 
 >
 > Image annotations are included in **MBA Gallery Pro** — a one-time $99 lifetime license with a 30-day money-back guarantee.
 >
-> [See pricing](/pricing/) · [View the live demo](https://demo.medicalbeforeaftergallery.com/)
+> [See pricing](/pricing/) · [View the live demos](/demo/)

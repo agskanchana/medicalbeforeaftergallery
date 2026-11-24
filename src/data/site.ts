@@ -15,7 +15,6 @@ export const site = {
 
   // External properties
   demoUrl: '/demo/',
-  demoSite: 'https://demo.medicalbeforeaftergallery.com/',
   wpOrgUrl: 'https://wordpress.org/plugins/medical-before-after-gallery/',
   wpOrgReviewsUrl: 'https://wordpress.org/support/plugin/medical-before-after-gallery/reviews/',
 

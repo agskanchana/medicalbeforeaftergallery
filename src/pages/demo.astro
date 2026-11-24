@@ -1,35 +1,38 @@
 ---
-// Landing page for the live demos. One card per working demo page, grouped as on the demo
-// site. The list is src/data/demos.ts; a page is shown only while it passes the browser check
-// in scripts/capture-demo-shots.mjs (src/data/demo-check.json).
+// The one landing page for all live demos. A "Start here" row, then the Pro demos in groups,
+// then the free plugin's. The list is src/data/demos.ts; a page is linked only while it passes
+// the browser check in scripts/capture-demo-shots.mjs (src/data/demo-check.json).
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaBanner from '../components/CtaBanner.astro';
+import DemoCard from '../components/DemoCard.astro';
 import { site } from '../data/site';
-import { demoSections, liveDemos } from '../utils/demos';
+import { demoUrl } from '../data/demos';
+import { demoSections, liveDemos, startHere } from '../utils/demos';
+
+const pro = demoSections.filter((s) => s.tier === 'pro');
+const free = demoSections.filter((s) => s.tier === 'free');
 
 const itemListJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'Medical Before After Gallery live demos',
   numberOfItems: liveDemos.length,
-  itemListElement: demoSections
-    .flatMap((s) => s.families.flatMap((f) => f.items))
-    .map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.title, url: d.url })),
+  itemListElement: liveDemos.map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.title, url: demoUrl(d.path) })),
 };
 ---
 
 <BaseLayout
   title="Live demos"
-  description={`Try every feature of the Medical Before After Gallery plugin on its own live demo page: ${liveDemos.length} pages covering the free plugin and the Pro layouts, category styles, case windows, embeds and protection.`}
+  description={`${liveDemos.length} working demos of the Medical Before After Gallery plugin: Pro case windows, layouts and cards, category styles with icons, embeds, design templates and photo protection, and the free plugin.`}
   jsonLd={itemListJsonLd}
 >
   <section class="page-hero">
     <div class="container">
       <span class="eyebrow">Live demos</span>
-      <h1>Try every feature, <span class="grad">live</span></h1>
+      <h1>Try it <span class="grad">live</span></h1>
       <p class="lead">
-        {liveDemos.length} demo pages, each showing one thing the free plugin or the Pro add-on can do, with the same sample
-        cases. Every page works: filter the cases, open one, drag the slider, step through the stages.
+        {liveDemos.length} working demos with the same sample cases. Filter, open a case, drag the slider, step through the
+        stages.
       </p>
       <nav class="jump" aria-label="Demo groups">
         {
@@ -43,54 +46,74 @@ const itemListJsonLd = {
     </div>
   </section>
 
+  <section class="section demo-section" id="start" aria-labelledby="start-title">
+    <div class="container">
+      <header class="group-head">
+        <span class="badge badge-pro">Pro</span>
+        <h2 id="start-title">Start here</h2>
+        <p>Four demos to see first.</p>
+      </header>
+      <ul class="demo-grid demo-grid-start">
+        {startHere.map((c) => <DemoCard card={c} />)}
+      </ul>
+    </div>
+  </section>
+
   {
-    demoSections.map((section, i) => (
-      <section class:list={['section', 'demo-section', { 'section-soft': i % 2 === 1 }]} id={section.id} aria-labelledby={`${section.id}-title`}>
+    pro.map((section, i) => (
+      <section class:list={['section', 'demo-section', { 'section-soft': i % 2 === 0 }]} id={section.id} aria-labelledby={`${section.id}-title`}>
         <div class="container">
           <header class="group-head">
-            <span class:list={['badge', section.tier === 'pro' ? 'badge-pro' : 'badge-free']}>{section.tier === 'pro' ? 'Pro' : 'Free'}</span>
+            <span class="badge badge-pro">Pro</span>
             <h2 id={`${section.id}-title`}>{section.title}</h2>
             <p>{section.intro}</p>
           </header>
-          {section.families.map((family) => (
-            <div class="family">
-              {section.families.length > 1 && <h3 class="family-title">{family.name}</h3>}
-              <ul class="demo-grid">
-                {family.items.map((d) => (
-                  <li class="demo-card card">
-                    <div class="demo-shot">
-                      <img src={d.image} alt={`Screenshot: ${d.shot}`} width="800" height="450" loading="lazy" decoding="async" />
-                    </div>
-                    <div class="demo-body">
-                      <h4>
-                        <a href={d.url} target="_blank" rel="noopener" class="demo-link">
-                          {d.title}
-                          <span class="sr-only"> — open the live demo (new tab)</span>
-                        </a>
-                      </h4>
-                      <p>{d.description}</p>
-                      <span class="demo-go" aria-hidden="true">
-                        Open live demo <i class="fa-solid fa-arrow-up-right-from-square" />
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <ul class="demo-grid">
+            {section.cards.map((c) => <DemoCard card={c} />)}
+          </ul>
         </div>
       </section>
     ))
   }
 
-  <section class="section">
+  {
+    free.map((section) => (
+      <section class:list={['section', 'demo-section', { 'section-soft': pro.length % 2 === 0 }]} id={section.id} aria-labelledby={`${section.id}-title`}>
+        <div class="container">
+          <header class="group-head">
+            <span class="badge badge-free">Free</span>
+            <h2 id={`${section.id}-title`}>{section.title}</h2>
+            <p>{section.intro}</p>
+          </header>
+          <ul class="free-list">
+            {section.cards.map((c) => (
+              <li class="free-item card">
+                <img src={c.image} alt={c.alt} width="160" height="90" loading="lazy" decoding="async" />
+                <div>
+                  <h3 class="free-title">
+                    <a href={c.url} target="_blank" rel="noopener" class="free-link">
+                      {c.title}
+                      <span class="sr-only"> — open the demo (new tab)</span>
+                    </a>
+                  </h3>
+                  <p>{c.line}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class:list={['section', { 'section-soft': pro.length % 2 === 1 }]}>
     <div class="container about">
       <h2>About the demo site</h2>
       <p>
-        The demos run on <a href={site.demoSite} target="_blank" rel="noopener">demo.medicalbeforeaftergallery.com</a>, a static copy of
-        a WordPress site with the free plugin {site.freeVersion} and Pro {site.proVersion}. Each page says how to turn its feature on.
-        The cases are sample content: the doctors are fictional, some photos were created with an image model, and three cases use
-        photos from Wikimedia Commons (Alexander Rivkin, CC BY-SA 3.0; Yvul, CC BY-SA 4.0), as each of those cases says.
+        The demos run on demo.medicalbeforeaftergallery.com, a static copy of a WordPress site with the free plugin
+        {' '}{site.freeVersion} and Pro {site.proVersion}. Each page says how to turn its feature on. The cases are sample
+        content: the doctors are fictional, some photos were created with an image model, and three cases use photos from
+        Wikimedia Commons (Alexander Rivkin, CC BY-SA 3.0; Yvul, CC BY-SA 4.0), as each of those cases says.
       </p>
     </div>
   </section>
@@ -149,7 +172,7 @@ const itemListJsonLd = {
   }
 
   .demo-section {
-    padding-block: clamp(3rem, 7vw, 5rem);
+    padding-block: clamp(2.5rem, 6vw, 4.25rem);
     scroll-margin-top: var(--header-h);
   }
   .group-head {
@@ -164,77 +187,60 @@ const itemListJsonLd = {
     color: var(--text-light);
     margin-top: 0.4rem;
   }
-  .family + .family {
-    margin-top: 2.25rem;
-  }
-  .family-title {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    color: var(--text);
-  }
   .demo-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
     gap: 1.25rem;
   }
-  .demo-card {
+  .demo-grid-start {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  }
+  .free-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 0.9rem;
+  }
+  .free-item {
     position: relative;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem;
   }
-  .demo-shot {
+  .free-item img {
+    flex: none;
+    width: 120px;
+    height: auto;
     aspect-ratio: 16 / 9;
-    background: var(--bg-softer);
-    border-bottom: 1px solid var(--border);
-  }
-  .demo-shot img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
   }
-  .demo-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-    padding: 1.1rem 1.2rem 1.25rem;
-    flex: 1;
+  .free-title {
+    font-size: 0.98rem;
   }
-  .demo-body h4 {
-    font-size: 1.02rem;
+  .free-item p {
+    color: var(--text-light);
+    font-size: 0.86rem;
+    margin-top: 0.2rem;
   }
-  .demo-link {
+  .free-link {
     color: var(--ink);
   }
-  /* The whole card is the link's target area. */
-  .demo-link::after {
+  .free-link::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
   }
-  .demo-link:focus-visible {
+  .free-link:focus-visible {
     outline: none;
   }
-  .demo-card:has(.demo-link:focus-visible) {
+  .free-item:has(.free-link:focus-visible) {
     outline: 3px solid var(--primary-light);
     outline-offset: 2px;
   }
-  .demo-body p {
-    color: var(--text-light);
-    font-size: 0.92rem;
-    flex: 1;
-  }
-  .demo-go {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.3rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--primary-dark);
-  }
-  .demo-card:hover .demo-link {
+  .free-item:hover .free-link {
     color: var(--primary-dark);
   }
 
