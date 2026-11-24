@@ -4,8 +4,8 @@ description: "Step-by-step guide to creating a stunning portfolio of veneers, te
 date: 2024-12-08
 author: "Dr. Lisa Thompson"
 category: "Best Practices"
-image: "https://images.unsplash.com/photo-1629909615184-74f495363b67?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-imageAlt: "How to Create a Stunning Veneers, Whitening & Orthodontics Portfolio for Your Dental Website"
+image: "/images/features/card-stacked.webp"
+imageAlt: "Demo gallery cards with the before photo above the after photo"
 tags: ["Portfolio Creation","Veneers","Teeth Whitening","Orthodontics","Dental Photography","Best Practices"]
 ---
 

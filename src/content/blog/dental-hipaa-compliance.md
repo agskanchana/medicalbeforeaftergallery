@@ -4,8 +4,8 @@ description: "Learn how to display impressive dental before-after photos while s
 date: 2024-12-05
 author: "Legal Team"
 category: "HIPAA Compliance"
-image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-imageAlt: "How to Showcase Dental Transformations on Your Website Without Violating HIPAA"
+image: "/images/features/sensitive-photos-notice.webp"
+imageAlt: "Demo gallery with each case photo blurred behind its own Show button"
 tags: ["HIPAA Compliance","Dental Photography","Before-After Gallery","Patient Privacy","Legal Compliance"]
 ---
 

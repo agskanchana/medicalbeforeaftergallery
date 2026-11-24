@@ -82,12 +82,13 @@ const FEATURE = new Set([
   '/pro-demos/compare-two-cases/', '/pro-demos/find-by-area/', '/pro-demos/help-me-choose/', '/pro-demos/template-luxury/',
   '/pro-demos/template-modern/', '/pro-demos/sensitive-photos-notice/', '/pro-demos/automatic-watermarks/', '/pro-demos/area-then-treatment/',
   '/pro-demos/story-mode-on-phones/', '/pro-demos/card-extras/', '/pro-demos/spotlight-layout/',
+  '/pro-demos/image-annotations/', '/pro-demos/card-stacked/', // blog covers
 ]);
 // Pages whose 1920×1080 capture the video uses.
 const VIDEO = new Set([
   '/free/', '/pro-demos/masonry-layout/', '/pro-demos/card-slider/', '/pro-demos/icon-chips/', '/pro-demos/area-then-treatment/',
   '/pro-demos/treatment-hub/', '/pro-demos/find-by-area/', '/pro-demos/compare-two-cases/', '/pro-demos/window-cinema/',
-  '/pro-demos/progress-stages/', '/pro-demos/window-comparison-desk/', '/pro-demos/window-drawer/', '/pro-demos/single-case-stages/',
+  '/pro-demos/progress-stages/', '/pro-demos/window-comparison-desk/', '/pro-demos/window-drawer/', '/pro-demos/window-case-story/', '/pro-demos/single-case-stages/',
   '/pro-demos/category-carousel/', '/pro-demos/doctor-portfolios/', '/pro-demos/sensitive-photos-notice/',
   '/pro-demos/automatic-watermarks/', '/pro-demos/template-luxury/', '/pro-demos/story-mode-on-phones/', '/pro-demos/collections/',
 ]);
@@ -319,6 +320,12 @@ for (const demo of pages) {
       await page.waitForSelector('.mba-pro-discovery-region', { timeout: 8000 }).catch(() => {});
       ok('the map renders', (await page.locator('.mba-pro-discovery-region').count()) > 3);
     }
+    // Concern first opens with text buttons only: a concern has to be chosen before any photo shows.
+    if (/concern-first/.test(demo.path)) {
+      await page.locator('.mba-pro-organise-concern').first().click().catch(() => {});
+      await page.waitForSelector('.medbeafgallery-gallery-item', { state: 'visible', timeout: 6000 }).catch(() => {});
+      ok('a concern shows its cases', (await page.locator('.medbeafgallery-gallery-item:visible').count()) > 0);
+    }
     const scroll = await page.evaluate(() => ({ w: document.documentElement.scrollWidth, v: document.documentElement.clientWidth }));
     warn('no sideways scroll at 1536 px', scroll.w <= scroll.v, `page is ${scroll.w - scroll.v}px wider than the window`);
     const images = await brokenImages(page);
@@ -326,8 +333,8 @@ for (const demo of pages) {
 
     // It works: a case window opens and closes, or the embed's control responds.
     if (kind === 'gallery') {
-      if (/treatment-hub|concern-first/.test(demo.path)) {
-        await page.locator('.mba-pro-organise-treatment, .mba-pro-organise-concerns > *').first().locator('button, a').first().click().catch(() => {});
+      if (/treatment-hub/.test(demo.path)) {
+        await page.locator('.mba-pro-organise-treatment').first().locator('button, a').first().click().catch(() => {});
         await page.waitForSelector('.medbeafgallery-gallery-item', { state: 'visible', timeout: 6000 }).catch(() => {});
         ok('a treatment shows its cases', (await page.locator('.medbeafgallery-gallery-item:visible').count()) > 0);
       }
@@ -342,8 +349,8 @@ for (const demo of pages) {
         }
         ok('the case window closes', await closeCase(page));
       }
-      if (/treatment-hub|concern-first/.test(demo.path)) {
-        // Back to the page's first view for the screenshot.
+      if (/treatment-hub/.test(demo.path)) {
+        // Back to the page's first view for the screenshot (Concern first keeps the chosen concern).
         await page.goto(BASE + demo.path, { waitUntil: 'load' });
         await settle(page);
       }

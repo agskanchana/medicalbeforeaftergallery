@@ -4,8 +4,8 @@ description: "Discover why a professional before-after gallery is essential for 
 date: 2024-12-15
 author: "Dr. Sarah Mitchell"
 category: "Dental Marketing"
-image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-imageAlt: "5 Reasons Your Cosmetic Dentistry Practice Needs a Professional Before-After Gallery"
+image: "/images/features/category-carousel.webp"
+imageAlt: "A sliding row of smile cases from the demo site, each with its before and after photos"
 tags: ["Cosmetic Dentistry","Dental Marketing","Before-After Gallery","Patient Conversion","Dental SEO","Practice Growth","Website Optimization"]
 ---
 
@@ -140,9 +140,9 @@ While high-quality images are essential, they can also slow down your website if
 
 > ### Ready to Transform Your Practice's Online Presence?
 >
-> Join hundreds of cosmetic dentistry practices that have upgraded their websites with professional before-after galleries. See the difference an interactive, user-friendly gallery can make for your patient conversion rates.
+> See what an interactive gallery looks like with your own eyes: every feature has a working demo page.
 >
-> [Explore Gallery Solutions](/pricing/)
+> [Try the live demos](/demo/)
 
 ## Conclusion: The Competitive Necessity of Professional Galleries
 

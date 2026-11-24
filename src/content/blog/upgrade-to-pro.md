@@ -4,8 +4,8 @@ description: "Discover why medical professionals are upgrading to MBA Gallery Pr
 date: 2026-01-06
 author: "MBA Gallery Team"
 category: "Product"
-image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-imageAlt: "Why Upgrade to MBA Gallery Pro? 7 Features That Transform Your Medical Practice"
+image: "/images/features/window-cinema.webp"
+imageAlt: "A demo case open in the Pro Cinema case window"
 tags: ["MBA Gallery Pro","Upgrade","WordPress Plugin","Medical Marketing","Before-After Gallery","ROI"]
 ---
 

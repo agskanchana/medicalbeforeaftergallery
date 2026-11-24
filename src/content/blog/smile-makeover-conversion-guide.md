@@ -4,8 +4,8 @@ description: "Master the art of displaying smile makeovers online. Learn proven 
 date: 2024-12-12
 author: "Dr. Michael Chen"
 category: "Patient Conversion"
-image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-imageAlt: "The Complete Guide to Displaying Smile Makeovers That Convert Website Visitors into Patients"
+image: "/images/features/card-slider.webp"
+imageAlt: "Demo gallery cards with a before and after slider on each card"
 tags: ["Smile Makeovers","Patient Conversion","Dental Photography","Website Optimization","Before-After Gallery","Dental Marketing","Cosmetic Dentistry"]
 ---
 

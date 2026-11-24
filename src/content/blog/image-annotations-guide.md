@@ -4,8 +4,8 @@ description: "Numbered hotspots let you point out exactly what changed in a befo
 date: 2026-06-13
 author: "MBA Gallery Team"
 category: "Product"
-image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-imageAlt: "Reviewing a before and after medical case on screen"
+image: "/images/features/image-annotations.webp"
+imageAlt: "A demo case with numbered markers on the photo"
 tags: ["Image Annotations", "Pro Features", "Patient Education", "Before-After Gallery", "Tutorials"]
 ---
 

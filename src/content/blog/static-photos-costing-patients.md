@@ -4,8 +4,8 @@ description: "Learn why static before-after photos are ineffective and costing y
 date: 2024-12-10
 author: "Jennifer Martinez"
 category: "Practice Growth"
-image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-imageAlt: "Why Static Before-After Photos Are Costing Your Dental Practice New Patients (And What to Do Instead)"
+image: "/images/features/free.webp"
+imageAlt: "The free plugin on the demo site: category tiles above before and after cards"
 tags: ["Static vs Interactive","Conversion Optimization","Dental Marketing","Practice Growth","Website ROI","Patient Acquisition"]
 ---
 
