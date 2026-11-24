@@ -3,6 +3,7 @@
 //
 //   NODE_PATH=<folder with playwright-core> node scripts/capture-demo-shots.mjs --demo=<export folder>
 //     [--only=part,of,path]  only pages whose path contains one of these
+//     [--from=/path/]         start at this page, keeping the results before it (after a stop)
 //     [--no-shots]           check only, write no images
 //     [--port=8095]
 //
@@ -18,7 +19,7 @@
 // Images (WebP, encoded by Chrome's canvas — no image library needed):
 //   public/images/demos/<slug>.webp      800×450, one per page (the /demo/ cards)
 //   public/images/features/<slug>.webp  1600×900, for the pages in FEATURE (home and features)
-//   scripts/video/shots/<name>.jpg      1920×1080 sources for the feature video (+ meta.json)
+// (The feature video has its own capture: scripts/video/capture.mjs.)
 // Only the demo export is ever captured: its photos are publishable. Never point this at the
 // development site.
 import fs from 'node:fs';
@@ -47,14 +48,13 @@ const { demos, demoSlug } = await import(pathToFileURL(path.join(ROOT, 'src/data
 
 const OUT_CARDS = path.join(ROOT, 'public/images/demos');
 const OUT_FEATURES = path.join(ROOT, 'public/images/features');
-const OUT_VIDEO = path.join(ROOT, 'scripts/video/shots');
 const CHECK_FILE = path.join(ROOT, 'src/data/demo-check.json');
 
 // What state each page is photographed in (default: the gallery in view).
 const ACTION = {
   '/free/plain-case-window/': 'open',
   '/pro-demos/doctors/': 'open',
-  '/pro-demos/window-cinema/': 'open',
+  '/pro-demos/window-cinema/': 'cinema-stage',
   '/pro-demos/window-drawer/': 'open',
   '/pro-demos/window-comparison-desk/': 'open',
   '/pro-demos/window-case-story/': 'open',
@@ -84,15 +84,6 @@ const FEATURE = new Set([
   '/pro-demos/story-mode-on-phones/', '/pro-demos/card-extras/', '/pro-demos/spotlight-layout/',
   '/pro-demos/image-annotations/', '/pro-demos/card-stacked/', // blog covers
 ]);
-// Pages whose 1920×1080 capture the video uses.
-const VIDEO = new Set([
-  '/free/', '/pro-demos/masonry-layout/', '/pro-demos/card-slider/', '/pro-demos/icon-chips/', '/pro-demos/area-then-treatment/',
-  '/pro-demos/treatment-hub/', '/pro-demos/find-by-area/', '/pro-demos/compare-two-cases/', '/pro-demos/window-cinema/',
-  '/pro-demos/progress-stages/', '/pro-demos/window-comparison-desk/', '/pro-demos/window-drawer/', '/pro-demos/window-case-story/', '/pro-demos/single-case-stages/',
-  '/pro-demos/category-carousel/', '/pro-demos/doctor-portfolios/', '/pro-demos/sensitive-photos-notice/',
-  '/pro-demos/automatic-watermarks/', '/pro-demos/template-luxury/', '/pro-demos/story-mode-on-phones/', '/pro-demos/collections/',
-]);
-
 const DESKTOP = { viewport: { width: 1536, height: 864 }, deviceScaleFactor: 1.25 }; // = 1920×1080 pixels
 const PHONE = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true };
 
@@ -230,7 +221,9 @@ async function encode(png, width, height, { mode = 'cover', quality = 0.82, type
 }
 
 // ── Main ────────────────────────────────────────────────────────────────────────────────────
-const pages = demos.filter((d) => !ONLY.length || ONLY.some((o) => d.path.includes(o)));
+const pages = demos
+  .filter((d) => !ONLY.length || ONLY.some((o) => d.path.includes(o)))
+  .filter((d, i, all) => { const from = String(arg('from', '')); return !from || i >= all.findIndex((x) => x.path === from); });
 if (!fs.existsSync(path.join(DEMO, 'index.html'))) {
   console.error(`No demo export at ${DEMO} (pass --demo=<folder>)`);
   process.exit(2);
@@ -238,23 +231,44 @@ if (!fs.existsSync(path.join(DEMO, 'index.html'))) {
 for (const d of demos) {
   if (!fs.existsSync(path.join(DEMO, d.path, 'index.html'))) console.warn(`warning: ${d.path} is not in the export`);
 }
-if (SHOTS) for (const dir of [OUT_CARDS, OUT_FEATURES, OUT_VIDEO]) fs.mkdirSync(dir, { recursive: true });
+if (SHOTS) for (const dir of [OUT_CARDS, OUT_FEATURES]) fs.mkdirSync(dir, { recursive: true });
 
 const server = await serveStatic(DEMO, PORT);
-const browser = await chromium.launch({
-  channel: 'chrome',
-  headless: true,
-  args: [`--host-resolver-rules=MAP demo.medicalbeforeaftergallery.com 127.0.0.1`, '--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable'],
-});
-const encContext = await browser.newContext();
-encoder = await encContext.newPage();
+// A fresh browser every few pages: a long run needs less memory, and a hung browser costs one page.
+const RESTART_EVERY = 12;
+let browser = null;
+async function freshBrowser() {
+  if (browser) await Promise.race([browser.close().catch(() => {}), new Promise((r) => setTimeout(r, 10000))]);
+  browser = await chromium.launch({
+    channel: 'chrome',
+    headless: true,
+    args: [`--host-resolver-rules=MAP demo.medicalbeforeaftergallery.com 127.0.0.1`, '--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable'],
+  });
+  encoder = await (await browser.newContext()).newPage();
+}
+await freshBrowser();
 
 const previous = fs.existsSync(CHECK_FILE) ? JSON.parse(fs.readFileSync(CHECK_FILE, 'utf8')) : { pages: {} };
-const results = ONLY.length ? { ...previous.pages } : {};
-const videoMeta = fs.existsSync(path.join(OUT_VIDEO, 'meta.json')) ? JSON.parse(fs.readFileSync(path.join(OUT_VIDEO, 'meta.json'), 'utf8')) : {};
+const FROM = String(arg('from', ''));
+const results = ONLY.length || FROM ? { ...previous.pages } : {};
 let totalChecks = 0;
 
+function save() {
+  const list = Object.values(results);
+  fs.writeFileSync(CHECK_FILE, JSON.stringify({
+    checked: new Date().toISOString().slice(0, 10),
+    export: path.basename(path.dirname(DEMO)) + '/' + path.basename(DEMO),
+    note: 'Written by scripts/capture-demo-shots.mjs. A page with ok:false is left off /demo/.',
+    passed: list.filter((r) => r.ok).length,
+    total: list.length,
+    pages: results,
+  }, null, 2) + '\n');
+}
+
+let done = 0;
 for (const demo of pages) {
+  if (done && done % RESTART_EVERY === 0) await freshBrowser();
+  done++;
   const slug = demoSlug(demo.path);
   const action = ACTION[demo.path] || 'view';
   const notice = action === 'notice';
@@ -281,7 +295,9 @@ for (const demo of pages) {
   page.on('request', (r) => { const u = r.url(); if (!/^(data|blob|about):/.test(u) && new URL(u).host !== HOST) log.foreign.push(u); });
 
   let png = null;
-  let meta = null;
+  // A page that hangs is a failed page, not a stalled run.
+  let hung = false;
+  const watchdog = setTimeout(() => { hung = true; browser.close().catch(() => {}); }, 150000);
   try {
     const response = await page.goto(BASE + demo.path, { waitUntil: 'load' });
     ok('status 200', response && response.status() === 200, String(response && response.status()));
@@ -297,9 +313,7 @@ for (const demo of pages) {
       ok('the notice covers the photos', state.overlay || state.blurred > 0, JSON.stringify(state));
       await page.waitForTimeout(600);
       const btn = page.locator('#medbeafgallery-consent-accept:visible, .mba-pro-veil button:visible').first();
-      const target = await btn.evaluate(rectOf).catch(() => null);
       png = await page.screenshot({ type: 'png' });
-      meta = { pointer: target };
       await page.locator('#medbeafgallery-consent-accept, .mba-pro-sensitive-bar button').first().click();
       await page.waitForTimeout(600);
       ok('the notice goes away', await page.evaluate(() => {
@@ -345,7 +359,6 @@ for (const demo of pages) {
         if (!png && action === 'open' && SHOTS) {
           await page.waitForTimeout(700);
           png = await page.screenshot({ type: 'png' });
-          meta = { pointer: clicked };
         }
         ok('the case window closes', await closeCase(page));
       }
@@ -398,21 +411,29 @@ for (const demo of pages) {
         ok('a case with stages opens', await page.waitForFunction(openWindow, null, { timeout: 5000 }).then(() => true).catch(() => false));
         await page.waitForSelector('.mba-pro-stages-item', { state: 'visible', timeout: 6000 }).catch(() => {});
         const item = page.locator('.mba-pro-stages-item', { hasText: '3 months' }).first();
-        const rect = await item.evaluate(rectOf).catch(() => null);
         await item.click().catch(() => {});
         await page.waitForTimeout(1200);
         png = await page.screenshot({ type: 'png' });
-        meta = { pointer: rect };
+        await closeCase(page);
+      } else if (action === 'cinema-stage') {
+        // The hair transplant case in Cinema, at one of its dated stages.
+        await page.evaluate(() => { const c = galleryData.find((x) => /FUE Hair/.test(x.title)); window.openModal(c.id); });
+        ok('a case with stages opens', await page.waitForFunction(openWindow, null, { timeout: 5000 }).then(() => true).catch(() => false));
+        const stops = page.locator('.mba-pro-viewer-timeline-stop');
+        await stops.first().waitFor({ state: 'visible', timeout: 6000 }).catch(() => {});
+        ok('Cinema shows the progress timeline', (await stops.count()) > 2);
+        await stops.nth(2).click().catch(() => {});
+        await page.mouse.move(1500, 850);
+        await page.waitForTimeout(1200);
+        png = await page.screenshot({ type: 'png' });
         await closeCase(page);
       } else if (action === 'zoom') {
-        const clicked = await openCase(page);
+        await openCase(page);
         await page.waitForTimeout(600);
         const zoom = page.locator('[aria-label="Zoom in"]:visible, .mba-pro-mmodal-zoom-in:visible').first();
-        const rect = await zoom.evaluate(rectOf).catch(() => clicked);
         for (let i = 0; i < 3; i++) await zoom.click().catch(() => {});
         await page.waitForTimeout(800);
         png = await page.screenshot({ type: 'png' });
-        meta = { pointer: rect };
         await closeCase(page);
       } else if (action === 'annotated') {
         const opened = await page.evaluate(() => {
@@ -433,23 +454,19 @@ for (const demo of pages) {
         await page.evaluate(() => { const b = document.querySelectorAll('.medbeafgallery-gallery-item input[type="checkbox"]'); b[0].click(); b[1].click(); });
         await page.waitForTimeout(500);
         const btn = page.locator('button:visible', { hasText: /^Compare/ }).last();
-        const rect = await btn.evaluate(rectOf).catch(() => null);
         await btn.click();
         const opened = await page.waitForFunction(openWindow, null, { timeout: 5000 }).then(() => true).catch(() => false);
         ok('the comparison opens', opened);
         await page.waitForTimeout(900);
         png = await page.screenshot({ type: 'png' });
-        meta = { pointer: rect };
         ok('the comparison closes', await closeCase(page));
       } else if (action === 'area' || action === 'guide') {
         await scrollToMain(page);
         const btn = page.locator('.mba-pro-discovery-button:visible').first();
-        const rect = await btn.evaluate(rectOf).catch(() => null);
         await btn.click();
         await page.waitForTimeout(1000);
         ok(action === 'area' ? 'the map opens' : 'the guided search opens', !!(await page.evaluate(openWindow)));
         png = await page.screenshot({ type: 'png' });
-        meta = { pointer: rect };
         await closeCase(page);
       } else if (action === 'single-stage') {
         await scrollToMain(page);
@@ -460,12 +477,10 @@ for (const demo of pages) {
           if (el) scrollTo(0, Math.max(0, el.getBoundingClientRect().top + scrollY - 28));
         });
         await page.waitForTimeout(400);
-        const rect = await button.evaluate(rectOf).catch(() => null);
         await button.click();
         await page.waitForTimeout(1000);
         ok('a stage photo fills the photo area', await page.evaluate(() => [...document.querySelectorAll('.mba-pro-scase img')].some((i) => i.getBoundingClientRect().width > 250 && i.naturalWidth > 0)));
         png = await page.screenshot({ type: 'png' });
-        meta = { pointer: rect };
       } else if (action !== 'phone-open') {
         await scrollToMain(page);
         png = await page.screenshot({ type: 'png' });
@@ -476,9 +491,11 @@ for (const demo of pages) {
     ok('no failed requests', !log.failed.length, log.failed.slice(0, 3).join(' | '));
     ok('no request to another host', !log.foreign.length, log.foreign.slice(0, 2).join(' | '));
   } catch (e) {
-    ok('ran without an error', false, String(e).slice(0, 200));
+    ok(hung ? 'finished within 150 s' : 'ran without an error', false, String(e).slice(0, 200));
   }
-  await context.close();
+  clearTimeout(watchdog);
+  if (hung || !browser.isConnected()) await freshBrowser();
+  else await context.close();
 
   // Story mode is a phone feature: photograph it on a phone.
   if (SHOTS && action === 'phone-open') {
@@ -492,7 +509,6 @@ for (const demo of pages) {
       ok('the phone Story window opens', !!clicked);
       await p.waitForTimeout(1200);
       png = await p.screenshot({ type: 'png' });
-      meta = { phone: true };
       await closeCase(p);
     } catch (e) {
       ok('phone capture ran', false, String(e).slice(0, 200));
@@ -504,67 +520,18 @@ for (const demo of pages) {
     const mode = action === 'phone-open' ? 'phone' : 'cover';
     fs.writeFileSync(path.join(OUT_CARDS, `${slug}.webp`), await encode(png, 800, 450, { mode }));
     if (FEATURE.has(demo.path)) fs.writeFileSync(path.join(OUT_FEATURES, `${slug}.webp`), await encode(png, 1600, 900, { mode, quality: 0.8 }));
-    if (VIDEO.has(demo.path)) {
-      if (mode === 'phone') fs.writeFileSync(path.join(OUT_VIDEO, `${slug}.png`), png);
-      else fs.writeFileSync(path.join(OUT_VIDEO, `${slug}.jpg`), await encode(png, 1920, 1080, { quality: 0.9, type: 'image/jpeg' }));
-      videoMeta[slug] = { ...(meta || {}), scale: mode === 'phone' ? PHONE.deviceScaleFactor : DESKTOP.deviceScaleFactor, title: demo.title };
-    }
   } else if (SHOTS) {
     problems.push('no screenshot');
   }
 
   if (log.favicon) notes.push('the export has no /favicon.ico (the browser asks for it)');
   results[demo.path] = { ok: problems.length === 0, problems, notes };
+  save();
   console.log(`${problems.length ? 'FAIL' : 'ok  '} ${demo.path}${problems.length ? ' — ' + problems.join('; ') : ''}${notes.length ? ' [note: ' + notes.join('; ') + ']' : ''}`);
-}
-
-// Two extra frames for the video's slider scene: the free case window in Before and After.
-if (SHOTS && (!ONLY.length || ONLY.some((o) => '/free/'.includes(o)))) {
-  const context = await browser.newContext(DESKTOP);
-  await context.addInitScript(() => { try { localStorage.setItem('mbaGalleryConsent', '1'); } catch { /* about:blank */ } });
-  const page = await context.newPage();
-  try {
-    await page.goto(BASE + '/free/', { waitUntil: 'load' });
-    await settle(page);
-    const clicked = await openCase(page);
-    await windowPhotosLoad(page);
-    const frames = {};
-    for (const view of ['Before', 'After']) {
-      await page.locator('#medbeafgallery-modal button:visible', { hasText: new RegExp(`^\\s*${view}\\s*$`) }).first().click().catch(() => {});
-      await page.waitForTimeout(900);
-      frames[view] = await page.screenshot({ type: 'png' });
-    }
-    const stage = await page.evaluate(() => {
-      const m = document.querySelector('#medbeafgallery-modal');
-      const imgs = m ? [...m.querySelectorAll('img')].filter((i) => i.getBoundingClientRect().width > 200) : [];
-      if (!imgs.length) return null;
-      const r = imgs[0].getBoundingClientRect();
-      return { x: r.x, y: r.y, w: r.width, h: r.height };
-    });
-    for (const view of ['Before', 'After']) {
-      fs.writeFileSync(path.join(OUT_VIDEO, `free-window-${view.toLowerCase()}.jpg`), await encode(frames[view], 1920, 1080, { quality: 0.9, type: 'image/jpeg' }));
-    }
-    videoMeta['free-window'] = { pointer: clicked, stage, scale: DESKTOP.deviceScaleFactor };
-    console.log('ok   video frames: free case window, Before and After');
-  } catch (e) {
-    console.log('FAIL video frames: ' + String(e).slice(0, 200));
-  }
-  await context.close();
 }
 
 await browser.close();
 server.close();
-
 const passed = Object.values(results).filter((r) => r.ok).length;
-fs.writeFileSync(CHECK_FILE, JSON.stringify({
-  checked: new Date().toISOString().slice(0, 10),
-  export: path.basename(path.dirname(DEMO)) + '/' + path.basename(DEMO),
-  note: 'Written by scripts/capture-demo-shots.mjs. A page with ok:false is left off /demo/.',
-  passed,
-  total: Object.keys(results).length,
-  pages: results,
-}, null, 2) + '\n');
-if (SHOTS) fs.writeFileSync(path.join(OUT_VIDEO, 'meta.json'), JSON.stringify(videoMeta, null, 1));
 console.log(`\n${passed}/${Object.keys(results).length} pages work; ${totalChecks} checks this run`);
-const failed = Object.entries(results).filter(([, r]) => !r.ok);
-if (failed.length) console.log('Left off /demo/:\n' + failed.map(([p, r]) => `  ${p}: ${r.problems.join('; ')}`).join('\n'));
+process.exit(passed === Object.keys(results).length ? 0 : 1);
