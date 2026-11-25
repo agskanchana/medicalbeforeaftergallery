@@ -68,6 +68,12 @@ const ACTION = {
   '/pro-demos/image-annotations/': 'annotated',
   '/pro-demos/compare-two-cases/': 'compare',
   '/pro-demos/find-by-area/': 'area',
+  '/pro-demos/body-map-embed/': 'openmap',
+  '/pro-demos/live-map/': 'livemap',
+  '/pro-demos/someone-like-you/': 'match',
+  '/pro-demos/open-row/': 'row',
+  '/pro-demos/treatment-index/': 'index',
+  '/pro-demos/scroll-story/': 'story',
   '/pro-demos/help-me-choose/': 'guide',
   '/pro-demos/single-case-stages/': 'single-stage',
   '/pro-demos/sensitive-photos-notice/': 'notice',
@@ -83,6 +89,8 @@ const FEATURE = new Set([
   '/pro-demos/template-modern/', '/pro-demos/sensitive-photos-notice/', '/pro-demos/automatic-watermarks/', '/pro-demos/area-then-treatment/',
   '/pro-demos/story-mode-on-phones/', '/pro-demos/card-extras/', '/pro-demos/spotlight-layout/',
   '/pro-demos/image-annotations/', '/pro-demos/card-stacked/', // blog covers
+  '/pro-demos/live-map/', '/pro-demos/someone-like-you/', '/pro-demos/flip-wall/', '/pro-demos/expanding-strips/', '/pro-demos/open-row/',
+  '/pro-demos/scroll-story/', '/pro-demos/refined-grid/', '/pro-demos/treatment-index/', '/pro-demos/body-map-embed/',
 ]);
 const DESKTOP = { viewport: { width: 1536, height: 864 }, deviceScaleFactor: 1.25 }; // = 1920×1080 pixels
 const PHONE = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true };
@@ -90,7 +98,7 @@ const PHONE = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, has
 // ── In-page helpers (run inside the demo pages) ─────────────────────────────────────────────
 const visibleCards = () => {
   const seen = new Set();
-  document.querySelectorAll('.medbeafgallery-gallery-item, .mba-pro-mcard, .mba-pro-organise-treatment:not(.mba-pro-organise-ghost), .mba-pro-organise-concerns > *, .mba-pro-organise-profile').forEach((e) => {
+  document.querySelectorAll('.medbeafgallery-gallery-item, .mba-pro-mcard, .mba-pro-organise-treatment:not(.mba-pro-organise-ghost), .mba-pro-organise-concerns > *, .mba-pro-organise-profile, .mba-pro-index-row').forEach((e) => {
     const r = e.getBoundingClientRect();
     if (r.width > 40 && r.height > 40 && getComputedStyle(e).visibility !== 'hidden') seen.add(e);
   });
@@ -145,6 +153,10 @@ async function openCase(page) {
       await page.waitForTimeout(250);
       const rect = await el.evaluate(rectOf).catch(() => null);
       await el.click({ timeout: 3000 }).catch(() => {});
+      // Open row: the case opens in its row, its window is one button further. A closed strip opens first.
+      const row = page.locator('.mba-pro-openrow-view');
+      if (await row.count()) { await page.waitForTimeout(700); await row.first().click({ timeout: 3000 }).catch(() => {}); }
+      else if ((await page.locator('.mba-pro-strip').count()) && !(await page.evaluate(openWindow))) { await page.waitForTimeout(900); await el.click({ timeout: 3000, position: { x: 30, y: 60 } }).catch(() => {}); }
       const opened = await page.waitForFunction(openWindow, null, { timeout: 3000 }).then((h) => h.jsonValue()).catch(() => '');
       if (opened) return rect || { x: 0, y: 0, w: 0, h: 0 };
       break;
@@ -171,7 +183,7 @@ async function windowPhotosLoad(page) {
 /** Scrolls the page's main gallery or embed to the top of the viewport. */
 async function scrollToMain(page) {
   await page.evaluate(() => {
-    const el = document.querySelector('.medbeafgallery-container, .mba-pro-scase, .mba-pro-carousel-wrap, .mba-pro-carousel, .splide, .mba-pro-discovery-standalone, .mba-pro-discovery-map, .mba-pro-discovery-region');
+    const el = document.querySelector('.mba-pro-discovery-inline, .medbeafgallery-container, .mba-pro-sstory, .mba-pro-scase, .mba-pro-carousel-wrap, .mba-pro-carousel, .splide, .mba-pro-discovery-standalone, .mba-pro-discovery-map, .mba-pro-discovery-region');
     if (!el) return;
     const top = el.getBoundingClientRect().top + scrollY - 28;
     scrollTo(0, Math.max(0, top));
@@ -272,7 +284,7 @@ for (const demo of pages) {
   const slug = demoSlug(demo.path);
   const action = ACTION[demo.path] || 'view';
   const notice = action === 'notice';
-  const kind = /single-case/.test(demo.path) ? 'single' : /category-carousel/.test(demo.path) ? 'carousel' : /body-map-embed/.test(demo.path) ? 'map' : 'gallery';
+  const kind = /scroll-story/.test(demo.path) ? 'story' : /single-case/.test(demo.path) ? 'single' : /category-carousel/.test(demo.path) ? 'carousel' : /body-map-embed/.test(demo.path) ? 'map' : 'gallery';
   const problems = [];
   const notes = [];
   const ok = (what, pass, detail = '') => { totalChecks++; if (!pass) problems.push(detail ? `${what} (${detail})` : what); return pass; };
@@ -330,6 +342,8 @@ for (const demo of pages) {
       ok('slides render', (await page.locator('.splide__slide').count()) > 1);
     } else if (kind === 'single') {
       ok('the single case renders', (await page.locator('.mba-pro-scase-stage').count()) > 0);
+    } else if (kind === 'story') {
+      ok('the story is pinned', await page.evaluate(() => document.querySelector('.mba-pro-sstory').classList.contains('is-live')));
     } else if (kind === 'map') {
       await page.waitForSelector('.mba-pro-discovery-region', { timeout: 8000 }).catch(() => {});
       ok('the map renders', (await page.locator('.mba-pro-discovery-region').count()) > 3);
@@ -343,12 +357,12 @@ for (const demo of pages) {
     const scroll = await page.evaluate(() => ({ w: document.documentElement.scrollWidth, v: document.documentElement.clientWidth }));
     warn('no sideways scroll at 1536 px', scroll.w <= scroll.v, `page is ${scroll.w - scroll.v}px wider than the window`);
     const images = await brokenImages(page);
-    ok('images load', !images.broken.length && (images.count > 0 || kind === 'map'), `${images.count} images; broken ${images.broken.join(', ')}`);
+    ok('images load', !images.broken.length && (images.count > 0 || kind === 'map' || /treatment-index/.test(demo.path)), `${images.count} images; broken ${images.broken.join(', ')}`);
 
     // It works: a case window opens and closes, or the embed's control responds.
     if (kind === 'gallery') {
-      if (/treatment-hub/.test(demo.path)) {
-        await page.locator('.mba-pro-organise-treatment').first().locator('button, a').first().click().catch(() => {});
+      if (/treatment-(hub|index)/.test(demo.path)) {
+        await (/hub/.test(demo.path) ? page.locator('.mba-pro-organise-treatment').first().locator('button, a').first() : page.locator('.mba-pro-index-row').first()).click().catch(() => {});
         await page.waitForSelector('.medbeafgallery-gallery-item', { state: 'visible', timeout: 6000 }).catch(() => {});
         ok('a treatment shows its cases', (await page.locator('.medbeafgallery-gallery-item:visible').count()) > 0);
       }
@@ -362,7 +376,7 @@ for (const demo of pages) {
         }
         ok('the case window closes', await closeCase(page));
       }
-      if (/treatment-hub/.test(demo.path)) {
+      if (/treatment-(hub|index)/.test(demo.path)) {
         // Back to the page's first view for the screenshot (Concern first keeps the chosen concern).
         await page.goto(BASE + demo.path, { waitUntil: 'load' });
         await settle(page);
@@ -391,10 +405,17 @@ for (const demo of pages) {
       ok('the slider moves with the keyboard', Number(await handle.getAttribute('aria-valuenow')) !== 50);
       await page.keyboard.press('ArrowLeft');
       await page.keyboard.press('ArrowLeft');
+    } else if (kind === 'story') {
+      const at = (q) => page.evaluate(async (k) => { const r = document.querySelector('.mba-pro-sstory'); scrollTo(0, r.getBoundingClientRect().top + scrollY + (r.offsetHeight - innerHeight) * k); await new Promise((x) => setTimeout(x, 500)); return document.querySelector('.mba-pro-sstory-number').textContent; }, q);
+      const first = await at(0); const last = await at(1);
+      ok('it counts the months', first === '0' && Number(last) > 3, `${first} to ${last}`);
     } else if (kind === 'map') {
       await page.locator('.mba-pro-discovery-region-choice:visible').first().click();
-      await page.waitForURL(/find-by-area|mbarea/, { timeout: 6000 }).catch(() => {});
-      ok('an area leads to the gallery', /find-by-area|mbarea/.test(page.url()), page.url());
+      await page.waitForTimeout(500);
+      ok('an area shows its newest results', (await page.locator('.mba-pro-discovery-pair:visible').count()) > 0);
+      await page.locator('.mba-pro-discovery-cta').first().click();
+      await page.waitForTimeout(1500);
+      ok('its cases open under the map', (await page.locator('.mba-pro-map-cases .medbeafgallery-gallery-item:visible').count()) > 0 && /body-map-embed/.test(page.url()), page.url());
       await page.goto(BASE + demo.path, { waitUntil: 'load' });
       await settle(page);
     }
@@ -460,12 +481,64 @@ for (const demo of pages) {
         await page.waitForTimeout(900);
         png = await page.screenshot({ type: 'png' });
         ok('the comparison closes', await closeCase(page));
+      } else if (action === 'openmap') {
+        await scrollToMain(page);
+        await page.locator('.mba-pro-discovery-region-choice[data-area="skin"]:visible').first().click();
+        await page.mouse.move(2, 2);
+        await page.waitForTimeout(900);
+        png = await page.screenshot({ type: 'png' });
+      } else if (action === 'livemap') {
+        await page.goto(BASE + demo.path, { waitUntil: 'load' });
+        await settle(page, 900);
+        await scrollToMain(page);
+        const region = page.locator('.mba-pro-live .mba-pro-discovery-region[data-area="skin"]');
+        await region.hover({ force: true, position: { x: 60, y: 60 } }).catch(() => {});
+        await page.waitForTimeout(1400);
+        ok('pointing at an area changes the results', /mbarea=/.test(page.url()), page.url());
+        png = await page.screenshot({ type: 'png' });
+      } else if (action === 'match') {
+        await page.goto(BASE + demo.path, { waitUntil: 'load' });
+        await settle(page, 900);
+        await scrollToMain(page);
+        await page.locator('.mba-pro-match .is-pair button').first().click();
+        await page.locator('.mba-pro-match .is-ages button').nth(1).click();
+        await page.locator('.mba-pro-match .is-chips button', { hasText: 'Skin tone' }).click();
+        await page.waitForTimeout(1200);
+        ok('the closest case is marked', (await page.locator('.mba-pro-match-badge:visible').count()) === 1);
+        await page.evaluate(() => document.activeElement && document.activeElement.blur());
+        await page.mouse.move(2, 2);
+        await page.waitForTimeout(500);
+        png = await page.screenshot({ type: 'png' });
+      } else if (action === 'row') {
+        await page.goto(BASE + demo.path, { waitUntil: 'load' });
+        await settle(page, 900);
+        await scrollToMain(page);
+        await page.locator('.mba-pro-tile').nth(2).click();
+        await page.waitForTimeout(1400);
+        ok('a case opens in its row', (await page.locator('.mba-pro-openrow.is-open').count()) === 1);
+        await page.evaluate(() => document.activeElement && document.activeElement.blur());
+        await page.mouse.move(2, 2);
+        await scrollToMain(page);
+        png = await page.screenshot({ type: 'png' });
+      } else if (action === 'index') {
+        await scrollToMain(page);
+        await page.locator('.mba-pro-index-row').nth(1).hover();
+        await page.waitForTimeout(800);
+        png = await page.screenshot({ type: 'png' });
+      } else if (action === 'story') {
+        await page.evaluate(() => { const r = document.querySelector('.mba-pro-sstory'); scrollTo(0, r.getBoundingClientRect().top + scrollY + (r.offsetHeight - innerHeight) * 0.7); });
+        await page.waitForTimeout(900);
+        png = await page.screenshot({ type: 'png' });
       } else if (action === 'area' || action === 'guide') {
         await scrollToMain(page);
         const btn = page.locator('.mba-pro-discovery-button:visible').first();
         await btn.click();
         await page.waitForTimeout(1000);
         ok(action === 'area' ? 'the map opens' : 'the guided search opens', !!(await page.evaluate(openWindow)));
+        if (action === 'area') {
+          await page.locator('.mba-pro-discovery-overlay .mba-pro-discovery-region-choice[data-area="skin"]:visible').first().click();
+          await page.waitForTimeout(900);
+        }
         png = await page.screenshot({ type: 'png' });
         await closeCase(page);
       } else if (action === 'single-stage') {

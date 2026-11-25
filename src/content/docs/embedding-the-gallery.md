@@ -21,7 +21,7 @@ With Pro, the workspace **Overview** shows this shortcode with a copy button and
 | `items_per_page` | `6` | Cases loaded at a time. |
 | `default_category` | `all` | Slug of the category to show first. |
 | `show_filters` | `true` | `false` hides the category bar (and, with Pro, the filter sidebar or drawer). |
-| `card_style` | from Design | `split` (side by side) or `reveal` (hover-reveal) for this gallery. |
+| `card_style` | from Design | `split` (side by side), `reveal` (hover reveal) or `refined` (portrait photos without boxes) for this gallery. |
 | `category_style` | from Design | `carousel`, `grid`, `buttons` or `dropdown` (Pro adds eight more). |
 
 A treatment page that shows only one category, without the category bar:

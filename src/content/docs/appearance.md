@@ -10,7 +10,7 @@ order: 2
 
 **Medical Before After Gallery → Dashboard** holds the gallery settings:
 
-- **Design** — brand colour (a colour or a gradient), **Card Style** (side by side or hover reveal), **Category Navigation** (carousel, grid, buttons or drop-down), **Case Window Background** (a blurred copy of the photo, or plain black) and **Category Counts** (count subcategory cases toward their parent category).
+- **Design** — brand colour (a colour or a gradient), **Card Style** (side by side, hover reveal or refined), **Category Navigation** (carousel, grid, buttons or drop-down), **Case Window Background** (a blurred copy of the photo, or plain black) and **Category Counts** (count subcategory cases toward their parent category).
 - **Image Cropping** — see [Image cropping](/docs/image-cropping/).
 - **Data & Uninstall** — your cases and categories are kept when the plugin is deleted, unless you tick “Also delete all cases, categories and their images when this plugin is deleted” first.
 
@@ -22,7 +22,7 @@ With Pro active, the dashboard becomes a workspace with a section list on the le
 | --- | --- |
 | **Overview** | The gallery shortcode with a copy button, the pages that show it, counts, a getting-started checklist and the cases that need attention |
 | **Design → Templates** | Six ready-made looks ([Design templates](/docs/design-templates-and-preview/)) |
-| **Design → Gallery** | Layout and columns, card style, card frame, card extras, motion, page structure, concerns and Compare two cases |
+| **Design → Gallery** | How visitors find cases, how cases are shown, how photos compare, card frame and extras, motion, concerns and Compare two cases |
 | **Design → Categories & filters** | Category style, counts, filter sidebar or drawer, search and sort |
 | **Design → Case window** | Window style and its features, background, starting view, labels, case details, booking button, height, shareable links |
 | **Design → Colours & style** | Brand colour, dark mode, style preset |

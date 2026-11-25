@@ -16,8 +16,8 @@ order: 4
 | **Modern** | Masonry cards that wipe from before to after | Compact buttons | Drawer |
 | **Luxury** | A featured case first (Spotlight), ivory and gold | Text tabs | Cinema |
 | **Editorial** | One case per row with room for its story | Text tabs | Case story |
-| **Compact** | A row of cases per procedure with comparison sliders | Drop-down | Comparison desk |
-| **Photo-first** | Complete, uncropped photos in clean white cards | Image cards | Cinema |
+| **Compact** | A dense wall of photos; a case opens in place | Filter bar | Drawer |
+| **Photo-first** | Portrait photos without boxes, the result first | Photo pills | Cinema |
 
 - **Preview** opens the template full screen with your own cases, at **Desktop**, **Tablet** (820 px) or **Phone** (390 px). A gallery with no published cases yet is previewed with sample cases.
 - **Use this template** applies it in one click — from the card or from the preview. The page then offers **Undo**.

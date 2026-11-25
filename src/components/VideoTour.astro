@@ -1,34 +1,138 @@
 ---
-// The feature video (drawn on a canvas from demo screenshots, with a spoken voiceover; see
-// scripts/video/). No autoplay; nothing loads until the visitor presses play.
+// The feature video (drawn from the sample cases, with a spoken voiceover). No autoplay; nothing loads until the visitor presses play.
+// With a YouTube id in src/data/video.json it plays from YouTube (no-cookie player). Until then the same picture is a placeholder
+// that plays the site's own copy.
 import video from '../data/video.json';
 
-const { files } = video;
+const { files, youtubeId, title } = video;
 ---
 
 <div class="tour">
-  <video controls preload="none" playsinline poster={files.poster} width="1920" height="1080" aria-label="Feature video: Medical Before After Gallery Pro">
-    <source src={files.mp4} type="video/mp4" />
-    <source src={files.webm} type="video/webm" />
-    <track kind="captions" src={files.captions} srclang="en" label="English" />
-    <p>
-      Your browser can’t play this video. <a href={files.mp4}>Download it (MP4)</a>.
-    </p>
-  </video>
+  <div class="tour-yt" data-tour data-youtube={youtubeId} data-mp4={files.mp4} data-webm={files.webm} data-poster={files.poster} data-captions={files.captions}>
+    <a
+      href={youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : files.mp4}
+      target={youtubeId ? '_blank' : undefined}
+      rel={youtubeId ? 'noopener noreferrer' : undefined}
+      aria-label={`Play the video: ${title}`}
+    >
+      <img src={files.poster} alt="" width="1920" height="1080" loading="lazy" />
+      <span class="tour-play" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="34" height="34"><path d="M8 5.2v13.6a1 1 0 0 0 1.53.85l10.6-6.8a1 1 0 0 0 0-1.7L9.53 4.35A1 1 0 0 0 8 5.2z" fill="currentColor" /></svg>
+      </span>
+    </a>
+  </div>
+  {youtubeId && <p class="tour-note">The video plays from YouTube. Nothing is loaded from YouTube until you press play.</p>}
 </div>
+
+<script>
+  // The player replaces the picture on the first click; without JavaScript the link opens the video itself.
+  document.querySelectorAll<HTMLElement>('[data-tour]').forEach((box) => {
+    const link = box.querySelector('a');
+    const title = (link?.getAttribute('aria-label') || 'Feature video').replace('Play the video: ', '');
+    link?.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey) return;
+      event.preventDefault();
+      const { youtube, mp4, webm, poster, captions } = box.dataset;
+      if (youtube) {
+        const frame = document.createElement('iframe');
+        frame.src = `https://www.youtube-nocookie.com/embed/${youtube}?autoplay=1&rel=0&playsinline=1`;
+        frame.title = title;
+        frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        frame.allowFullscreen = true;
+        frame.referrerPolicy = 'strict-origin-when-cross-origin';
+        box.replaceChildren(frame);
+        frame.focus();
+        return;
+      }
+      const player = document.createElement('video');
+      player.controls = true;
+      player.playsInline = true;
+      player.poster = poster || '';
+      player.setAttribute('aria-label', title);
+      for (const [src, type] of [[webm, 'video/webm'], [mp4, 'video/mp4']]) {
+        const source = document.createElement('source');
+        source.src = src || '';
+        source.type = type || '';
+        player.append(source);
+      }
+      const track = document.createElement('track');
+      track.kind = 'captions';
+      track.src = captions || '';
+      track.srclang = 'en';
+      track.label = 'English';
+      player.append(track);
+      box.replaceChildren(player);
+      player.focus();
+      player.play().catch(() => {});
+    });
+  });
+</script>
 
 <style>
   .tour {
     max-width: 1040px;
     margin-inline: auto;
   }
-  .tour video {
+  .tour-yt {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--bg-softer);
+    box-shadow: var(--shadow-lg);
+  }
+  .tour-yt a,
+  .tour-yt img,
+  .tour-yt :global(iframe),
+  .tour-yt :global(video) {
     display: block;
     width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    border-radius: var(--radius-lg);
+    height: 100%;
+    border: 0;
+  }
+  .tour-yt img {
+    object-fit: cover;
+  }
+  .tour-yt a:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: -3px;
+  }
+  .tour-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 92px;
+    height: 92px;
+    margin: -46px 0 0 -46px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--primary);
+    box-shadow: 0 16px 44px rgba(15, 27, 51, 0.36);
+    transition: transform 0.2s ease;
+  }
+  .tour-yt :global(video) {
     background: var(--bg-dark);
-    box-shadow: var(--shadow-lg);
+  }
+  .tour-yt a:hover .tour-play {
+    transform: scale(1.06);
+  }
+  .tour-note {
+    margin: 0.9rem 0 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+  @media (max-width: 560px) {
+    .tour-play {
+      width: 62px;
+      height: 62px;
+      margin: -31px 0 0 -31px;
+    }
+    .tour-play svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 </style>

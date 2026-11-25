@@ -10,7 +10,9 @@ Both are Pro features in the **Discovery** section of the Pro workspace. A **How
 
 ## Find by area
 
-A **Find by area** button above the gallery opens a map. Visitors tap the nose, lips, teeth, abdomen and so on, and the gallery shows the matching cases.
+A **Find by area** button above any gallery opens a map of the face, body and smile. Visitors point at an area to see its treatments, its two newest results and how many cases there are; **See cases** lists them.
+
+For a gallery that starts from the map, with the results changing beside it, use the [Live map](/docs/page-structures-and-collections/#live-map).
 
 1. Turn on the map.
 2. Choose the figures to show: **Face**, **Body front**, **Body back** and **Smile**.
@@ -20,15 +22,16 @@ The areas include, on the face: scalp / hair, forehead, eyes & brows, nose, chee
 
 ### The map on any page
 
-`[mba_body_map]` shows the map without the gallery. A chosen area opens your gallery page filtered to it.
+`[mba_body_map]` shows the map on any page. Choosing an area shows its newest results, and **See cases** lists them all under the map. With `url` it opens your gallery page with the area chosen instead. On a page that already has a gallery, the map works that gallery.
 
 | Attribute | Description |
 | --- | --- |
-| `url` | Your gallery page (required). |
+| `url` | Optional: your gallery page, to open it instead of listing the cases here. |
 | `figures` | Which figures to show, comma-separated: `face`, `body-front`, `body-back`, `smile`. Defaults to the figures chosen in Discovery. |
+| `items_per_page`, `layout`, `card_style`, `columns`, `preset` | Optional: how the cases under the map look. |
 
 ```text
-[mba_body_map url="https://example.com/gallery/" figures="face,body-front"]
+[mba_body_map figures="face,body-front"]
 ```
 
 ## Help me choose

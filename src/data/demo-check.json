@@ -1,9 +1,9 @@
 {
-  "checked": "2026-11-24",
+  "checked": "2026-11-25",
   "export": "demo-site/out",
   "note": "Written by scripts/capture-demo-shots.mjs. A page with ok:false is left off /demo/.",
-  "passed": 74,
-  "total": 74,
+  "passed": 83,
+  "total": 83,
   "pages": {
     "/pro-demos/window-cinema/": {
       "ok": true,
@@ -55,6 +55,26 @@
       "problems": [],
       "notes": []
     },
+    "/pro-demos/flip-wall/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/expanding-strips/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/open-row/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/refined-grid/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
     "/pro-demos/masonry-layout/": {
       "ok": true,
       "problems": [],
@@ -80,17 +100,17 @@
       "problems": [],
       "notes": []
     },
+    "/pro-demos/card-after-first/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
     "/pro-demos/card-switch/": {
       "ok": true,
       "problems": [],
       "notes": []
     },
     "/pro-demos/card-hover-reveal/": {
-      "ok": true,
-      "problems": [],
-      "notes": []
-    },
-    "/pro-demos/card-photo/": {
       "ok": true,
       "problems": [],
       "notes": []
@@ -185,6 +205,21 @@
       "problems": [],
       "notes": []
     },
+    "/pro-demos/live-map/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/someone-like-you/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/treatment-index/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
     "/pro-demos/treatment-hub/": {
       "ok": true,
       "problems": [],
@@ -231,6 +266,11 @@
       "notes": []
     },
     "/pro-demos/search-and-sort/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/pro-demos/scroll-story/": {
       "ok": true,
       "problems": [],
       "notes": []
@@ -351,6 +391,11 @@
       "notes": []
     },
     "/free/category-drop-down/": {
+      "ok": true,
+      "problems": [],
+      "notes": []
+    },
+    "/free/refined-cards/": {
       "ok": true,
       "problems": [],
       "notes": []

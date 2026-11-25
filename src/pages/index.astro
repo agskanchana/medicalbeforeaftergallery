@@ -9,6 +9,8 @@ import FreemiusCheckout from '../components/FreemiusCheckout.astro';
 import FeatureShowcase from '../components/FeatureShowcase.astro';
 import FeatureCards from '../components/FeatureCards.astro';
 import VideoTour from '../components/VideoTour.astro';
+import video from '../data/video.json';
+import Highlights from '../components/Highlights.astro';
 import { showcase, setupSteps } from '../data/showcase';
 import { faqItems } from '../data/faq';
 import { site } from '../data/site';
@@ -37,7 +39,7 @@ const groupIcons: Record<string, string> = {
 // Software + rating, matching the rating shown in the testimonials section.
 const homeTitle = 'Medical Before After Gallery (MBA Gallery) — before and after galleries for clinics';
 const homeDescription =
-  'Medical Before After Gallery (MBA Gallery) is a WordPress plugin for before and after photo galleries in clinics: free on WordPress.org, with a Pro add-on for layouts, case windows, progress timelines, single-case embeds and watermarks.';
+  'Medical Before After Gallery (MBA Gallery) is a WordPress plugin for before and after photo galleries in clinics: free on WordPress.org, with a Pro add-on for a live map, layouts, case windows, progress timelines, single-case embeds and watermarks.';
 
 const softwareJsonLd = {
   '@context': 'https://schema.org',
@@ -73,9 +75,24 @@ const softwareJsonLd = {
     worstRating: '1',
   },
 };
+
+// The feature video, once it is on YouTube (src/data/video.json).
+const videoJsonLd = video.youtubeId && video.uploadDate
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: video.title,
+      description: video.description,
+      thumbnailUrl: [site.url + video.files.poster],
+      uploadDate: video.uploadDate,
+      duration: video.duration,
+      embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
+      publisher: { '@type': 'Organization', name: site.legalName, logo: { '@type': 'ImageObject', url: site.url + site.logo } },
+    }
+  : null;
 ---
 
-<BaseLayout fullTitle={homeTitle} description={homeDescription} jsonLd={softwareJsonLd}>
+<BaseLayout fullTitle={homeTitle} description={homeDescription} jsonLd={videoJsonLd ? [softwareJsonLd, videoJsonLd] : softwareJsonLd}>
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="container hero-inner">
@@ -84,8 +101,8 @@ const softwareJsonLd = {
         <h1>Show your patients real <span class="grad">before &amp; after</span> results</h1>
         <p class="lead">
           <strong>Medical Before After Gallery (MBA Gallery)</strong> is a before and after gallery for medical and aesthetic
-          practices. The free plugin gives you a comparison slider, categories and doctor cards. Pro adds layouts, case windows,
-          progress timelines, single-case embeds, watermarks and more.
+          practices. The free plugin gives you a comparison slider, categories and doctor cards. Pro adds a live map, Someone like you,
+          eleven layouts, full-screen case windows, scroll stories, watermarks and more.
         </p>
         <div class="hero-cta">
           <FreemiusCheckout label={`Get Pro — $${site.proPrice} one-time`} class="btn btn-primary btn-lg" />
@@ -111,13 +128,14 @@ const softwareJsonLd = {
         <a class="hero-frame" href="#tour">
           <span class="bar" aria-hidden="true"><span></span><span></span><span></span></span>
           <img
-            src="/images/features/window-cinema.webp"
-            alt="Screenshot of the Pro Cinema case window: a hair transplant case shown full screen with a timeline of its progress photos"
-            width="1600"
-            height="900"
+            src="/video/clips/live-map.webp"
+            alt="The live map: a face beside the before and after cases of the area pointed at"
+            width="1280"
+            height="720"
             loading="eager"
             fetchpriority="high"
           />
+          <video class="hero-loop" muted loop playsinline preload="none" width="1280" height="720" aria-hidden="true" data-hero-loop data-src="/video/clips/live-map.mp4"></video>
           <span class="hero-play"><i class="fa-solid fa-play" aria-hidden="true"></i> Watch the feature video</span>
         </a>
         <p class="hero-versions">
@@ -151,14 +169,26 @@ const softwareJsonLd = {
     <div class="container">
       <div class="section-head">
         <h2>See Pro at work</h2>
-        <p>The main Pro features, in under a minute.</p>
+        <p>The live map, Someone like you, the flip wall and more, in under two minutes.</p>
       </div>
       <VideoTour />
     </div>
   </section>
 
+  <!-- ============ HIGHLIGHTS ============ -->
+  <section class="section section-soft" id="highlights">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">New in Pro {site.proVersion}</span>
+        <h2>Galleries patients want to explore</h2>
+        <p>Every one of these is a live demo you can try.</p>
+      </div>
+      <Highlights />
+    </div>
+  </section>
+
   <!-- ============ FEATURES ============ -->
-  <section class="section section-soft" id="features">
+  <section class="section" id="features">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">What’s new: free {site.freeVersion} · Pro {site.proVersion}</span>
@@ -169,7 +199,7 @@ const softwareJsonLd = {
     </div>
   </section>
 
-  <section class="section" id="more-features">
+  <section class="section section-soft" id="more-features">
     <div class="container">
       <div class="section-head">
         <h2>Put cases where patients read about a treatment</h2>
@@ -311,6 +341,19 @@ const softwareJsonLd = {
   </p>
 </BaseLayout>
 
+<script>
+  // The loop in the hero: only once the page is quiet, and never with reduced motion.
+  const loop = document.querySelector<HTMLVideoElement>('[data-hero-loop]');
+  if (loop) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) loop.remove();
+    else
+      addEventListener('load', () => {
+        loop.src = loop.dataset.src!;
+        new IntersectionObserver(([e]) => (e.isIntersecting ? loop.play().catch(() => {}) : loop.pause())).observe(loop);
+      });
+  }
+</script>
+
 <style>
   /* Hero */
   .hero {
@@ -406,9 +449,22 @@ const softwareJsonLd = {
     background: var(--border-strong);
   }
   .hero-frame img {
+    display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+  }
+  .hero-loop {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .hero-play {
+    z-index: 1;
   }
   .hero-play {
     position: absolute;

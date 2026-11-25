@@ -17,19 +17,19 @@ There are four shortcodes. `[medbeafgallery]` is in the free plugin; the other t
 | `items_per_page` | `6` | Cases loaded at a time. |
 | `default_category` | `all` | Slug of the category shown first. |
 | `show_filters` | `true` | `false` hides the category bar (and Pro’s filter sidebar or drawer). |
-| `card_style` | from Design | `split`, `reveal` — Pro adds `slider`, `photo`, `toggle`, `stacked`. |
+| `card_style` | from Design | `split`, `reveal`, `refined` — Pro adds `reveal-after`, `slider`, `toggle`, `stacked`. |
 | `category_style` | from Design | `carousel`, `grid`, `buttons`, `dropdown` — Pro adds `tabs`, `photos`, `cards`, `areas`, `menu`, `search`, `icons`, `bar`. |
 
 ### Pro attributes
 
 | Attribute | Default | Values |
 | --- | --- | --- |
-| `layout` | from Design | `classic`, `masonry`, `spotlight`, `rows`, `editorial`, `angles`, `uncropped`, `collections` |
+| `layout` | from Design | `classic`, `refined`, `strips`, `openrow`, `wall`, `masonry`, `spotlight`, `rows`, `editorial`, `angles`, `uncropped`, `collections` |
 | `card_frame` | `boxed` | `boxed`, `framed`, `open` |
 | `columns` | from Design | `auto`, `1`, `2`, `3`, `4` |
 | `preset` | `default` | `default`, `clinical`, `luxury`, `spa`, `midnight` |
 | `motion` | `subtle` | `none`, `subtle`, `lively` |
-| `structure` | `gallery` | `gallery`, `hub`, `concerns`, `doctors` |
+| `structure` | `gallery` | `gallery`, `map`, `match`, `hub`, `index`, `concerns`, `doctors` |
 | `compare` | `off` | `off`, `on` |
 
 `gallery_layout` and `grid_columns` are accepted as other names for `layout` and `columns`. An attribute that is left out uses the saved Design setting, so existing galleries keep their look.
@@ -45,7 +45,7 @@ There are four shortcodes. `[medbeafgallery]` is in the free plugin; the other t
 | Attribute | Default | Values |
 | --- | --- | --- |
 | `id` | *(required)* | A published case’s ID |
-| `layout` | `auto` | `auto`, `split`, `stacked`, `compact` |
+| `layout` | `auto` | `auto`, `split`, `stacked`, `compact`, `story` |
 | `view` | `slider` | `slider`, `before`, `after`, `side` |
 | `show_title` | `true` | `true`, `false` |
 | `heading` | `3` | `2`–`6` |
@@ -82,11 +82,12 @@ Details: [Category carousel](/docs/category-carousel/).
 
 | Attribute | Default | Values |
 | --- | --- | --- |
-| `url` | *(required)* | Your gallery page |
+| `url` | *(none)* | Your gallery page, to open it instead of listing the cases under the map |
 | `figures` | from Discovery | `face`, `body-front`, `body-back`, `smile`, comma-separated |
+| `items_per_page`, `layout`, `card_style`, `columns`, `preset` | `8`, from Design | How the cases under the map look |
 
 ```text
-[mba_body_map url="https://example.com/gallery/" figures="face,smile"]
+[mba_body_map figures="face,smile"]
 ```
 
 Details: [Find by area & Help me choose](/docs/find-by-area-and-help-me-choose/).

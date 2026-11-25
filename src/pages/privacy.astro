@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
-const updated = 'June 2026';
+import video from '../data/video.json';
+const updated = video.youtubeId ? 'November 2026' : 'June 2026';
 ---
 
 <BaseLayout title="Privacy Policy" description="How medicalbeforeaftergallery.com handles your data.">
@@ -37,6 +38,15 @@ const updated = 'June 2026';
           this Site — Google Analytics (analytics), Web3Forms (contact form delivery), and our checkout provider
           Freemius if you choose to purchase Pro. Each processes data under their own privacy terms.
         </p>
+
+        {
+          video.youtubeId && (
+            <p>
+              The feature video on the home page is hosted by YouTube. Nothing is loaded from YouTube until you press play; from
+              then on, YouTube receives your IP address and may set cookies under Google’s privacy terms.
+            </p>
+          )
+        }
 
         <h2>Cookies</h2>
         <p>

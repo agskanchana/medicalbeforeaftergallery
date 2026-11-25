@@ -1,0 +1,201 @@
+---
+// The signature designs as short silent loops. A clip loads and plays only while it is in
+// view, never for visitors who ask for reduced motion, and one button stops them all.
+import { highlights } from '../data/highlights';
+import { liveDemoUrl } from '../utils/demos';
+
+const tiles = highlights.map((h) => ({ ...h, url: liveDemoUrl(h.demo) })).filter((h) => h.url);
+---
+
+<div class="hl" data-highlights>
+  <ul class="hl-grid">
+    {
+      tiles.map((h) => (
+        <li class:list={['hl-tile', h.size && `is-${h.size}`]}>
+          <a href={h.url} target="_blank" rel="noopener">
+            <span class="hl-media">
+              <video muted loop playsinline preload="none" poster={`/video/clips/${h.clip}.webp`} width="1280" height="720" aria-label={h.alt} data-src={`/video/clips/${h.clip}.mp4`} />
+            </span>
+            <span class="hl-text">
+              <strong>{h.title}</strong>
+              <span>{h.text}</span>
+              <em>
+                Try it live <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
+                <span class="sr-only">(new tab)</span>
+              </em>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="hl-control">
+    <button type="button" data-pause aria-pressed="false"><i class="fa-solid fa-pause" aria-hidden="true"></i> <span>Pause the animations</span></button>
+  </p>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-highlights]');
+  if (root) {
+    const clips = [...root.querySelectorAll<HTMLVideoElement>('video')];
+    const button = root.querySelector<HTMLButtonElement>('[data-pause]')!;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const visible = new Set<HTMLVideoElement>();
+    let paused = reduced.matches;
+    const apply = () => {
+      clips.forEach((v) => {
+        if (!paused && visible.has(v)) {
+          if (!v.src && v.dataset.src) v.src = v.dataset.src;
+          v.play().catch(() => {});
+        } else v.pause();
+      });
+      button.setAttribute('aria-pressed', String(paused));
+      button.querySelector('i')!.className = paused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+      button.querySelector('span')!.textContent = paused ? 'Play the animations' : 'Pause the animations';
+    };
+    button.addEventListener('click', () => { paused = !paused; apply(); });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? visible.add(e.target as HTMLVideoElement) : visible.delete(e.target as HTMLVideoElement)));
+      apply();
+    }, { threshold: 0.35 });
+    clips.forEach((v) => io.observe(v));
+    apply();
+  }
+</script>
+
+<style>
+  .hl-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hl-tile {
+    grid-column: span 2;
+    min-width: 0;
+  }
+  .hl-tile.is-lead {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+  .hl-tile.is-half {
+    grid-column: span 3;
+  }
+  .hl-tile a {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    color: var(--text);
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .hl-tile a:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+  .hl-media {
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: var(--bg-softer);
+  }
+  .hl-media video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* The map panel is on the left of the picture: keep it whole. */
+  .hl-tile.is-lead video {
+    object-position: 0 50%;
+  }
+  .hl-tile.is-lead .hl-media {
+    flex: 1 1 auto;
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+  .hl-text {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1.1rem 1.3rem 1.25rem;
+  }
+  .hl-text strong {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+  .hl-text > span {
+    font-size: 0.96rem;
+    line-height: 1.5;
+    color: var(--text-light);
+  }
+  .hl-text em {
+    margin-top: 0.35rem;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--primary-dark);
+  }
+  .hl-text em i {
+    font-size: 0.78em;
+  }
+  .hl-tile.is-lead .hl-text {
+    padding: 1.4rem 1.7rem 1.6rem;
+  }
+  .hl-tile.is-lead strong {
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+    letter-spacing: -0.02em;
+  }
+  .hl-tile.is-lead .hl-text > span {
+    max-width: 56ch;
+    font-size: 1.05rem;
+  }
+  .hl-control {
+    display: flex;
+    justify-content: center;
+    margin: 1.4rem 0 0;
+  }
+  .hl-control button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 44px;
+    padding: 0.4rem 1.15rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: #fff;
+    color: var(--text);
+    font: 500 0.92rem/1.2 var(--font-sans);
+    cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    .hl-tile,
+    .hl-tile.is-half {
+      grid-column: span 3;
+    }
+    .hl-tile.is-lead,
+    .hl-tile:last-child {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .hl-tile.is-lead .hl-media {
+      aspect-ratio: 16 / 9;
+    }
+  }
+  @media (max-width: 560px) {
+    .hl-grid {
+      gap: 1rem;
+    }
+    .hl-tile,
+    .hl-tile.is-half {
+      grid-column: 1 / -1;
+    }
+  }
+</style>
