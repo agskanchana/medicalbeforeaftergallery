@@ -45,6 +45,7 @@ const jsonLdArray = [organization, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd 
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+{pathname === '/' && <meta name="msvalidate.01" content="3A1CA9F30152CE148EF670661A9D8081" />}
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
 <!-- Open Graph -->
