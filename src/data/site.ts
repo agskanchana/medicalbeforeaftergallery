@@ -56,6 +56,7 @@ export const site = {
     twitter: '',
     instagram: '',
     linkedin: '',
+    youtube: 'https://www.youtube.com/@mba_gallery',
   },
 } as const;
 

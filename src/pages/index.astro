@@ -76,8 +76,8 @@ const softwareJsonLd = {
   },
 };
 
-// The feature video, once it is on YouTube (src/data/video.json).
-const videoJsonLd = video.youtubeId && video.uploadDate
+// The feature video (src/data/video.json).
+const videoJsonLd = video.uploadDate
   ? {
       '@context': 'https://schema.org',
       '@type': 'VideoObject',
@@ -86,7 +86,8 @@ const videoJsonLd = video.youtubeId && video.uploadDate
       thumbnailUrl: [site.url + video.files.poster],
       uploadDate: video.uploadDate,
       duration: video.duration,
-      embedUrl: `https://www.youtube-nocookie.com/embed/${video.youtubeId}`,
+      contentUrl: site.url + video.files.mp4,
+      ...(video.youtubeId ? { embedUrl: `https://www.youtube.com/embed/${video.youtubeId}` } : {}),
       publisher: { '@type': 'Organization', name: site.legalName, logo: { '@type': 'ImageObject', url: site.url + site.logo } },
     }
   : null;

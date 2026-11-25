@@ -1,16 +1,17 @@
 ---
 // The feature video (drawn from the sample cases, with a spoken voiceover). No autoplay; nothing loads until the visitor presses play.
-// With a YouTube id in src/data/video.json it plays from YouTube (no-cookie player). Until then the same picture is a placeholder
-// that plays the site's own copy.
+// It plays the site's own copy and links to YouTube; player "youtube" in src/data/video.json plays it from YouTube (no-cookie player) instead.
 import video from '../data/video.json';
 
-const { files, youtubeId, title } = video;
+const { files, title } = video;
+const youtubeId = video.player === 'youtube' ? video.youtubeId : '';
+const youtubeUrl = video.youtubeId ? `https://www.youtube.com/watch?v=${video.youtubeId}` : '';
 ---
 
 <div class="tour">
   <div class="tour-yt" data-tour data-youtube={youtubeId} data-mp4={files.mp4} data-webm={files.webm} data-poster={files.poster} data-captions={files.captions}>
     <a
-      href={youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : files.mp4}
+      href={youtubeId ? youtubeUrl : files.mp4}
       target={youtubeId ? '_blank' : undefined}
       rel={youtubeId ? 'noopener noreferrer' : undefined}
       aria-label={`Play the video: ${title}`}
@@ -21,7 +22,16 @@ const { files, youtubeId, title } = video;
       </span>
     </a>
   </div>
-  {youtubeId && <p class="tour-note">The video plays from YouTube. Nothing is loaded from YouTube until you press play.</p>}
+  {
+    youtubeUrl && (
+      <p class="tour-note">
+        {youtubeId && 'Nothing is loaded from YouTube until you press play. '}
+        <a href={youtubeUrl} target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-youtube" aria-hidden="true" /> Watch on YouTube
+        </a>
+      </p>
+    )
+  }
 </div>
 
 <script>

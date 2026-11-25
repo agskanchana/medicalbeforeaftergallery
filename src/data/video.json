@@ -1,8 +1,9 @@
 {
   "_note": "The feature video's files. It is made in scripts/video/ (see the README).",
-  "_youtube": "The id in https://youtu.be/<id>, and the day it went public (YYYY-MM-DD). With an id, the home page plays the video from YouTube; without one, it plays the files below.",
-  "youtubeId": "",
-  "uploadDate": "",
+  "_player": "The home page plays the site's own files (the owner's choice, 2026-11-25) and links to the video on YouTube. player: \"youtube\" would play it from YouTube instead.",
+  "player": "files",
+  "youtubeId": "LHW8qlbSHco",
+  "uploadDate": "2026-11-25",
   "duration": "PT1M55S",
   "title": "Before & After Gallery for WordPress: Medical Before After Gallery Pro",
   "description": "The live map, treatment index, Someone like you, refined grid, flip wall, expanding strips, card styles, category navigation and case windows of Medical Before After Gallery Pro, a WordPress plugin for clinics.",
