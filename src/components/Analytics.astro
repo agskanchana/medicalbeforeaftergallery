@@ -1,6 +1,6 @@
 ---
 import { site } from '../data/site';
-const { gaId } = site;
+const { gaId, wpOrgUrl } = site;
 // Loaded once via BaseLayout. Skipped in dev so local visits don't pollute analytics.
 const enabled = import.meta.env.PROD && gaId;
 ---
@@ -9,13 +9,24 @@ const enabled = import.meta.env.PROD && gaId;
   enabled && (
     <>
       <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} is:inline />
-      <script define:vars={{ gaId }} is:inline>
+      <script define:vars={{ gaId, wpOrgUrl }} is:inline>
         window.dataLayer = window.dataLayer || [];
         function gtag() {
           dataLayer.push(arguments);
         }
         gtag('js', new Date());
         gtag('config', gaId);
+        // The two key events: "Get Pro" (checkout or the pricing page) and "Download free" (the WordPress.org page).
+        document.addEventListener('click', function (event) {
+          const el = event.target.closest && event.target.closest('[data-fs-checkout], a.btn[href="/pricing/"], a[href="' + wpOrgUrl + '"]');
+          if (!el) return;
+          const free = el.getAttribute('href') === wpOrgUrl;
+          gtag('event', free ? 'download_free_click' : 'get_pro_click', {
+            button_text: el.textContent.trim().slice(0, 60),
+            button_target: free ? 'wordpress.org' : el.hasAttribute('data-fs-checkout') ? 'checkout' : 'pricing page',
+            transport_type: 'beacon',
+          });
+        });
       </script>
     </>
   )

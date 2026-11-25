@@ -1,7 +1,7 @@
 {
   "_note": "The feature video's files. It is made in scripts/video/ (see the README).",
-  "_player": "The home page plays the site's own files (the owner's choice, 2026-11-25) and links to the video on YouTube. player: \"youtube\" would play it from YouTube instead.",
-  "player": "files",
+  "_player": "player \"youtube\": the home page plays the video from YouTube (no-cookie player, loaded on click). \"files\": it plays the site's own copy.",
+  "player": "youtube",
   "youtubeId": "LHW8qlbSHco",
   "uploadDate": "2026-11-25",
   "duration": "PT1M55S",
